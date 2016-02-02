@@ -11,24 +11,11 @@
 </head>
 
 <body>
-	<header>
-		<a id="home_button" href="../">Home</a>
-		<a id="logout_button"href="../logout.php">Logout</a>
-		<p id="user_name">Dona Lina</p>
-	</header>	
-
-	
-
-	<aside id="sidebar-wrapper">
-		<ul class="sidebar-nav">
-			<li><a href="../menu">123</a></li>
-		</ul>
-	</aside>
-	
-	<footer>
-		Desenvolvido por: 
-		<a href="//ni.fe.up.pt">NIAEFEUP</a>
-	</footer>
+	<?php
+		include 'header.html';
+		include 'sidebar.html';
+		include 'footer.html';
+	?>
 
   	<script src="./../bootstrap-3.3.6-dist/jquery/jquery.js"></script>
   	<script src="./../bootstrap-3.3.6-dist/js/bootstrap.js"></script>
