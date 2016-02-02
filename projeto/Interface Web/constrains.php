@@ -7,7 +7,7 @@ include 'Templates/header.html';
 
 <div align="right">
 	<button type="button" class="btn btn-default btn-lg" onclick="addConstrain()">
-	  <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"> Adicionar Restrição</span>
+		<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"> Adicionar Restrição</span>
 	</button>
 </div>
 
