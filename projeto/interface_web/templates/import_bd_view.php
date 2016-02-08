@@ -26,4 +26,4 @@
 <script src="../lib/updateFileLib/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
 <script src="../lib/updateFileLib/js/fileinput.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../aux_files/importBdAux/importBd.js" type="text/javascript"></script>
+<script src="js/importBd.js" type="text/javascript"></script>

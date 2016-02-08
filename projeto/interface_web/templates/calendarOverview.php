@@ -5,8 +5,8 @@
 ?>
 
 
-<link rel="stylesheet" href="../aux_files/calendarOverviewFilesAux/calendarOverview.css">
-<link href="../aux_files/calendarOverviewFilesAux/bootstrap-switch.css" rel="stylesheet">
+<link rel="stylesheet" href="css/calendarOverview.css">
+<link href="css/bootstrap-switch.css" rel="stylesheet">
 
 <div align="right">
 	<input type="checkbox" name="request-checkbox" checked>
@@ -28,9 +28,9 @@
 	</div>
 </div>
 
-<script src="../aux_files/calendarOverviewFilesAux/bootstrap-switch.js"></script>
-<script src="../aux_files/calendarOverviewFilesAux/calendarOverview.js"></script>
+<script src="js/bootstrap-switch.js"></script>
+<script src="js/calendarOverview.js"></script>
 
 <?php
-	include '../templates/footer.html';
+	include 'footer.html';
 ?>

@@ -3,7 +3,7 @@
 	include 'sidebar.html';
 ?>
 
-<link rel="stylesheet" href="../aux_files/loginFilesAux/login.css">
+<link rel="stylesheet" href="css/login.css">
 
 <form name="login" method="post" action="">
 	<div class="input-group input-group-lg">

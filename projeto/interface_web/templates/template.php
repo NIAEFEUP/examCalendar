@@ -3,11 +3,9 @@
 <head>
   <title>Exam Calendar</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="./styles/template.css"></script>
+  <link rel="stylesheet" href="./css/template.css"></script>
 
-  <link rel="stylesheet" href="./../bootstrap-3.3.6-dist/css/bootstrap.css">
-
-
+  <link rel="stylesheet" href="../lib/bootstrap-3.3.6-dist/css/bootstrap.css">
 </head>
 
 <body>
@@ -17,8 +15,8 @@
 		include 'footer.html';
 	?>
 
-  	<script src="./../bootstrap-3.3.6-dist/jquery/jquery.js"></script>
-  	<script src="./../bootstrap-3.3.6-dist/js/bootstrap.js"></script>
+  	<script src="./../lib/bootstrap-3.3.6-dist/jquery/jquery.js"></script>
+  	<script src="./../lib/bootstrap-3.3.6-dist/js/bootstrap.js"></script>
 
 </body>
 

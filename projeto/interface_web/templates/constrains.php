@@ -3,8 +3,8 @@
 	include 'sidebar.html';
 ?>
 
-<link rel="stylesheet" href="../aux_files/ConstrainsFilesAux/constrains.css">
-<script src="../aux_files/ConstrainsFilesAux/constrains.js" async></script>
+<link rel="stylesheet" href="css/constrains.css">
+<script src="js/constrains.js" async></script>
 
 <div align="right">
 	<button type="button" class="btn btn-default btn-lg" onclick="addConstrain()">

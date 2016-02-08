@@ -3,8 +3,8 @@
 	include 'sidebar.html';
 ?>
 
-<link rel="stylesheet" href="../aux_files/AdminUsersAux/adminUsers.css">
-<script src="../aux_files/AdminUsersAux/adminUsers.js" async></script>
+<link rel="stylesheet" href="css/adminUsers.css">
+<script src="js/adminUsers.js" async></script>
 
 
 <div align="right">

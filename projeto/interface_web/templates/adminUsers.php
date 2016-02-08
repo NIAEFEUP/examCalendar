@@ -3,8 +3,8 @@
 	include 'sidebar.html'
 ?>
 
-<link rel="stylesheet" href="../aux_files/AdminUsersAux/adminUsers.css">
-<script src="../aux_files/AdminUsersAux/adminUsers.js" async></script>
+<link rel="stylesheet" href="css/adminUsers.css">
+<script src="js/adminUsers.js" async></script>
 
 <div align="right">
 	<input class="glyphicon glyphicon-plus-sign" aria-hidden="true" type="email" name="email"  class="form-control" id="email" required="true" placeholder="inserir novo email utilizador">
@@ -33,5 +33,5 @@ Em baixo está apenas um exemplo.
 </div>
 
 <?php
-include 'footer.html';
+	include 'footer.html';
 ?>
