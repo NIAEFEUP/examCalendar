@@ -3,9 +3,7 @@ html,body{
     height: 100%;
     margin: 0;
 }
-body > *{
-    margin:1%;
-}
+
 header > *, header p{
 	display: inline-block;
 	font-weight:bold;
@@ -24,8 +22,10 @@ header #logout_button{float: right;}
 header #user_name{float: right;}
 
 footer{
-	bottom: 0;
+    position: fixed;
+    bottom: 0;
 	margin: 0;
+    width: 100%;
 	color:#FFFFFF;
 	background-color:#1B1C26;
 	padding:0.5em;
@@ -36,6 +36,7 @@ footer a {
 }
 
 #sidebar-wrapper{
+    float: left;
 	margin: 0;
 	width: 180px;
 	/*z-index: 1000;*/

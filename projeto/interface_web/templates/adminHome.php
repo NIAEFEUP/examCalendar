@@ -1,9 +1,10 @@
 <?php
-include 'Templates/header.html';
+	include 'header.html';
+	include 'sidebar.html';
 ?>
 
-<link rel="stylesheet" href="AdminUsersAux/adminUsers.css">
-<script src="AdminUsersAux/adminUsers.js" async></script>
+<link rel="stylesheet" href="css/adminUsers.css">
+<script src="js/adminUsers.js" async></script>
 
 
 <div align="right">
@@ -30,5 +31,5 @@ Em baixo está apenas um exemplo.
 </div>
 
 <?php
-include 'Templates/footer.html';
+	include 'footer.html';
 ?>

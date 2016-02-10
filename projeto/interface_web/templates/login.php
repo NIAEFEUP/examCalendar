@@ -1,8 +1,9 @@
 <?php
-include 'Templates/header.html';
+	include 'header.html';
+	include 'sidebar.html';
 ?>
 
-<link rel="stylesheet" href="loginFilesAux/login.css">
+<link rel="stylesheet" href="css/login.css">
 
 <form name="login" method="post" action="">
 	<div class="input-group input-group-lg">
@@ -23,5 +24,5 @@ include 'Templates/header.html';
 </form>
 
 <?php
-include 'Templates/footer.html';
+	include 'footer.html';
 ?>

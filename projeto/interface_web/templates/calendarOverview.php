@@ -1,9 +1,12 @@
+<link rel="stylesheet" href="./templates/styles/template.css">
 <?php
-include 'Templates/header.html';
+	include 'header.html';
+	include 'sidebar.html';
 ?>
 
-<link rel="stylesheet" href="calendarOverviewFilesAux/calendarOverview.css">
-<link href="calendarOverviewFilesAux/bootstrap-switch.css" rel="stylesheet">
+
+<link rel="stylesheet" href="css/calendarOverview.css">
+<link href="css/bootstrap-switch.css" rel="stylesheet">
 
 <div align="right">
 	<input type="checkbox" name="request-checkbox" checked>
@@ -11,7 +14,7 @@ include 'Templates/header.html';
 </div>
 
 <div class="page-header">
-  <h1>Lista de Calendários</h1>
+	<h1>Lista de Calendários</h1>
 </div>
 
 <div class="calendars">
@@ -25,9 +28,9 @@ include 'Templates/header.html';
 	</div>
 </div>
 
-<script src="calendarOverviewFilesAux/bootstrap-switch.js"></script>
-<script src="calendarOverviewFilesAux/calendarOverview.js"></script>
+<script src="js/bootstrap-switch.js"></script>
+<script src="js/calendarOverview.js"></script>
 
 <?php
-include 'Templates/footer.html';
+	include 'footer.html';
 ?>
