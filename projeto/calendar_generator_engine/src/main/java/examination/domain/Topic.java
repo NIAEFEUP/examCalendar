@@ -24,13 +24,17 @@ import common.domain.AbstractPersistable;
 
 @XStreamAlias("Topic")
 public class Topic extends AbstractPersistable {
-
+    private String name;
     private int duration; // in minutes
     private List<Student> studentList;
 
     // Calculated during initialization, not modified during score calculation.
     private boolean frontLoadLarge;
     private Set<Topic> coincidenceTopicSet = null;
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public int getDuration() {
         return duration;

@@ -9,14 +9,11 @@ import org.optaplanner.core.api.solver.SolverFactory;
  */
 public class ExamScheduler {
     public static void main(String [] args){
-        System.out.println("Main");
         SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
         Solver solver = solverFactory.buildSolver();
 
-        Examination unsolvedExamination = new Examination();
+        Examination unsolvedExamination = new ExaminationGenerator().createExamination();
         solver.solve(unsolvedExamination);
         Examination solvedExamination = (Examination) solver.getBestSolution();
-
-        System.out.println("aaa");
     }
 }
