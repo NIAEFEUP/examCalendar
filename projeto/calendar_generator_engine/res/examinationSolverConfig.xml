@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+  <!--<environmentMode>FAST_ASSERT</environmentMode>-->
+  <solutionClass>examination.domain.Examination</solutionClass>
+  <entityClass>examination.domain.RoomPeriod</entityClass>
+
+  <scoreDirectorFactory>
+    <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
+    <scoreDrl>examinationScoreRules.drl</scoreDrl>
+    <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>s
+  </scoreDirectorFactory>
+
+  <termination>
+    <secondsSpentLimit>5</secondsSpentLimit>
+    <!--<bestScoreLimit>-0hard/-999999soft</bestScoreLimit>-->
+  </termination>
+</solver>
