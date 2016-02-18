@@ -17,12 +17,8 @@ public class Exam {
 	private List<RoomPeriod> roomPeriods;
 	public Topic m_Topic;
 
-	public Exam(){
-
-	}
-
-	public void finalize() throws Throwable {
-
-	}
-
+	public int getNumStudents() { return this.numStudents; }
+	public void setNumStudents(int numStudents) { this.numStudents = numStudents; };
+	public boolean getPC() { return this.pc; }
+	public void setPC(boolean pc) { this.pc = pc; }
 }

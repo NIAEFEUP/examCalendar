@@ -17,10 +17,6 @@ public class Period {
 		this.penalty = this.time.ordinal();
 	}
 
-	public void finalize() throws Throwable {
-
-	}
-
 	public int getDayIndex() {
 		return dayIndex;
 	}
@@ -36,6 +32,4 @@ public class Period {
 	public void setPenalty(int penalty) {
 		this.penalty = penalty;
 	}
-
-
 }
