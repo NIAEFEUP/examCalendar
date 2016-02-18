@@ -19,18 +19,18 @@ package examination.solver;
 
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 
-import examination.domain.Exam;
-import examination.domain.Examination;
-import examination.domain.InstitutionParametrization;
-import examination.domain.Period;
-import examination.domain.PeriodPenalty;
-import examination.domain.PeriodPenaltyType;
-import examination.domain.Room;
-import examination.domain.RoomPenalty;
-import examination.domain.RoomPenaltyType;
-import examination.domain.Student;
-import examination.domain.Topic;
-import examination.domain.solver.TopicConflict;
+import examination.example_domain.Exam;
+import examination.example_domain.Examination;
+import examination.example_domain.InstitutionParametrization;
+import examination.example_domain.Period;
+import examination.example_domain.PeriodPenalty;
+import examination.example_domain.PeriodPenaltyType;
+import examination.example_domain.Room;
+import examination.example_domain.RoomPenalty;
+import examination.example_domain.RoomPenaltyType;
+import examination.example_domain.Student;
+import examination.example_domain.Topic;
+import examination.example_domain.solver.TopicConflict;
 
 global HardSoftScoreHolder scoreHolder;
 

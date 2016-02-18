@@ -39,19 +39,19 @@ import common.persistence.SolutionDao;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.optaplanner.core.api.domain.solution.Solution;
 import common.persistence.AbstractTxtSolutionImporter;
-import examination.domain.Exam;
-import examination.domain.Examination;
-import examination.domain.FollowingExam;
-import examination.domain.InstitutionParametrization;
-import examination.domain.LeadingExam;
-import examination.domain.Period;
-import examination.domain.PeriodPenalty;
-import examination.domain.PeriodPenaltyType;
-import examination.domain.Room;
-import examination.domain.RoomPenalty;
-import examination.domain.RoomPenaltyType;
-import examination.domain.Student;
-import examination.domain.Topic;
+import examination.example_domain.Exam;
+import examination.example_domain.Examination;
+import examination.example_domain.FollowingExam;
+import examination.example_domain.InstitutionParametrization;
+import examination.example_domain.LeadingExam;
+import examination.example_domain.Period;
+import examination.example_domain.PeriodPenalty;
+import examination.example_domain.PeriodPenaltyType;
+import examination.example_domain.Room;
+import examination.example_domain.RoomPenalty;
+import examination.example_domain.RoomPenaltyType;
+import examination.example_domain.Student;
+import examination.example_domain.Topic;
 
 public class ExaminationImporter extends AbstractTxtSolutionImporter {
 

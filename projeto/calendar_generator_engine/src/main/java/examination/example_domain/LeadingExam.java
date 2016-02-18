@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package examination.domain;
+package examination.example_domain;
+
+import java.util.List;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
-import org.optaplanner.core.api.domain.variable.CustomShadowVariable;
-import examination.domain.solver.PeriodUpdatingVariableListener;
+import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
 @PlanningEntity
-@XStreamAlias("FollowingExam")
-public class FollowingExam extends Exam {
+@XStreamAlias("LeadingExam")
+public class LeadingExam extends Exam {
 
-    protected LeadingExam leadingExam;
+    protected List<FollowingExam> followingExamList;
 
-    // Shadow variables
+    // Planning variables: changes during planning, between score calculations.
     protected Period period;
 
-    public LeadingExam getLeadingExam() {
-        return leadingExam;
+    public List<FollowingExam> getFollowingExamList() {
+        return followingExamList;
     }
 
-    public void setLeadingExam(LeadingExam leadingExam) {
-        this.leadingExam = leadingExam;
+    public void setFollowingExamList(List<FollowingExam> followingExamList) {
+        this.followingExamList = followingExamList;
     }
 
-    @CustomShadowVariable(variableListenerClass = PeriodUpdatingVariableListener.class,
-            sources = {@CustomShadowVariable.Source(entityClass = LeadingExam.class, variableName = "period")})
+    @PlanningVariable(valueRangeProviderRefs = {"periodRange"})
     public Period getPeriod() {
         return period;
     }

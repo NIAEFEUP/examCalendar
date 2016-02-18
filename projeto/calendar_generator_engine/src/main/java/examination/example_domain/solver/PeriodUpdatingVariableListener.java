@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package examination.domain.solver;
+package examination.example_domain.solver;
 
 import org.optaplanner.core.impl.domain.variable.listener.VariableListener;
 import org.optaplanner.core.impl.score.director.ScoreDirector;
-import examination.domain.FollowingExam;
-import examination.domain.LeadingExam;
-import examination.domain.Period;
+import examination.example_domain.FollowingExam;
+import examination.example_domain.LeadingExam;
+import examination.example_domain.Period;
 
 public class PeriodUpdatingVariableListener implements VariableListener<LeadingExam> {
 

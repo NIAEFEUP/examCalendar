@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package examination.domain.solver;
+package examination.example_domain.solver;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.optaplanner.core.impl.heuristic.selector.common.decorator.SelectionSorterWeightFactory;
-import examination.domain.Examination;
-import examination.domain.Room;
+import examination.example_domain.Examination;
+import examination.example_domain.Room;
 
 public class RoomStrengthWeightFactory implements SelectionSorterWeightFactory<Examination, Room> {
 

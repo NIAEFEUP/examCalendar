@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package examination.persistence;
+package examination.example_domain;
 
-import common.persistence.XStreamSolutionDao;
-import examination.example_domain.Examination;
-
-public class ExaminationDao extends XStreamSolutionDao {
-
-    public ExaminationDao() {
-        super("examination", Examination.class);
-    }
-
+public enum PeriodPenaltyType {
+    EXAM_COINCIDENCE, // TODO rename to coincidence?
+    EXCLUSION,
+    AFTER
 }

@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-package examination.domain;
+package examination.example_domain;
 
-public enum PeriodPenaltyType {
-    EXAM_COINCIDENCE, // TODO rename to coincidence?
-    EXCLUSION,
-    AFTER
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import common.domain.AbstractPersistable;
+
+/**
+ * Not used during score calculation, so not inserted into the working memory.
+ */
+@XStreamAlias("Student")
+public class Student extends AbstractPersistable {
+
 }

@@ -1,15 +1,16 @@
 package examination.domain;
 
 /**
- * @author Duarte
+ * @author Gustavo
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-public class Student {
+public class TopicConflict {
 
-	private long id;
+	private int studentSize;
+	public Topic m_Topic;
 
-	public Student(){
+	public TopicConflict(){
 
 	}
 

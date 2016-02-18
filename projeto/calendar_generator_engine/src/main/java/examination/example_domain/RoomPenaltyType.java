@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package examination.domain;
+package examination.example_domain;
 
 public enum RoomPenaltyType {
     ROOM_EXCLUSIVE,

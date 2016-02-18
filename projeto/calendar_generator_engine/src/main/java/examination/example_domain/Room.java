@@ -14,36 +14,40 @@
  * limitations under the License.
  */
 
-package examination.domain;
+package examination.example_domain;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import common.domain.AbstractPersistable;
 
-@XStreamAlias("RoomPenalty")
-public class RoomPenalty extends AbstractPersistable {
+@XStreamAlias("Room")
+public class Room extends AbstractPersistable  {
 
-    private RoomPenaltyType roomPenaltyType;
-    private Topic topic;
+    private int capacity;
+    private int penalty;
 
-    public RoomPenaltyType getRoomPenaltyType() {
-        return roomPenaltyType;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setRoomPenaltyType(RoomPenaltyType roomPenaltyType) {
-        this.roomPenaltyType = roomPenaltyType;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
-    public Topic getTopic() {
-        return topic;
+    public int getPenalty() {
+        return penalty;
     }
 
-    public void setTopic(Topic topic) {
-        this.topic = topic;
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
+    public String getLabel() {
+        return Long.toString(id);
     }
 
     @Override
     public String toString() {
-        return roomPenaltyType + "@" + topic.getId();
+        return Long.toString(id);
     }
 
 }

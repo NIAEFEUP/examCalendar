@@ -1,17 +1,17 @@
 package examination.domain;
 
 /**
- * @author Gustavo
+ * @author Duarte
  * @version 1.0
- * @created 18-fev-2016 16:42:19
+ * @created 18-fev-2016 16:42:18
  */
-public class Topic {
+public class Professor {
 
-	public Student m_Student;
+	private String id;
 	public Auxiliar m_Auxiliar;
 	public Regent m_Regent;
 
-	public Topic(){
+	public Professor(){
 
 	}
 

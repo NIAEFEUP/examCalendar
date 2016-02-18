@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package examination.domain;
+package examination.example_domain;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import common.domain.AbstractPersistable;

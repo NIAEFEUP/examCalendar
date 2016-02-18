@@ -1,89 +1,41 @@
-/*
- * Copyright 2010 JBoss Inc
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package examination.domain;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import common.domain.AbstractPersistable;
+/**
+ * @author Gustavo
+ * @version 1.0
+ * @created 18-fev-2016 16:42:18
+ */
+public class Period {
 
-@XStreamAlias("Period")
-public class Period extends AbstractPersistable{
+	private int dayIndex;
+	private PeriodTime time;
+	private int penalty;
 
-    private String startDateTimeString;
-    private int periodIndex;
-    private int dayIndex;
-    private int duration; // in minutes
-    private int penalty;
-    private boolean frontLoadLast;
+	public Period(int dayIndex, PeriodTime time){
+		this.dayIndex = dayIndex;
+		this.time = time;
+		this.penalty = this.time.ordinal();
+	}
 
-    public String getStartDateTimeString() {
-        return startDateTimeString;
-    }
+	public void finalize() throws Throwable {
 
-    public void setStartDateTimeString(String startDateTimeString) {
-        this.startDateTimeString = startDateTimeString;
-    }
+	}
 
-    public int getPeriodIndex() {
-        return periodIndex;
-    }
+	public int getDayIndex() {
+		return dayIndex;
+	}
 
-    public void setPeriodIndex(int periodIndex) {
-        this.periodIndex = periodIndex;
-    }
+	public void setDayIndex(int dayIndex) {
+		this.dayIndex = dayIndex;
+	}
 
-    public int getDayIndex() {
-        return dayIndex;
-    }
+	public int getPenalty() {
+		return penalty;
+	}
 
-    public void setDayIndex(int dayIndex) {
-        this.dayIndex = dayIndex;
-    }
+	public void setPenalty(int penalty) {
+		this.penalty = penalty;
+	}
 
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public int getPenalty() {
-        return penalty;
-    }
-
-    public void setPenalty(int penalty) {
-        this.penalty = penalty;
-    }
-
-    public boolean isFrontLoadLast() {
-        return frontLoadLast;
-    }
-
-    public void setFrontLoadLast(boolean frontLoadLast) {
-        this.frontLoadLast = frontLoadLast;
-    }
-
-    public String getLabel() {
-        return startDateTimeString;
-    }
-
-    @Override
-    public String toString() {
-        return startDateTimeString;
-    }
 
 }

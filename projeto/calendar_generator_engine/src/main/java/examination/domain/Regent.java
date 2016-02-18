@@ -5,11 +5,9 @@ package examination.domain;
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-public class Student {
+public class Regent {
 
-	private long id;
-
-	public Student(){
+	public Regent(){
 
 	}
 

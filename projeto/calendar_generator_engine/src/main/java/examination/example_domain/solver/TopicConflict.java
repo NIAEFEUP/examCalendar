@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package examination.domain.solver;
+package examination.example_domain.solver;
 
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import examination.domain.Topic;
+import examination.example_domain.Topic;
 
 /**
  * Calculated during initialization, not modified during score calculation.

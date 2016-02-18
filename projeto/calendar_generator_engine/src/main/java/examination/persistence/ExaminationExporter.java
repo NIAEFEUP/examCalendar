@@ -23,8 +23,8 @@ import common.persistence.SolutionDao;
 import org.optaplanner.core.api.domain.solution.Solution;
 import common.domain.PersistableIdComparator;
 import common.persistence.AbstractTxtSolutionExporter;
-import examination.domain.Exam;
-import examination.domain.Examination;
+import examination.example_domain.Exam;
+import examination.example_domain.Examination;
 
 public class ExaminationExporter extends AbstractTxtSolutionExporter {
 
