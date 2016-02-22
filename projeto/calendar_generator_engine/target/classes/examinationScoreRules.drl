@@ -22,7 +22,7 @@ import examination.domain.Exam;
 import examination.domain.Period;
 import examination.domain.Room;
 import examination.domain.RoomPeriod;
-import examination.domain.TopicConflict;
+
 
 global HardSoftScoreHolder scoreHolder;
 
@@ -50,9 +50,9 @@ rule "examsWithSameStudentsAtSamePeriods"
     when
         RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
         RoomPeriod($period == period, $rightTopic : exam.getTopic())
-        TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
+        //TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
+        //scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
 end
 
 // ############################################################################

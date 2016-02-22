@@ -41,6 +41,20 @@ rule "notEnoughRoomsForExam"
         scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
 end
 
+//exam != null
+//exams with different topics
+//exams with same students
+//giant penalty, because two exams for the same student can NEVER be at the same time
+//TODO: TopicConflit
+rule "examsWithSameStudentsAtSamePeriods"
+    when
+        RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
+        RoomPeriod($period == period, $rightTopic : exam.getTopic())
+        //TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
+    then
+        //scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
+end
+
 // ############################################################################
 // Soft constraints
 // ############################################################################
