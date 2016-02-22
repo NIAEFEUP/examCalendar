@@ -34,6 +34,7 @@ public class ExaminationGenerator {
         Student st = new Student();
         st.setId(1);
         tp.setM_Student(st);
+
         for (int i = 0; i < examList.size()/2; i++) {
             examList.get(i).setTopic(tp);
         }
