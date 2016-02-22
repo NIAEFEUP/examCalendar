@@ -22,7 +22,26 @@ public class ExaminationGenerator {
         examination.setPeriodList(periodList);
         examination.setRoomList(roomList);
 
+        //this is only useful for test purposes
+        //different topics with same student
+        setTopicsToExams(examination.getExamList());
+
         return examination;
+    }
+
+    private void setTopicsToExams(List<Exam> examList) {
+        Topic tp = new Topic();
+        Student st = new Student();
+        st.setId(1);
+        tp.setM_Student(st);
+        for (int i = 0; i < examList.size()/2; i++) {
+            examList.get(i).setTopic(tp);
+        }
+        Topic tp1 = new Topic();
+        tp1.setM_Student(st);
+        for (int i = examList.size()/2; i < examList.size(); i++) {
+            examList.get(i).setTopic(tp1);
+        }
     }
 
     private ArrayList<Period> createPeriods(int numWeeks) {
@@ -40,6 +59,7 @@ public class ExaminationGenerator {
 
     private ArrayList<Room> createRooms() {
         ArrayList<Room> roomList = new ArrayList<Room>();
+        //Room(ID, Capacity, pc_room?)
         roomList.add(new Room("B116", 69, false));
         roomList.add(new Room("B120", 69, false));
         roomList.add(new Room("B215", 82, false));
@@ -53,6 +73,7 @@ public class ExaminationGenerator {
 
     private List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
+        //5 exams with 115 students each
         for (int i = 0; i < 5; i++) {
             Exam exam = new Exam();
             exam.setNumStudents(115);
