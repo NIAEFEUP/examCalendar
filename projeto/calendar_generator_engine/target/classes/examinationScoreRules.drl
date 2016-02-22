@@ -1,0 +1,70 @@
+/*
+ * Copyright 2010 JBoss Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package examination.solver;
+    dialect "java"
+
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+import examination.domain.Exam;
+import examination.domain.Period;
+import examination.domain.Room;
+import examination.domain.RoomPeriod;
+import examination.domain.TopicConflict;
+
+global HardSoftScoreHolder scoreHolder;
+
+// ############################################################################
+// Hard constraints
+// ############################################################################
+
+rule "notEnoughRoomsForExam"
+    when
+        $exam : Exam($numStudents : numStudents)
+        $totalCapacity : Number(intValue < $numStudents) from accumulate(
+            RoomPeriod(exam == $exam, $room : room),
+            sum($room.getCapacity())
+        )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+end
+
+//exam != null
+//exams with different topics
+//exams with same students
+//giant penalty, because two exams for the same student can NEVER be at the same time
+//TODO: TopicConflit
+rule "examsWithSameStudentsAtSamePeriods"
+    when
+        RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
+        RoomPeriod($period == period, $rightTopic : exam.getTopic())
+        TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
+end
+
+// ############################################################################
+// Soft constraints
+// ############################################################################
+
+// 20% done
+// TODO: penalty doesn't consider the number of students and there shouldn't be more than a periodPenalty applied to the same exam
+rule "periodPenalty"
+    when
+        $period : Period(penalty != 0)
+        $roomPeriod : RoomPeriod(exam != null, period == $period)
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, -$period.getPenalty());
+end
