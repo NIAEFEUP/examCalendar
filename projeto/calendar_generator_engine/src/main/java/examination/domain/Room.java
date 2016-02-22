@@ -44,4 +44,11 @@ public class Room {
 	public void setPc(boolean pc) {
 		this.pc = pc;
 	}
+
+	@Override
+	public String toString() {
+		return "Room{" +
+				"codRoom='" + codRoom + '\'' +
+				'}';
+	}
 }

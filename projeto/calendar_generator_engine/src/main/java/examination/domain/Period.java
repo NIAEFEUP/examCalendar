@@ -14,7 +14,7 @@ public class Period {
 	public Period(int dayIndex, PeriodTime time){
 		this.dayIndex = dayIndex;
 		this.time = time;
-		this.penalty = this.time.ordinal();
+		this.penalty = this.time.ordinal() + 1;
 	}
 
 	public int getDayIndex() {
@@ -29,7 +29,15 @@ public class Period {
 		return penalty;
 	}
 
-	public void setPenalty(int penalty) {
-		this.penalty = penalty;
+	public void setPeriodTime(PeriodTime time) {
+		this.penalty = this.time.ordinal();
+	}
+
+	@Override
+	public String toString() {
+		return "Period{" +
+				"dayIndex=" + dayIndex +
+				", time=" + time +
+				'}';
 	}
 }

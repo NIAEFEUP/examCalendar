@@ -15,7 +15,7 @@ public class RoomPeriod {
 	public Exam exam;
 	private Period period;
 
-	@PlanningVariable(nullable = false,valueRangeProviderRefs = {"examRange"})
+	@PlanningVariable(nullable = true,valueRangeProviderRefs = {"examRange"})
 	public Exam getExam() {
 		return exam;
 	}
@@ -40,5 +40,14 @@ public class RoomPeriod {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	@Override
+	public String toString() {
+		return "RoomPeriod{" +
+				"room=" + room +
+				", exam=" + exam +
+				", period=" + period +
+				'}';
 	}
 }

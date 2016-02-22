@@ -20,6 +20,7 @@ package examination.solver;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 import examination.domain.Exam;
 import examination.domain.Period;
+import examination.domain.Room;
 import examination.domain.RoomPeriod;
 
 
@@ -28,6 +29,17 @@ global HardSoftScoreHolder scoreHolder;
 // ############################################################################
 // Hard constraints
 // ############################################################################
+
+rule "notEnoughRoomsForExam"
+    when
+        $exam : Exam($numStudents : numStudents)
+        $totalCapacity : Number(intValue < $numStudents) from accumulate(
+            RoomPeriod(exam == $exam, $room : room),
+            sum($room.getCapacity())
+        )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+end
 
 // ############################################################################
 // Soft constraints

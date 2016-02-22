@@ -17,10 +17,11 @@ import java.util.List;
  */
 @PlanningSolution()
 public class Examination implements Solution<HardSoftScore> {
+	private HardSoftScore score;
 	private List<RoomPeriod> roomPeriodList;
-
 	public List<Exam> examList;
 	private List<Period> periodList;
+	private List<Room> roomList;
 	public InstitutionParametrization m_InstitutionParametrization;
 
 	public Examination(){
@@ -45,19 +46,20 @@ public class Examination implements Solution<HardSoftScore> {
 
 	@Override
 	public HardSoftScore getScore() {
-		return HardSoftScore.valueOf(0,0);
+		return this.score;
 	}
 
 	@Override
 	public void setScore(HardSoftScore score) {
-
+		this.score = score;
 	}
 
 	@Override
 	public Collection<?> getProblemFacts() {
 		List<Object> facts = new ArrayList<Object>();
 		facts.addAll(examList);
-		facts.addAll(getPeriodList());
+		facts.addAll(periodList);
+		facts.addAll(roomList);
 		return facts;
 	}
 
@@ -67,5 +69,20 @@ public class Examination implements Solution<HardSoftScore> {
 
 	public void setPeriodList(List<Period> periodList) {
 		this.periodList = periodList;
+	}
+
+	public List<Room> getRoomList() { return roomList; }
+
+	public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
+
+	@Override
+	public String toString() {
+		String result = new String();
+		for (RoomPeriod rp : roomPeriodList) {
+			if (rp.getExam() == null) continue;
+			result += rp;
+			result += '\n';
+		}
+		return result;
 	}
 }
