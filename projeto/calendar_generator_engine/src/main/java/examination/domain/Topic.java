@@ -7,12 +7,19 @@ package examination.domain;
  */
 public class Topic {
 
+	private static int currId = 0;
+	public int id;
 	private Student m_Student;
 	public Auxiliar m_Auxiliar;
 	public Regent m_Regent;
 
 	public Topic(){
+		this.attributeId();
+	}
 
+	private void attributeId(){
+		this.currId++;
+		this.id = this.currId;
 	}
 
 	public void finalize() throws Throwable {
@@ -29,6 +36,6 @@ public class Topic {
 
 	@Override
 	public String toString() {
-		return "Topic with " + m_Student.toString();
+		return "Topic with id = "+this.id;
 	}
 }

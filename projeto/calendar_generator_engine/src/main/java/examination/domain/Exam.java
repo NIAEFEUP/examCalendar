@@ -9,6 +9,9 @@ import java.util.List;
  */
 public class Exam {
 
+	private static int currId = 0;
+	public int id;
+
 	private int numStudents;
 	private boolean pc;
 	/**
@@ -16,6 +19,15 @@ public class Exam {
 	 */
 	private List<RoomPeriod> roomPeriods;
 	private Topic topic;
+
+	public Exam(){
+		this.attributeId();
+	}
+
+	private void attributeId(){
+		this.currId++;
+		this.id = this.currId;
+	}
 
 	public int getNumStudents() { return this.numStudents; }
 	public void setNumStudents(int numStudents) { this.numStudents = numStudents; };
@@ -32,6 +44,6 @@ public class Exam {
 
 	@Override
 	public String toString() {
-		return "Exam with " + topic.toString();
+		return "Exam with id = "+ this.id + " " + topic.toString();
 	}
 }

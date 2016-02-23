@@ -30,18 +30,11 @@ public class ExaminationGenerator {
     }
 
     private void setTopicsToExams(List<Exam> examList) {
-        Topic tp = new Topic();
-        Student st = new Student();
-        st.setId(1);
-        tp.setM_Student(st);
 
-        for (int i = 0; i < examList.size()/2; i++) {
+        for (int i = 0; i < examList.size(); i+=2) {
+            Topic tp = new Topic();
             examList.get(i).setTopic(tp);
-        }
-        Topic tp1 = new Topic();
-        tp1.setM_Student(st);
-        for (int i = examList.size()/2; i < examList.size(); i++) {
-            examList.get(i).setTopic(tp1);
+            examList.get(i+1).setTopic(tp);
         }
     }
 
@@ -75,7 +68,7 @@ public class ExaminationGenerator {
     private List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
         //5 exams with 115 students each
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             Exam exam = new Exam();
             exam.setNumStudents(115);
             examList.add(exam);

@@ -31,6 +31,15 @@ global HardSoftScoreHolder scoreHolder;
 // Hard constraints
 // ############################################################################
 
+rule "differentPeriodsSameExame"
+    when
+        RoomPeriod(exam != null, $period : period, $exam : exam)
+        RoomPeriod($exam == exam, $period != period)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+
 rule "notEnoughRoomsForExam"
     when
         $exam : Exam($numStudents : numStudents)
