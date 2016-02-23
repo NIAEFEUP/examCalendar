@@ -15,7 +15,7 @@ public class RoomPeriod {
 	public Exam exam;
 	private Period period;
 
-	@PlanningVariable(nullable = true,valueRangeProviderRefs = {"examRange"})
+	@PlanningVariable(nullable = false,valueRangeProviderRefs = {"examRange"})
 	public Exam getExam() {
 		return exam;
 	}

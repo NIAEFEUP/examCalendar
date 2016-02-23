@@ -20,6 +20,7 @@ public class Examination implements Solution<HardSoftScore> {
 	private List<RoomPeriod> roomPeriodList;
 
 	public List<Exam> examList;
+	private List<Period> periodList;
 	public InstitutionParametrization m_InstitutionParametrization;
 
 	public Examination(){
@@ -32,10 +33,6 @@ public class Examination implements Solution<HardSoftScore> {
 		return roomPeriodList;
 	}
 	public void addRoomPeriod(RoomPeriod roomPeriod){ this.roomPeriodList.add(roomPeriod); }
-
-	public void finalize() throws Throwable {
-
-	}
 
 	@ValueRangeProvider(id = "examRange")
 	public List<Exam> getExamList() {
@@ -60,6 +57,15 @@ public class Examination implements Solution<HardSoftScore> {
 	public Collection<?> getProblemFacts() {
 		List<Object> facts = new ArrayList<Object>();
 		facts.addAll(examList);
+		facts.addAll(getPeriodList());
 		return facts;
+	}
+
+	public List<Period> getPeriodList() {
+		return periodList;
+	}
+
+	public void setPeriodList(List<Period> periodList) {
+		this.periodList = periodList;
 	}
 }

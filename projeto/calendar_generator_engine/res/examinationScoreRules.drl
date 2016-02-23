@@ -18,19 +18,10 @@ package examination.solver;
     dialect "java"
 
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+import examination.domain.Exam;
+import examination.domain.Period;
+import examination.domain.RoomPeriod;
 
-import examination.example_domain.Exam;
-import examination.example_domain.Examination;
-import examination.example_domain.InstitutionParametrization;
-import examination.example_domain.Period;
-import examination.example_domain.PeriodPenalty;
-import examination.example_domain.PeriodPenaltyType;
-import examination.example_domain.Room;
-import examination.example_domain.RoomPenalty;
-import examination.example_domain.RoomPenaltyType;
-import examination.example_domain.Student;
-import examination.example_domain.Topic;
-import examination.example_domain.solver.TopicConflict;
 
 global HardSoftScoreHolder scoreHolder;
 
@@ -38,182 +29,16 @@ global HardSoftScoreHolder scoreHolder;
 // Hard constraints
 // ############################################################################
 
-// Two exams in the same period which share students.
-rule "conflictingExamsInSamePeriod"
-    when
-        $topicConflict : TopicConflict($leftTopic : leftTopic, $rightTopic : rightTopic)
-        $leftExam : Exam(topic == $leftTopic, $period : period, period != null)
-        $rightExam : Exam(topic == $rightTopic, period == $period)
-    then
-        scoreHolder.addHardConstraintMatch(kcontext, - $topicConflict.getStudentSize());
-end
-
-// More time required during a period than available in that period.
-rule "periodDurationTooShort"
-    when
-        $exam : Exam(topicDuration > periodDuration, period != null)
-    then
-        scoreHolder.addHardConstraintMatch(kcontext, - $exam.getTopicStudentSize());
-end
-
-// More seating required during a period in a room than available in that room.
-rule "roomCapacityTooSmall" // TODO improve performance, as it takes 50% of the performance
-    when
-        $period : Period()
-        $room : Room($capacity : capacity)
-        $totalStudentSize : Number(intValue > $capacity) from accumulate(
-            Exam(period == $period, room == $room, $studentSize : topicStudentSize),
-            sum($studentSize) // Vote for http://jira.jboss.com/jira/browse/JBRULES-1075
-        )
-    then
-        scoreHolder.addHardConstraintMatch(kcontext, $capacity - $totalStudentSize.intValue());
-end
-
-// Period hard constraints
-rule "periodPenaltyExamCoincidence"
-    when
-        $periodPenalty : PeriodPenalty(
-            periodPenaltyType == PeriodPenaltyType.EXAM_COINCIDENCE,
-            $leftTopic : leftTopic,
-            $rightTopic : rightTopic
-        )
-        $leftExam : Exam(topic == $leftTopic, $leftPeriod : period, period != null)
-        $rightExam : Exam(topic == $rightTopic, period != $leftPeriod, period != null)
-        // Left and right don't share a student because those are filtered out in ExaminationImporter
-    then
-        scoreHolder.addHardConstraintMatch(kcontext,
-                - ($leftTopic.getStudentSize() + $rightTopic.getStudentSize()));
-end
-rule "periodPenaltyExclusion"
-    when
-        $periodPenalty : PeriodPenalty(
-            periodPenaltyType == PeriodPenaltyType.EXCLUSION,
-            $leftTopic : leftTopic,
-            $rightTopic : rightTopic
-        )
-        $leftExam : Exam(topic == $leftTopic, $leftPeriod : period, period != null)
-        $rightExam : Exam(topic == $rightTopic, period == $leftPeriod)
-    then
-        scoreHolder.addHardConstraintMatch(kcontext,
-                - ($leftTopic.getStudentSize() + $rightTopic.getStudentSize()));
-end
-rule "periodPenaltyAfter"
-    when
-        $periodPenalty : PeriodPenalty(
-            periodPenaltyType == PeriodPenaltyType.AFTER,
-            $leftTopic : leftTopic,
-            $rightTopic : rightTopic
-        )
-        $leftExam : Exam(topic == $leftTopic, $leftPeriodIndex : periodIndex, period != null)
-        $rightExam : Exam(topic == $rightTopic, $leftPeriodIndex <= periodIndex, period != null)
-    then
-        scoreHolder.addHardConstraintMatch(kcontext,
-                - ($leftTopic.getStudentSize() + $rightTopic.getStudentSize()));
-end
-
-// Room hard constraints
-rule "roomPenaltyExclusive"
-    when
-        $roomPenalty : RoomPenalty(
-            roomPenaltyType == RoomPenaltyType.ROOM_EXCLUSIVE,
-            $topic : topic
-        )
-        $leftExam : Exam(topic == $topic, $room : room, room != null, $period : period, period != null)
-        $rightExam : Exam(room == $room, period == $period, topic != $topic, $otherTopic : topic)
-    then
-        scoreHolder.addHardConstraintMatch(kcontext,
-                - ($topic.getStudentSize() + $otherTopic.getStudentSize()));
-end
-
 // ############################################################################
 // Soft constraints
 // ############################################################################
 
-// Two exams in a row which share students
-rule "twoExamsInARow"
-    when
-        $institutionParametrization : InstitutionParametrization(twoInARowPenalty != 0)
-        $topicConflict : TopicConflict($leftTopic : leftTopic, $rightTopic : rightTopic)
-        $leftExam : Exam(topic == $leftTopic, $leftDayIndex : dayIndex, $leftPeriodIndex : periodIndex, period != null)
-        $rightExam : Exam(topic == $rightTopic, dayIndex == $leftDayIndex,
-            Math.abs($leftPeriodIndex - periodIndex) == 1)
-    then
-        scoreHolder.addSoftConstraintMatch(kcontext,
-                $topicConflict.getStudentSize() * (- $institutionParametrization.getTwoInARowPenalty()));
-end
-
-// TODO check if merging twoExamsInARow and twoExamsInADay can be a noticeable performance boost
-// Two exams in a day which share students
-rule "twoExamsInADay"
-    when
-        $institutionParametrization : InstitutionParametrization(twoInADayPenalty != 0)
-        $topicConflict : TopicConflict($leftTopic : leftTopic, $rightTopic : rightTopic)
-        $leftExam : Exam(topic == $leftTopic, $leftDayIndex : dayIndex, $leftPeriodIndex : periodIndex, period != null)
-        $rightExam : Exam(topic == $rightTopic, dayIndex == $leftDayIndex,
-            Math.abs($leftPeriodIndex - periodIndex) > 1)
-    then
-        scoreHolder.addSoftConstraintMatch(kcontext,
-                $topicConflict.getStudentSize() * (- $institutionParametrization.getTwoInADayPenalty()));
-end
-
-// Exams which share students have to few periods between them
-rule "periodSpread"
-    when
-        $institutionParametrization : InstitutionParametrization(periodSpreadPenalty != 0)
-        $topicConflict : TopicConflict($leftTopic : leftTopic, $rightTopic : rightTopic)
-        $leftExam : Exam(topic == $leftTopic, $leftPeriodIndex : periodIndex, period != null)
-        $rightExam : Exam(topic == $rightTopic, period != null,
-            Math.abs($leftPeriodIndex - periodIndex) < ($institutionParametrization.getPeriodSpreadLength() + 1))
-    then
-        scoreHolder.addSoftConstraintMatch(kcontext,
-                $topicConflict.getStudentSize() * (- $institutionParametrization.getPeriodSpreadPenalty()));
-end
-
-// Several exams in the same room and period have different durations
-rule "mixedDurations"
-    when
-        $institutionParametrization : InstitutionParametrization(mixedDurationPenalty != 0)
-        $leftExam : Exam($leftId : id, period != null, $period : period, room != null, $room : room,
-            $leftTopicDuration : topicDuration)
-        // 4 mixed durations of 100, 150, 200 and 200 should only result in 2 penalty's (for 100&150 and 100&200)
-        // leftExam has lowest id of the period+room combo
-        not Exam(period == $period, room == $room, id < $leftId)
-        // rightExam has a different duration
-        $rightExam : Exam(period == $period, room == $room, id > $leftId,
-            topicDuration != $leftTopicDuration,
-            $rightId : id, $rightTopicDuration : topicDuration
-        )
-        // rightExam has the lowest id of the period+room+rightDuration combo
-        not Exam(period == $period, room == $room, id < $rightId,
-            topicDuration == $rightTopicDuration
-        )
-    then
-        scoreHolder.addSoftConstraintMatch(kcontext, - $institutionParametrization.getMixedDurationPenalty());
-end
-
-// Larger Exams towards the beginning of the examination session
-rule "frontLoad"
-    when
-        $institutionParametrization : InstitutionParametrization(frontLoadPenalty != 0)
-        $exam : Exam(topicFrontLoadLarge == true, periodFrontLoadLast == true)
-    then
-        scoreHolder.addSoftConstraintMatch(kcontext, - $institutionParametrization.getFrontLoadPenalty());
-end
-
-// Period Penalty
+// 20% done
+// TODO: penalty doesn't consider the number of students and there shouldn't be more than a periodPenalty applied to the same exam
 rule "periodPenalty"
     when
         $period : Period(penalty != 0)
-        $exam: Exam(period == $period)
+        $roomPeriod : RoomPeriod(exam != null, period == $period)
     then
-        scoreHolder.addSoftConstraintMatch(kcontext, - $period.getPenalty());
-end
-
-// Room Penalty
-rule "roomPenalty"
-    when
-        $room : Room(penalty != 0)
-        $exam: Exam(room == $room)
-    then
-        scoreHolder.addSoftConstraintMatch(kcontext, - $room.getPenalty());
+        scoreHolder.addSoftConstraintMatch(kcontext, -$period.getPenalty());
 end
