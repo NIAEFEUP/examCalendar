@@ -11,7 +11,7 @@ public class Exam {
 
 	private static int currId = 0;
 	public int id;
-
+	private int year;
 	private int numStudents;
 	private boolean pc;
 	/**
@@ -41,6 +41,15 @@ public class Exam {
 	public void setTopic(Topic topic) {
 		this.topic = topic;
 	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
 
 	@Override
 	public String toString() {

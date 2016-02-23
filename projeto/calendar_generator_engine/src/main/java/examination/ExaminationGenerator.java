@@ -71,6 +71,7 @@ public class ExaminationGenerator {
         for (int i = 0; i < 6; i++) {
             Exam exam = new Exam();
             exam.setNumStudents(115);
+            exam.setYear(1);
             examList.add(exam);
         }
         return examList;
