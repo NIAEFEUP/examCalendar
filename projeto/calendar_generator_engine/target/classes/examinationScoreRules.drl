@@ -22,6 +22,7 @@ import examination.domain.Exam;
 import examination.domain.Period;
 import examination.domain.Room;
 import examination.domain.RoomPeriod;
+import examination.domain.TopicConflict;
 
 
 global HardSoftScoreHolder scoreHolder;
@@ -30,15 +31,31 @@ global HardSoftScoreHolder scoreHolder;
 // Hard constraints
 // ############################################################################
 
+rule "differentPeriodsSameExam"
+    when
+        RoomPeriod(exam != null, $period : period, $exam : exam)
+        RoomPeriod($exam == exam, $period != period)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
 rule "notEnoughRoomsForExam"
     when
         $exam : Exam($numStudents : numStudents)
-        $totalCapacity : Number(intValue < $numStudents) from accumulate(
+        $totalCapacity : Number(intValue < $numStudents) from accumulate (
             RoomPeriod(exam == $exam, $room : room),
             sum($room.getCapacity())
         )
     then
         scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+end
+
+rule "sameYearTooCloseExams"
+    when
+        RoomPeriod(exam != null, $exam : exam, $year : exam.getYear(), $leftDayIndex : period.getDayIndex())
+        RoomPeriod(exam != null, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < 2)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 //exam != null
@@ -50,9 +67,9 @@ rule "examsWithSameStudentsAtSamePeriods"
     when
         RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
         RoomPeriod($period == period, $rightTopic : exam.getTopic())
-        //TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
+        TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
-        //scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
+        scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
 end
 
 // ############################################################################

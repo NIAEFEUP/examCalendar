@@ -13,7 +13,7 @@ public class ExaminationGenerator {
     public Examination createExamination() {
         Examination examination = new Examination();
 
-        ArrayList<Period> periodList = createPeriods(5);
+        ArrayList<Period> periodList = createPeriods(1);
         ArrayList<Room> roomList = createRooms();
 
         addRoomPeriods(examination, roomList, periodList);

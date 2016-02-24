@@ -14,7 +14,7 @@ public class Period {
 	public Period(int dayIndex, PeriodTime time){
 		this.dayIndex = dayIndex;
 		this.time = time;
-		this.penalty = this.time.ordinal() + 1;
+		this.penalty = this.time.ordinal();
 	}
 
 	public int getDayIndex() {
