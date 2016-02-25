@@ -44,16 +44,18 @@ rule "differentPeriodsSameExame"
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
+//the penalty is the number of periods coincidentes
 rule "professorUnavailable"
     when
         RoomPeriod(exam != null, $professorId : exam.getTopic().getRegent().getProfessor(), $period : period)
         ProfessorUnavailable( $professorId == professor.getId(), $periodList : periods)
-        Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList
+        $totalPeriods : Number() from accumulate (
+            Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList,
+            sum(-1)
+        )
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
-
+        scoreHolder.addHardConstraintMatch(kcontext, $totalPeriods.intValue());
 end
-
 
 rule "notEnoughRoomsForExam"
     when
