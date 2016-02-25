@@ -68,6 +68,13 @@ rule "notEnoughRoomsForExam"
         scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
 end
 
+rule "pcExamsNotInPcRooms"
+    when
+        RoomPeriod(exam != null, room != null, exam.getPC() != room.isPc())
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
 //exam != null
 //exams with different topics
 //exams with same students
