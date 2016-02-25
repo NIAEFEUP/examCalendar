@@ -21,6 +21,11 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 import examination.domain.Exam;
 import examination.domain.Period;
 import examination.domain.Room;
+import examination.domain.Topic;
+import examination.domain.Regent;
+import examination.domain.Auxiliar;
+import examination.domain.Professor;
+import examination.domain.ProfessorUnavailable;
 import examination.domain.RoomPeriod;
 import examination.domain.TopicConflict;
 
@@ -37,6 +42,16 @@ rule "differentPeriodsSameExame"
         RoomPeriod($exam == exam, $period != period)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+rule "professorUnavailable"
+    when
+        RoomPeriod(exam != null, $professorId : exam.getTopic().getRegent().getProfessor(), $period : period)
+        ProfessorUnavailable( $professorId == professor.getId(), $periodList : periods)
+        Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+
 end
 
 

@@ -11,13 +11,11 @@ import java.util.List;
 public class Professor {
 
 	private String id;
-
 	public List<Auxiliar> auxliarList;
 	public List<Regent> regentList;
-	List<ProfessorUnavailable> unavailableList;
+	ProfessorUnavailable unavailability;
 
 	public Professor(){
-		unavailableList = new ArrayList<ProfessorUnavailable>();
 		auxliarList = new ArrayList<Auxiliar>();
 		regentList = new ArrayList<Regent>();
 	}
@@ -30,16 +28,8 @@ public class Professor {
 		this.regentList.add(regent);
 	}
 
-	public void addUnavailability(ProfessorUnavailable unavailability){
-		this.unavailableList.add(unavailability);
-	}
-
-	public List<ProfessorUnavailable> getUnavailableList() {
-		return unavailableList;
-	}
-
-	public void setUnavailableList(List<ProfessorUnavailable> unavailableList) {
-		this.unavailableList = unavailableList;
+	public String getId() {
+		return id;
 	}
 
 	public List<Regent> getRegentList() {
