@@ -50,11 +50,11 @@ rule "professorUnavailable"
         RoomPeriod(exam != null, $professorId : exam.getTopic().getRegent().getProfessor(), $period : period)
         ProfessorUnavailable( $professorId == professor.getId(), $periodList : periods)
         $totalPeriods : Number() from accumulate (
-            Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList,
-            sum(-1)
+            $unavailablePeriod : Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList,
+            count($unavailablePeriod)
         )
     then
-        scoreHolder.addHardConstraintMatch(kcontext, $totalPeriods.intValue());
+        scoreHolder.addHardConstraintMatch(kcontext, -$totalPeriods.intValue());
 end
 
 rule "notEnoughRoomsForExam"
