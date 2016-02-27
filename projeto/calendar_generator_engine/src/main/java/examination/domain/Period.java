@@ -29,6 +29,8 @@ public class Period {
 		return penalty;
 	}
 
+	public PeriodTime getPeriodTime() { return this.time; }
+
 	public void setPeriodTime(PeriodTime time) {
 		this.penalty = this.time.ordinal();
 	}

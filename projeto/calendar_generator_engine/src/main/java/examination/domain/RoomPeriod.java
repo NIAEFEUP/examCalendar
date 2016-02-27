@@ -1,5 +1,6 @@
 package examination.domain;
 
+import examination.domain.solver.RoomPeriodDifficultyComparator;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
@@ -8,7 +9,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-@PlanningEntity
+@PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class)
 public class RoomPeriod {
 
 	private Room room;
