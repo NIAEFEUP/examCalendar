@@ -70,7 +70,7 @@ end
 
 rule "pcExamsNotInPcRooms"
     when
-        RoomPeriod(exam != null, room != null, exam.getPC() != room.isPc())
+        RoomPeriod(exam != null, exam.getPC() != room.isPc())
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
