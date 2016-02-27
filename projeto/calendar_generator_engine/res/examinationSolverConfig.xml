@@ -7,11 +7,11 @@
   <scoreDirectorFactory>
     <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
     <scoreDrl>examinationScoreRules.drl</scoreDrl>
-    <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>s
+    <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
 
   <termination>
-    <secondsSpentLimit>20</secondsSpentLimit>
+    <secondsSpentLimit>50</secondsSpentLimit>
     <!--<bestScoreLimit>-0hard/-999999soft</bestScoreLimit>-->
   </termination>
 </solver>
