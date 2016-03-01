@@ -14,7 +14,7 @@ public class Room {
 	public Room(String codRoom, int capacity, boolean pc){
 		this.capacity = capacity;
 		this.codRoom = codRoom;
-		this.pc = pc;
+		this.setPc(pc);
 	}
 
 	public void finalize() throws Throwable {
@@ -43,5 +43,12 @@ public class Room {
 
 	public void setPc(boolean pc) {
 		this.pc = pc;
+	}
+
+	@Override
+	public String toString() {
+		return "Room{" +
+				"codRoom='" + codRoom + '\'' +
+				'}';
 	}
 }

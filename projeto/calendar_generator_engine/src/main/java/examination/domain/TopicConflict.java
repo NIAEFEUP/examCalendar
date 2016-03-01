@@ -8,7 +8,8 @@ package examination.domain;
 public class TopicConflict {
 
 	private int studentSize;
-	public Topic m_Topic;
+	public Topic leftTopic;
+	public Topic rightTopic;
 
 	public TopicConflict(){
 
@@ -18,4 +19,11 @@ public class TopicConflict {
 
 	}
 
+	public int getStudentSize() {
+		return studentSize;
+	}
+
+	public void setStudentSize(int studentSize) {
+		this.studentSize = studentSize;
+	}
 }

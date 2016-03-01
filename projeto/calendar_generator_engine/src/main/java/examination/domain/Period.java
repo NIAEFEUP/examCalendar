@@ -13,8 +13,8 @@ public class Period {
 
 	public Period(int dayIndex, PeriodTime time){
 		this.dayIndex = dayIndex;
-		this.time = time;
-		this.penalty = this.time.ordinal();
+		this.setTime(time);
+		this.penalty = this.getTime().ordinal() + 1;
 	}
 
 	public int getDayIndex() {
@@ -29,7 +29,23 @@ public class Period {
 		return penalty;
 	}
 
-	public void setPenalty(int penalty) {
-		this.penalty = penalty;
+	public void setPeriodTime(PeriodTime time) {
+		this.penalty = this.getTime().ordinal();
+	}
+
+	@Override
+	public String toString() {
+		return "Period{" +
+				"dayIndex=" + dayIndex +
+				", time=" + getTime() +
+				'}';
+	}
+
+	public PeriodTime getTime() {
+		return time;
+	}
+
+	public void setTime(PeriodTime time) {
+		this.time = time;
 	}
 }
