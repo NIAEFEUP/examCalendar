@@ -12,7 +12,7 @@ public class RoomPeriodDifficultyComparator implements Comparator<RoomPeriod> {
     @Override
     public int compare(RoomPeriod rp1, RoomPeriod rp2) {
         return new CompareToBuilder()
-                .append(rp1.getPeriod().getPeriodTime().ordinal(), rp2.getPeriod().getPeriodTime().ordinal())
+                .append(rp1.getPeriod().getTime().ordinal(), rp2.getPeriod().getTime().ordinal())
                 .toComparison();
     }
 }
