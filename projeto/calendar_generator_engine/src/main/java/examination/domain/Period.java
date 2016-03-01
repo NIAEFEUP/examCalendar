@@ -29,7 +29,19 @@ public class Period {
 		return penalty;
 	}
 
-	public void setPenalty(int penalty) {
-		this.penalty = penalty;
+	@Override
+	public String toString() {
+		return "Period{" +
+				"dayIndex=" + dayIndex +
+				", time=" + time +
+				'}';
+	}
+
+	public PeriodTime getTime() {
+		return time;
+	}
+
+	public void setTime(PeriodTime time) {
+		this.time = time;
 	}
 }

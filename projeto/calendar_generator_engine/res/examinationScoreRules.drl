@@ -20,7 +20,14 @@ package examination.solver;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
 import examination.domain.Exam;
 import examination.domain.Period;
+import examination.domain.Room;
+import examination.domain.Topic;
+import examination.domain.Regent;
+import examination.domain.Auxiliar;
+import examination.domain.Professor;
+import examination.domain.ProfessorUnavailable;
 import examination.domain.RoomPeriod;
+import examination.domain.TopicConflict;
 
 
 global HardSoftScoreHolder scoreHolder;
@@ -28,6 +35,67 @@ global HardSoftScoreHolder scoreHolder;
 // ############################################################################
 // Hard constraints
 // ############################################################################
+
+rule "differentPeriodsSameExam"
+    when
+        RoomPeriod(exam != null, $period : period, $exam : exam)
+        RoomPeriod($exam == exam, $period != period)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+//the penalty is the number of periods coincidentes
+rule "professorUnavailable"
+    when
+        RoomPeriod(exam != null, $professorId : exam.getTopic().getRegent().getProfessor(), $period : period)
+        ProfessorUnavailable( $professorId == professor.getId(), $periodList : periods)
+        $totalPeriods : Number() from accumulate (
+            $unavailablePeriod : Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList,
+            count($unavailablePeriod)
+        )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -$totalPeriods.intValue());
+end
+
+rule "notEnoughRoomsForExam"
+    when
+        $exam : Exam($numStudents : numStudents)
+        $totalCapacity : Number(intValue < $numStudents) from accumulate (
+            RoomPeriod(exam == $exam, $room : room),
+            sum($room.getCapacity())
+        )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+end
+
+rule "sameYearTooCloseExams"
+    when
+        RoomPeriod(exam != null, $exam : exam, $year : exam.getYear(), $leftDayIndex : period.getDayIndex())
+        RoomPeriod(exam != null, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < 2)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+rule "pcExamsNotInPcRooms"
+    when
+        RoomPeriod(exam != null, exam.getPC() != room.isPc())
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+//exam != null
+//exams with different topics
+//exams with same students
+//giant penalty, because two exams for the same student can NEVER be at the same time
+//TODO: TopicConflit
+rule "examsWithSameStudentsAtSamePeriods"
+    when
+        RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
+        RoomPeriod($period == period, $rightTopic : exam.getTopic())
+        TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
+end
 
 // ############################################################################
 // Soft constraints

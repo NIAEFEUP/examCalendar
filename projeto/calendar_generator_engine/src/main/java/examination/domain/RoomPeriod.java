@@ -1,5 +1,6 @@
 package examination.domain;
 
+import examination.domain.solver.RoomPeriodDifficultyComparator;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
@@ -8,14 +9,14 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-@PlanningEntity
+@PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class)
 public class RoomPeriod {
 
 	private Room room;
 	public Exam exam;
 	private Period period;
 
-	@PlanningVariable(nullable = false,valueRangeProviderRefs = {"examRange"})
+	@PlanningVariable(nullable = true,valueRangeProviderRefs = {"examRange"})
 	public Exam getExam() {
 		return exam;
 	}
@@ -40,5 +41,14 @@ public class RoomPeriod {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	@Override
+	public String toString() {
+		return "RoomPeriod{" +
+				"room=" + room +
+				", exam=" + exam +
+				", period=" + period +
+				'}';
 	}
 }
