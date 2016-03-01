@@ -14,7 +14,7 @@ public class Room {
 	public Room(String codRoom, int capacity, boolean pc){
 		this.capacity = capacity;
 		this.codRoom = codRoom;
-		this.pc = pc;
+		this.setPc(pc);
 	}
 
 	public void finalize() throws Throwable {

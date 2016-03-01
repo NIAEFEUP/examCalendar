@@ -29,17 +29,19 @@ public class Period {
 		return penalty;
 	}
 
-	public PeriodTime getPeriodTime() { return this.time; }
-
-	public void setPeriodTime(PeriodTime time) {
-		this.penalty = this.time.ordinal();
-	}
-
 	@Override
 	public String toString() {
 		return "Period{" +
 				"dayIndex=" + dayIndex +
 				", time=" + time +
 				'}';
+	}
+
+	public PeriodTime getTime() {
+		return time;
+	}
+
+	public void setTime(PeriodTime time) {
+		this.time = time;
 	}
 }

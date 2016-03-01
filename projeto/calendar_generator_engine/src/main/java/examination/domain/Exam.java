@@ -10,7 +10,7 @@ import java.util.List;
 public class Exam {
 
 	private static int currId = 0;
-	public int id;
+	private int id;
 	private int year;
 	private int numStudents;
 	private boolean pc;
@@ -50,6 +50,10 @@ public class Exam {
 		this.year = year;
 	}
 
+
+	public int getId() {
+		return id;
+	}
 
 	@Override
 	public String toString() {
