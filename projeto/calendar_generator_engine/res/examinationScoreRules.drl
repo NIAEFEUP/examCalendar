@@ -89,7 +89,8 @@ rule "gapBetweenSameTopicExams"
         $exam2 : Exam(id < $exam1.getId(), $topic == topic)
         RoomPeriod($exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex())
         RoomPeriod($exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex())
-        $dist : Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
+        //$dist : Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
+        Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
