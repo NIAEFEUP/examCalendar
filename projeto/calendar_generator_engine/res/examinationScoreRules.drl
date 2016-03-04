@@ -110,3 +110,13 @@ rule "periodPenalty"
     then
         scoreHolder.addSoftConstraintMatch(kcontext, -$period.getPenalty());
 end
+
+rule "periodSpread"
+    when
+        RoomPeriod(exam != null, $leftDayIndex : period.getDayIndex(), $leftExam : exam)
+        RoomPeriod(exam != null, exam != $leftExam, $rightExam : exam, $rightDayIndex : period.getDayIndex())
+        $dist : Number(intValue < 7) from Math.abs($leftDayIndex - $rightDayIndex)
+        TopicConflict($leftExam.getTopic() == leftTopic, $rightExam.getTopic() == rightTopic, studentSize > 0, $studentSize : studentSize)
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, -$studentSize);
+end
