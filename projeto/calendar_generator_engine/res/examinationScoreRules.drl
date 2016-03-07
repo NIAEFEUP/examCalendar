@@ -70,8 +70,8 @@ end
 
 rule "sameYearTooCloseExams"
     when
-        RoomPeriod(exam != null, $exam : exam, $year : exam.getYear(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod(exam != null, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < 2)
+        RoomPeriod(exam != null, $id1 : getId(), $exam : exam, $year : exam.getYear(), $leftDayIndex : period.getDayIndex())
+        RoomPeriod(exam != null, id > $id1, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < 2)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
@@ -83,6 +83,19 @@ rule "pcExamsNotInPcRooms"
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
+rule "gapBetweenSameTopicExams"
+    when
+        $exam1 : Exam($topic : topic)
+        $exam2 : Exam(id < $exam1.getId(), $topic == topic)
+        RoomPeriod($exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex())
+        RoomPeriod($exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex())
+        //$dist : Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
+        Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
+end
+
 //exam != null
 //exams with different topics
 //exams with same students
@@ -90,8 +103,8 @@ end
 //TODO: TopicConflit
 rule "examsWithSameStudentsAtSamePeriods"
     when
-        RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
-        RoomPeriod($period == period, $rightTopic : exam.getTopic())
+        RoomPeriod($period : period, $id1 : getId(), exam != null, $leftTopic : exam.getTopic())
+        RoomPeriod($period == period, id > $id1, $rightTopic : exam.getTopic())
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);

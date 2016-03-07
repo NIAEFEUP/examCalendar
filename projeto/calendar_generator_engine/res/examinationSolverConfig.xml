@@ -10,8 +10,15 @@
     <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
 
+  <constructionHeuristic>
+  </constructionHeuristic>
+
+  <localSearch>
+      <swapMoveSelector/>
+  </localSearch>
+
   <termination>
-    <secondsSpentLimit>50</secondsSpentLimit>
-    <!--<bestScoreLimit>-0hard/-999999soft</bestScoreLimit>-->
+    <secondsSpentLimit>500</secondsSpentLimit>
+    <bestScoreLimit>-0hard/-0soft</bestScoreLimit>
   </termination>
 </solver>
