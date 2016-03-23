@@ -8,6 +8,7 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,6 +78,7 @@ public class Examination implements Solution<HardSoftScore> {
 
 	@Override
 	public String toString() {
+		Collections.sort(roomPeriodList);
 		String result = new String();
 		for (RoomPeriod rp : roomPeriodList) {
 			if (rp.getExam() == null) continue;
