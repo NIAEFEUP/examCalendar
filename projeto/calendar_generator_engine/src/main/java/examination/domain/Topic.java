@@ -13,12 +13,11 @@ public class Topic {
 	private static int currId = 0;
 	public int id;
 	private Student m_Student;
-	public List<Auxiliar> auxiliarList;
+	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
 	private Regent regent;
 
 	public Topic(){
 		this.attributeId();
-		this.auxiliarList = new ArrayList<Auxiliar>();
 	}
 
 	private void attributeId(){

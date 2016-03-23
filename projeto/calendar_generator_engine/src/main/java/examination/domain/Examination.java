@@ -101,6 +101,8 @@ public class Examination implements Solution<HardSoftScore> {
 				if (examId == rp.getExam().getId()) {
 					result += continueExam(rp);
 				} else {
+					examId = rp.getExam().getId();
+
 					result += sameDayMoreExams(rp);
 				}
 			} else {
@@ -114,14 +116,14 @@ public class Examination implements Solution<HardSoftScore> {
 	}
 
 	private String sameDayMoreExams(RoomPeriod rp) {
-		return "";
+		return "\n\t" + rp.getExam().getName() + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
 	}
 
 	private String continueExam(RoomPeriod rp) {
-		return "";
+		return rp.getRoom().getCodRoom() + " ";
 	}
 
 	private String createBegin(RoomPeriod rp) {
-		return "";
+		return "\n" + rp.getPeriod() + sameDayMoreExams(rp);
 	}
 }

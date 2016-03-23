@@ -64,6 +64,11 @@ public class RoomPeriod implements Comparable<RoomPeriod> {
 
 	@Override
 	public int compareTo(RoomPeriod o) {
-		return period.compareTo(o.period);
+		int cmp = period.compareTo(o.period);
+		if (exam == null || o.exam == null || cmp == 0) {
+			return cmp;
+		}
+
+		return exam.compareTo(o.exam);
 	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
  * @version 1.0
  * @created 18-fev-2016 16:42:18
  */
-public class Exam {
+public class Exam implements Comparable<Exam> {
 
 	private static int currId = 0;
 	private int id;
@@ -23,6 +23,14 @@ public class Exam {
 
 	public Exam(){
 		this.attributeId();
+	}
+
+	public Exam(int year, int numStudents, String name, boolean pc){
+		this();
+		this.year = year;
+		this.numStudents = numStudents;
+		this.name = name;
+		this.pc = pc;
 	}
 
 	private void attributeId(){
@@ -59,5 +67,23 @@ public class Exam {
 	@Override
 	public String toString() {
 		return "Exam with id = "+ this.id + " " + topic.toString();
+	}
+
+	@Override
+	public int compareTo(Exam o) {
+		int yearDiff = year - o.year;
+		if (yearDiff != 0) {
+			return yearDiff;
+		} else {
+			return id - o.id;
+		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
