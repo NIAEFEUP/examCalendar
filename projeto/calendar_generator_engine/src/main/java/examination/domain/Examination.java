@@ -76,15 +76,52 @@ public class Examination implements Solution<HardSoftScore> {
 
 	public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
 
+	public void sort() {
+		Collections.sort(roomPeriodList);
+	}
+
 	@Override
 	public String toString() {
-		Collections.sort(roomPeriodList);
-		String result = new String();
+		String result = "";
+		int examId = 0;
+		Period period = null;
 		for (RoomPeriod rp : roomPeriodList) {
 			if (rp.getExam() == null) continue;
-			result += rp;
-			result += '\n';
+			//first period
+			if (period == null) {
+				period = rp.getPeriod();
+				examId = rp.getExam().getId();
+
+				result += createBegin(rp);
+				continue;
+			}
+			//if same period than before
+			if (period.equals(rp.getPeriod())) {
+				//if a new room for the same exam
+				if (examId == rp.getExam().getId()) {
+					result += continueExam(rp);
+				} else {
+					result += sameDayMoreExams(rp);
+				}
+			} else {
+				period = rp.getPeriod();
+				examId = rp.getExam().getId();
+
+				result += createBegin(rp);
+			}
 		}
 		return result;
+	}
+
+	private String sameDayMoreExams(RoomPeriod rp) {
+		return "";
+	}
+
+	private String continueExam(RoomPeriod rp) {
+		return "";
+	}
+
+	private String createBegin(RoomPeriod rp) {
+		return "";
 	}
 }

@@ -46,6 +46,15 @@ public class Period implements Comparable<Period> {
 	}
 
 	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof Period) {
+			Period op2 = (Period) obj;
+			return dayIndex == op2.dayIndex && time.equals(op2.time);
+		}
+		return false;
+	}
+
+	@Override
 	public int compareTo(Period p) {
 		if (dayIndex != p.dayIndex) {
 			return dayIndex - p.dayIndex;

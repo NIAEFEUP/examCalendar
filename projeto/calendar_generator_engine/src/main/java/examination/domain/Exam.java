@@ -13,6 +13,7 @@ public class Exam {
 	private int id;
 	private int year;
 	private int numStudents;
+	private String name;
 	private boolean pc;
 	/**
 	 * shadow variable
