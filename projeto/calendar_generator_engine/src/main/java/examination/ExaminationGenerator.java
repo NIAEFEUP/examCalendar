@@ -13,6 +13,7 @@ public class ExaminationGenerator {
     public Examination createExamination() {
         Examination examination = new Examination();
 
+        //5 weeks
         ArrayList<Period> periodList = createPeriods(5);
         ArrayList<Room> roomList = createRooms();
 
@@ -62,18 +63,46 @@ public class ExaminationGenerator {
         roomList.add(new Room("B231", 69, false));
         roomList.add(new Room("B232C", 44, false));
         roomList.add(new Room("B338", 69, false));
+
+        //fake rooms
+        roomList.add(new Room("B001", 69, true));
+        roomList.add(new Room("B002", 44, true));
+        roomList.add(new Room("B003", 69, true));
+
         return roomList;
     }
 
     private List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
-        //5 exams with 115 students each
-        for (int i = 0; i < 6; i++) {
-            Exam exam = new Exam();
-            exam.setNumStudents(115);
-            exam.setYear(1);
-            examList.add(exam);
-        }
+        //Exam(int year, int numStudents, String name, boolean pc)
+        //1 year 2 semester
+        examList.add(new Exam(1, 120, "FISI1", false));
+        examList.add(new Exam(1, 120, "MPCP", false));
+        examList.add(new Exam(1, 120, "MEST", false));
+        examList.add(new Exam(1, 120, "PROG", false));
+
+        //2 year 1 semester
+        examList.add(new Exam(2, 120, "AEDA", false));
+        examList.add(new Exam(2, 120, "FISI2", false));
+        examList.add(new Exam(2, 120, "MNUM", true));
+        examList.add(new Exam(2, 120, "TCOM", false));
+
+        //2 year 2 semester
+        examList.add(new Exam(2, 120, "BDAD", false));
+        examList.add(new Exam(2, 120, "CGRA", false));
+        examList.add(new Exam(2, 120, "CAL", false));
+        examList.add(new Exam(2, 120, "SOPE", false));
+
+        //3 year 1 semester
+        examList.add(new Exam(3, 120, "ESOF", false));
+        examList.add(new Exam(3, 120, "LTW", false));
+        examList.add(new Exam(3, 120, "PLOG", true));
+        examList.add(new Exam(3, 120, "RCOM", false));
+
+        //3 year 2 semester
+        examList.add(new Exam(3, 120, "IART", false));
+        examList.add(new Exam(3, 120, "SDIS", false));
+
         return examList;
     }
 
