@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * @author Gustavo
@@ -116,7 +117,7 @@ public class Examination implements Solution<HardSoftScore> {
 	}
 
 	private String sameDayMoreExams(RoomPeriod rp) {
-		return "\n\t" + rp.getExam().getName() + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
+		return "\n\t" + rp.getExam().getTopic().getName() + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
 	}
 
 	private String continueExam(RoomPeriod rp) {
@@ -125,5 +126,13 @@ public class Examination implements Solution<HardSoftScore> {
 
 	private String createBegin(RoomPeriod rp) {
 		return "\n" + rp.getPeriod() + sameDayMoreExams(rp);
+	}
+
+	public void removeNullPeriodsExams() {
+		for(int i = 0; i < roomPeriodList.size();i++){
+			if(roomPeriodList.get(i).getExam() == null){
+				roomPeriodList.remove(i--);
+			}
+		}
 	}
 }

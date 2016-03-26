@@ -11,25 +11,23 @@ public class Exam implements Comparable<Exam> {
 
 	private static int currId = 0;
 	private int id;
-	private int year;
 	private int numStudents;
-	private String name;
+	//private String name;
+	private Topic topic;
 	private boolean pc;
 	/**
 	 * shadow variable
 	 */
 	private List<RoomPeriod> roomPeriods;
-	private Topic topic;
 
 	public Exam(){
 		this.attributeId();
 	}
 
-	public Exam(int year, int numStudents, String name, boolean pc){
+	public Exam(int numStudents, boolean pc, Topic topic){
 		this();
-		this.year = year;
+		this.topic = topic;
 		this.numStudents = numStudents;
-		this.name = name;
 		this.pc = pc;
 	}
 
@@ -51,15 +49,6 @@ public class Exam implements Comparable<Exam> {
 		this.topic = topic;
 	}
 
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-
 	public int getId() {
 		return id;
 	}
@@ -71,19 +60,11 @@ public class Exam implements Comparable<Exam> {
 
 	@Override
 	public int compareTo(Exam o) {
-		int yearDiff = year - o.year;
+		int yearDiff = topic.getYear() - o.topic.getYear();
 		if (yearDiff != 0) {
 			return yearDiff;
 		} else {
 			return id - o.id;
 		}
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }
