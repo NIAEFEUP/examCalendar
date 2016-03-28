@@ -5,7 +5,7 @@ package examination.domain;
  * @version 1.0
  * @created 18-fev-2016 16:42:18
  */
-public class Period {
+public class Period implements Comparable<Period> {
 
 	private int dayIndex;
 	private PeriodTime time;
@@ -43,5 +43,23 @@ public class Period {
 
 	public void setTime(PeriodTime time) {
 		this.time = time;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof Period) {
+			Period op2 = (Period) obj;
+			return dayIndex == op2.dayIndex && time.equals(op2.time);
+		}
+		return false;
+	}
+
+	@Override
+	public int compareTo(Period p) {
+		if (dayIndex != p.dayIndex) {
+			return dayIndex - p.dayIndex;
+		}
+
+		return time.ordinal() - p.time.ordinal();
 	}
 }

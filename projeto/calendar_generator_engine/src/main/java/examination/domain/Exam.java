@@ -7,21 +7,28 @@ import java.util.List;
  * @version 1.0
  * @created 18-fev-2016 16:42:18
  */
-public class Exam {
+public class Exam implements Comparable<Exam> {
 
 	private static int currId = 0;
 	private int id;
-	private int year;
 	private int numStudents;
+	//private String name;
+	private Topic topic;
 	private boolean pc;
 	/**
 	 * shadow variable
 	 */
 	private List<RoomPeriod> roomPeriods;
-	private Topic topic;
 
 	public Exam(){
 		this.attributeId();
+	}
+
+	public Exam(int numStudents, boolean pc, Topic topic){
+		this();
+		this.topic = topic;
+		this.numStudents = numStudents;
+		this.pc = pc;
 	}
 
 	private void attributeId(){
@@ -42,15 +49,6 @@ public class Exam {
 		this.topic = topic;
 	}
 
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-
 	public int getId() {
 		return id;
 	}
@@ -58,5 +56,15 @@ public class Exam {
 	@Override
 	public String toString() {
 		return "Exam with id = "+ this.id + " " + topic.toString();
+	}
+
+	@Override
+	public int compareTo(Exam o) {
+		int yearDiff = topic.getYear() - o.topic.getYear();
+		if (yearDiff != 0) {
+			return yearDiff;
+		} else {
+			return id - o.id;
+		}
 	}
 }

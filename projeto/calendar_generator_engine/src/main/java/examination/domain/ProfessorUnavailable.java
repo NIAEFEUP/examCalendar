@@ -8,22 +8,9 @@ import java.util.List;
  */
 public class ProfessorUnavailable {
     List<Period> periods;
-    Professor professor;
 
     public ProfessorUnavailable(){
         this.periods = new ArrayList<Period>();
-    }
-    public ProfessorUnavailable(Professor professor){
-        this.professor = professor;
-        this.periods = new ArrayList<Period>();
-    }
-
-    public Professor getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
     }
 
     public void addPeriod(Period period){

@@ -15,6 +15,8 @@ public class ExamScheduler {
         Examination unsolvedExamination = new ExaminationGenerator().createExamination();
         solver.solve(unsolvedExamination);
         Examination solvedExamination = (Examination) solver.getBestSolution();
+        solvedExamination.removeNullPeriodsExams();
+        solvedExamination.sort();
         System.out.println(solvedExamination);
     }
 }
