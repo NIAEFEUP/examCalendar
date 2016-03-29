@@ -29,7 +29,7 @@ global HardSoftScoreHolder scoreHolder;
 
 rule "differentPeriodsSameExam"
     when
-        RoomPeriod(exam != null, $period : period, $exam : exam.getTopic())
+        RoomPeriod(exam != null, $period : period, $exam : exam)
         RoomPeriod($exam == exam, $period != period)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
