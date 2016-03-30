@@ -7,21 +7,18 @@ import java.util.List;
  * Created by Duarte on 25/02/2016.
  */
 public class ProfessorUnavailable {
-    List<Period> periods;
+    Professor professor;
+    Period period;
 
-    public ProfessorUnavailable(){
-        this.periods = new ArrayList<Period>();
+    public ProfessorUnavailable() {}
+    public ProfessorUnavailable(Professor professor, Period period) {
+        this.professor = professor;
+        this.period = period;
     }
-
-    public void addPeriod(Period period){
-        this.periods.add(period);
+    public Professor getProfessor() {
+        return this.professor;
     }
-
-    public List<Period> getPeriods() {
-        return periods;
-    }
-
-    public void setPeriods(List<Period> periods) {
-        this.periods = periods;
+    public Period getPeriod() {
+        return this.period;
     }
 }
