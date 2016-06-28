@@ -42,7 +42,7 @@ rule "differentPeriodsSameExam"
         RoomPeriod(exam != null, $period : period, $exam : exam)
         RoomPeriod($exam == exam, $period != period)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
 end
 
 //the penalty is the number of periods coincidentes
@@ -104,15 +104,18 @@ end
 // Soft constraints
 // ############################################################################
 
-// 20% done
-// TODO: penalty doesn't consider the number of students and there shouldn't be more than a periodPenalty applied to the same exam
+
 rule "periodPenalty"
     when
+        $institutionParametrization : InstitutionParametrization(periodPenalty != 0)
         $period : Period(penalty != 0)
-        $roomPeriod : RoomPeriod(exam != null, period == $period)
+        $roomPeriod : RoomPeriod(exam != null, $exam : exam, period == $period, $id : id)
+        not(exists(RoomPeriod(exam == $exam, $id >  id)))
     then
-        scoreHolder.addSoftConstraintMatch(kcontext, -$period.getPenalty());
+        scoreHolder.addSoftConstraintMatch(kcontext, - (int) ($period.getPenalty() * $exam.getNumStudents() * $institutionParametrization.getPeriodPenalty()));
 end
+
+
 
 
 rule "periodSpread"

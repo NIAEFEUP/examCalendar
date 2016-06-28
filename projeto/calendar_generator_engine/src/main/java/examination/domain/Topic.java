@@ -12,7 +12,6 @@ public class Topic {
 
 	private static int currId = 0;
 	public int id;
-	private Student m_Student;
 	public List<Auxiliar> auxiliarList;
 	private Regent regent;
 	private int difficulty = 2;
@@ -37,14 +36,6 @@ public class Topic {
 
 	public void setRegent(Regent regent) {
 		this.regent = regent;
-	}
-
-	public Student getM_Student() {
-		return m_Student;
-	}
-
-	public void setM_Student(Student m_Student) {
-		this.m_Student = m_Student;
 	}
 
 	public int getDifficulty() {

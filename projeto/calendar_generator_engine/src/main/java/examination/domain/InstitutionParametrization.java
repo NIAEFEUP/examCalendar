@@ -12,11 +12,12 @@ package examination.domain;
  */
 public class InstitutionParametrization {
 
-	private int minDaysBetweenSameTopicExams;
-	private float roomUsableRatio;
-	private int roomUsableMargin;
-	private float spreadPenalty;
-	private float difficultyPenalty;
+	private int minDaysBetweenSameTopicExams = 14;
+	private float roomUsableRatio = 0.7f;
+	private int roomUsableMargin = 10;
+	private float spreadPenalty = 10;
+	private float difficultyPenalty = 1;
+	private float periodPenalty = 1;
 
 	public InstitutionParametrization(){
 
@@ -44,5 +45,9 @@ public class InstitutionParametrization {
 
 	public float getDifficultyPenalty() {
 		return difficultyPenalty;
+	}
+
+	public float getPeriodPenalty() {
+		return periodPenalty;
 	}
 }
