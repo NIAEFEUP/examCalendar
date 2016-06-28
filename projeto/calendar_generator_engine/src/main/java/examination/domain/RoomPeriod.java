@@ -23,9 +23,6 @@ public class RoomPeriod {
 	}
 	public void setExam(Exam exam){
 		this.exam = exam;}
-	public void finalize() throws Throwable {
-
-	}
 
 	public RoomPeriod(){
 		assignID();
@@ -43,7 +40,6 @@ public class RoomPeriod {
 	public void setPeriod(Period period) {
 		this.period = period;
 	}
-
 
 	public Room getRoom() {
 		return room;
