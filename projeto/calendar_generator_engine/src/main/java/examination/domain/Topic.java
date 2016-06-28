@@ -15,6 +15,7 @@ public class Topic {
 	private Student m_Student;
 	public List<Auxiliar> auxiliarList;
 	private Regent regent;
+	private int difficulty = 2;
 
 	public Topic(){
 		this.attributeId();
@@ -44,6 +45,14 @@ public class Topic {
 
 	public void setM_Student(Student m_Student) {
 		this.m_Student = m_Student;
+	}
+
+	public int getDifficulty() {
+		return difficulty;
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 
 	public int getId() {

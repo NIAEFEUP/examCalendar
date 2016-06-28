@@ -13,6 +13,9 @@ package examination.domain;
 public class InstitutionParametrization {
 
 	private int minDaysBetweenSameTopicExams;
+	private float roomUsableRatio;
+	private int roomUsableMargin;
+	private int spreadPenalty;
 
 	public InstitutionParametrization(){
 
@@ -22,4 +25,19 @@ public class InstitutionParametrization {
 
 	}
 
+	public int getMinDaysBetweenSameTopicExams() {
+		return minDaysBetweenSameTopicExams;
+	}
+
+	public float getRoomUsableRatio() {
+		return roomUsableRatio;
+	}
+
+	public int getRoomUsableMargin() {
+		return roomUsableMargin;
+	}
+
+	public int getSpreadPenalty() {
+		return spreadPenalty;
+	}
 }

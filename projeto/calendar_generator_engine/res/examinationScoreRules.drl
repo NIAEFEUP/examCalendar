@@ -27,7 +27,8 @@ import examination.domain.Auxiliar;
 import examination.domain.Professor;
 import examination.domain.ProfessorUnavailable;
 import examination.domain.RoomPeriod;
-import examination.domain.TopicConflict;
+import examination.domain.TopicConflict
+import examination.domain.InstitutionParametrization;
 
 
 global HardSoftScoreHolder scoreHolder;
@@ -47,10 +48,10 @@ end
 //the penalty is the number of periods coincidentes
 rule "professorUnavailable"
     when
-        RoomPeriod(exam != null, $professorId : exam.getTopic().getRegent().getProfessor(), $period : period)
-        ProfessorUnavailable( $professorId == professor.getId(), $periodList : periods)
+        RoomPeriod(exam != null, $professor : exam.getTopic().getRegent().getProfessor(), $period : period)
+        ProfessorUnavailable( $professor == professor, $periods : periods)
         $totalPeriods : Number() from accumulate (
-            $unavailablePeriod : Period(dayIndex == $period.dayIndex, time == $period.time ) from $periodList,
+            $unavailablePeriod : Period(dayIndex == $period.dayIndex, time == $period.time ) from $periods,
             count($unavailablePeriod)
         )
     then
@@ -97,6 +98,8 @@ rule "examsWithSameStudentsAtSamePeriods"
         scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
 end
 
+
+
 // ############################################################################
 // Soft constraints
 // ############################################################################
@@ -111,12 +114,14 @@ rule "periodPenalty"
         scoreHolder.addSoftConstraintMatch(kcontext, -$period.getPenalty());
 end
 
+
 rule "periodSpread"
     when
-        RoomPeriod(exam != null, $leftDayIndex : period.getDayIndex(), $leftExam : exam)
+        $institutionParametrization : InstitutionParametrization(spreadPenalty != 0)
+        RoomPeriod(exam != null, $leftDayIndex : period.getDayIndex(), $leftExam : exam, $difficulty : exam.getTopic().getDifficulty())
         RoomPeriod(exam != null, exam != $leftExam, $rightExam : exam, $rightDayIndex : period.getDayIndex())
-        $dist : Number(intValue < 7) from Math.abs($leftDayIndex - $rightDayIndex)
+        $dist : Float(intValue < 7) from Math.abs($leftDayIndex - $rightDayIndex)
         TopicConflict($leftExam.getTopic() == leftTopic, $rightExam.getTopic() == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
-        scoreHolder.addSoftConstraintMatch(kcontext, -$studentSize);
+        scoreHolder.addSoftConstraintMatch(kcontext, - (int) (($difficulty*$studentSize / $dist) * $institutionParametrization.getSpreadPenalty()) );
 end
