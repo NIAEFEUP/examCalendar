@@ -15,7 +15,8 @@ public class InstitutionParametrization {
 	private int minDaysBetweenSameTopicExams;
 	private float roomUsableRatio;
 	private int roomUsableMargin;
-	private int spreadPenalty;
+	private float spreadPenalty;
+	private float difficultyPenalty;
 
 	public InstitutionParametrization(){
 
@@ -37,7 +38,11 @@ public class InstitutionParametrization {
 		return roomUsableMargin;
 	}
 
-	public int getSpreadPenalty() {
+	public float getSpreadPenalty() {
 		return spreadPenalty;
+	}
+
+	public float getDifficultyPenalty() {
+		return difficultyPenalty;
 	}
 }
