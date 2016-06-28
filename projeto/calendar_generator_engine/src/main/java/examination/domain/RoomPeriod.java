@@ -11,7 +11,8 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  */
 @PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class)
 public class RoomPeriod {
-
+	private static int currID = 0;
+	private int id;
 	private Room room;
 	public Exam exam;
 	private Period period;
@@ -24,6 +25,15 @@ public class RoomPeriod {
 		this.exam = exam;}
 	public void finalize() throws Throwable {
 
+	}
+
+	public RoomPeriod(){
+		assignID();
+	}
+
+	private void assignID(){
+		this.id = currID;
+		currID++;
 	}
 
 	public Period getPeriod() {
@@ -41,6 +51,10 @@ public class RoomPeriod {
 
 	public void setRoom(Room room) {
 		this.room = room;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	@Override
