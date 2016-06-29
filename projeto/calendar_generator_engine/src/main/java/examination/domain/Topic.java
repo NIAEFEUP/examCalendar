@@ -40,14 +40,6 @@ public class Topic {
 
 	}
 
-	public Regent getRegent() {
-		return regent;
-	}
-
-	public void setRegent(Regent regent) {
-		this.regent = regent;
-	}
-
 	public int getDifficulty() {
 		return difficulty;
 	}

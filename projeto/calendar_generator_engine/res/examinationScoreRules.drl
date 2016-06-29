@@ -33,7 +33,7 @@ rule "differentPeriodsSameExam"
         RoomPeriod(exam != null, $period : period, $exam : exam)
         RoomPeriod($exam == exam, $period != period)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 //An exam can't be scheduled when a professor is unavailable
@@ -61,8 +61,8 @@ end
 rule "sameYearTooCloseExams"
     when
         $institutionParametrization : InstitutionParametrization(minDaysBetweenSameYearExams > 0)
-        RoomPeriod(exam != null, $id1 : getId(), $exam : exam, $year : exam.getYear(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod(exam != null, id > $id1, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < $institutionParametrization.minDaysBetweenSameYearExams)
+        RoomPeriod(exam != null, $id1 : getId(), $exam : exam, $year : exam.topic.getYear(), $leftDayIndex : period.getDayIndex())
+        RoomPeriod(exam != null, id > $id1, $exam != exam, $year == exam.topic.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < $institutionParametrization.minDaysBetweenSameYearExams)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end

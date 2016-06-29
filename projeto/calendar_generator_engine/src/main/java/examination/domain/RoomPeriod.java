@@ -10,7 +10,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  * @created 18-fev-2016 16:42:19
  */
 @PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class)
-public class RoomPeriod {
+public class RoomPeriod implements Comparable<RoomPeriod> {
 	private static int currID = 0;
 	private int id;
 	private Room room;
