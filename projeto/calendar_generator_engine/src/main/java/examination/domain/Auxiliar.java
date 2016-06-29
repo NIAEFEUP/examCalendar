@@ -5,11 +5,7 @@ package examination.domain;
  * @version 1.0
  * @created 18-fev-2016 16:42:18
  */
-public class Auxiliar {
-
-	public Auxiliar(){
-
-	}
+public class Auxiliar extends Professor {
 
 	public void finalize() throws Throwable {
 

@@ -12,13 +12,23 @@ public class Topic {
 
 	private static int currId = 0;
 	public int id;
-	private Student m_Student;
-	public List<Auxiliar> auxiliarList;
+	private int year;
+	private String name;
+	private List<Student> studentList = new ArrayList<Student>();
+	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
 	private Regent regent;
+	private int difficulty = 2;
 
 	public Topic(){
 		this.attributeId();
 		this.auxiliarList = new ArrayList<Auxiliar>();
+		this.studentList = new ArrayList<Student>();
+	}
+
+	public Topic(int year, String name){
+		this();
+		this.year = year;
+		this.name = name;
 	}
 
 	private void attributeId(){
@@ -30,20 +40,12 @@ public class Topic {
 
 	}
 
-	public Regent getRegent() {
-		return regent;
+	public int getDifficulty() {
+		return difficulty;
 	}
 
-	public void setRegent(Regent regent) {
-		this.regent = regent;
-	}
-
-	public Student getM_Student() {
-		return m_Student;
-	}
-
-	public void setM_Student(Student m_Student) {
-		this.m_Student = m_Student;
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 
 	public int getId() {
@@ -53,5 +55,29 @@ public class Topic {
 	@Override
 	public String toString() {
 		return "Topic with id = "+this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public Regent getRegent() {
+		return regent;
+	}
+
+	public void setRegent(Regent regent) {
+		this.regent = regent;
 	}
 }
