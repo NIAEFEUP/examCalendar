@@ -61,4 +61,14 @@ public class RoomPeriod {
 				", period=" + period +
 				'}';
 	}
+
+	@Override
+	public int compareTo(RoomPeriod o) {
+		int cmp = period.compareTo(o.period);
+		if (cmp == 0) {
+            return exam.compareTo(o.exam);
+		}
+
+        return cmp;
+	}
 }

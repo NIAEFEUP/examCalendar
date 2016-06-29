@@ -23,20 +23,7 @@ public class ExaminationGenerator {
         examination.setPeriodList(periodList);
         examination.setRoomList(roomList);
 
-        //this is only useful for test purposes
-        //different topics with same student
-        setTopicsToExams(examination.getExamList());
-
         return examination;
-    }
-
-    private void setTopicsToExams(List<Exam> examList) {
-
-        for (int i = 0; i < examList.size(); i+=2) {
-            Topic tp = new Topic();
-            examList.get(i).setTopic(tp);
-            examList.get(i+1).setTopic(tp);
-        }
     }
 
     private ArrayList<Period> createPeriods(int numWeeks) {
@@ -74,34 +61,34 @@ public class ExaminationGenerator {
 
     private List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
-        //Exam(int year, int numStudents, String name, boolean pc)
+        //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
-        examList.add(new Exam(1, 120, "FISI1", false));
-        examList.add(new Exam(1, 120, "MPCP", false));
-        examList.add(new Exam(1, 120, "MEST", false));
-        examList.add(new Exam(1, 120, "PROG", false));
+        examList.add(new Exam(120, false, new Topic(1, "FISI1")));
+        examList.add(new Exam(120, false, new Topic(1, "MPCP")));
+        examList.add(new Exam(120, false, new Topic(1, "MEST")));
+        examList.add(new Exam(120, false, new Topic(1, "PROG")));
 
         //2 year 1 semester
-        examList.add(new Exam(2, 120, "AEDA", false));
-        examList.add(new Exam(2, 120, "FISI2", false));
-        examList.add(new Exam(2, 120, "MNUM", true));
-        examList.add(new Exam(2, 120, "TCOM", false));
+        examList.add(new Exam(120, false, new Topic(2, "AEDA")));
+        examList.add(new Exam(120, false, new Topic(2, "FISI2")));
+        examList.add(new Exam(120, true, new Topic(2, "MNUM")));
+        examList.add(new Exam(120, false, new Topic(2, "TCOM")));
 
         //2 year 2 semester
-        examList.add(new Exam(2, 120, "BDAD", false));
-        examList.add(new Exam(2, 120, "CGRA", false));
-        examList.add(new Exam(2, 120, "CAL", false));
-        examList.add(new Exam(2, 120, "SOPE", false));
+        examList.add(new Exam(120, false, new Topic(2, "BDAD")));
+        examList.add(new Exam(120, false, new Topic(2, "CGRA")));
+        examList.add(new Exam(120, false, new Topic(2, "CAL")));
+        examList.add(new Exam(120, false, new Topic(2, "SOPE")));
 
         //3 year 1 semester
-        examList.add(new Exam(3, 120, "ESOF", false));
-        examList.add(new Exam(3, 120, "LTW", false));
-        examList.add(new Exam(3, 120, "PLOG", true));
-        examList.add(new Exam(3, 120, "RCOM", false));
+        examList.add(new Exam(120, false, new Topic(3, "ESOF")));
+        examList.add(new Exam(120, false, new Topic(3, "LTW")));
+        examList.add(new Exam(120, true, new Topic(3, "PLOG")));
+        examList.add(new Exam(120, false, new Topic(3, "RCOM")));
 
         //3 year 2 semester
-        examList.add(new Exam(3, 120, "IART", false));
-        examList.add(new Exam(3, 120, "SDIS", false));
+        examList.add(new Exam(120, false, new Topic(3, "IART")));
+        examList.add(new Exam(120, false, new Topic(3, "SDIS")));
 
         return examList;
     }
