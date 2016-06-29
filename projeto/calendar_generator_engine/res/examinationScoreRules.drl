@@ -37,6 +37,7 @@ global HardSoftScoreHolder scoreHolder;
 // Hard constraints
 // ############################################################################
 
+// The same exam can't be scheduled at different periods
 rule "differentPeriodsSameExam"
     when
         RoomPeriod(exam != null, $period : period, $exam : exam)
@@ -45,7 +46,7 @@ rule "differentPeriodsSameExam"
         scoreHolder.addHardConstraintMatch(kcontext, -10);
 end
 
-//the penalty is the number of periods coincidentes
+//An exam can't be scheduled when a professor is unavailable
 rule "professorUnavailable"
     when
         RoomPeriod(exam != null, $professor : exam.getTopic().getRegent().getProfessor(), $period : period)
@@ -58,6 +59,7 @@ rule "professorUnavailable"
         scoreHolder.addHardConstraintMatch(kcontext, -$totalPeriods.intValue());
 end
 
+// An exam must to have rooms with enough space for all of it's students
 rule "notEnoughRoomsForExam"
     when
         $exam : Exam($numStudents : numStudents)
@@ -69,14 +71,17 @@ rule "notEnoughRoomsForExam"
         scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
 end
 
+// The difference of days between the date of two exams of the same year must be bigger than InstitutionParametrization.minDaysBetweenSameYearExams
 rule "sameYearTooCloseExams"
     when
+        $institutionParametrization : InstitutionParametrization(minDaysBetweenSameYearExams > 0)
         RoomPeriod(exam != null, $id1 : getId(), $exam : exam, $year : exam.getYear(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod(exam != null, id > $id1, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < 2)
+        RoomPeriod(exam != null, id > $id1, $exam != exam, $year == exam.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < $institutionParametrization.minDaysBetweenSameYearExams)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
+// PC Exams must be scheduled in a PC Room
 rule "pcExamsNotInPcRooms"
     when
         RoomPeriod(exam != null, exam.getPC() != room.isPc())
@@ -84,24 +89,22 @@ rule "pcExamsNotInPcRooms"
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
+// The difference of days between Normal Exams and Appeal Exams of the same topic must be bigger than InstitutionParametrization.minDaysBetweenSameTopicExams
 rule "gapBetweenSameTopicExams"
     when
+        $institutionParametrization : InstitutionParametrization(minDaysBetweenSameTopicExams > 0)
         $exam1 : Exam($topic : topic)
         $exam2 : Exam(id < $exam1.getId(), $topic == topic)
         RoomPeriod($exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex())
         RoomPeriod($exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex())
         //$dist : Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
-        Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
+        Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from Math.abs($leftDayIndex - $rightDayIndex)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
 end
 
-//exam != null
-//exams with different topics
-//exams with same students
-//giant penalty, because two exams for the same student can NEVER be at the same time
-//TODO: TopicConflit
+// A student cant' have two exams at the same time
 rule "examsWithSameStudentsAtSamePeriods"
     when
         RoomPeriod($period : period, $id1 : getId(), exam != null, $leftTopic : exam.getTopic())
@@ -117,7 +120,7 @@ end
 // Soft constraints
 // ############################################################################
 
-
+// Prioritize exams according to the time of the day, the earlier the better
 rule "periodPenalty"
     when
         $institutionParametrization : InstitutionParametrization(periodPenalty != 0)
@@ -128,9 +131,7 @@ rule "periodPenalty"
         scoreHolder.addSoftConstraintMatch(kcontext, - (int) ($period.getPenalty() * $exam.getNumStudents() * $institutionParametrization.getPeriodPenalty()));
 end
 
-
-
-
+// Tries to spread the exams from one another as much as possible, giving priority to more difficult
 rule "periodSpread"
     when
         $institutionParametrization : InstitutionParametrization(spreadPenalty != 0)
