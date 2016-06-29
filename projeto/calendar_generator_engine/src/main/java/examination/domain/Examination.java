@@ -23,7 +23,7 @@ public class Examination implements Solution<HardSoftScore> {
 	public List<Exam> examList;
 	private List<Period> periodList;
 	private List<Room> roomList;
-	public InstitutionParametrization m_InstitutionParametrization;
+	public InstitutionParametrization institutionParametrization = new InstitutionParametrization();
 
 	public Examination(){
 		this.examList = new ArrayList<Exam>();
@@ -61,6 +61,7 @@ public class Examination implements Solution<HardSoftScore> {
 		facts.addAll(examList);
 		facts.addAll(periodList);
 		facts.addAll(roomList);
+		facts.add(institutionParametrization);
 		return facts;
 	}
 

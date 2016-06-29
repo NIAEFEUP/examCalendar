@@ -12,12 +12,13 @@ public class Topic {
 
 	private static int currId = 0;
 	public int id;
-	private Student m_Student;
-	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
+	public List<Auxiliar> auxiliarList;
 	private Regent regent;
+	private int difficulty = 2;
 
 	public Topic(){
 		this.attributeId();
+		this.auxiliarList = new ArrayList<Auxiliar>();
 	}
 
 	private void attributeId(){
@@ -37,12 +38,12 @@ public class Topic {
 		this.regent = regent;
 	}
 
-	public Student getM_Student() {
-		return m_Student;
+	public int getDifficulty() {
+		return difficulty;
 	}
 
-	public void setM_Student(Student m_Student) {
-		this.m_Student = m_Student;
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 
 	public int getId() {

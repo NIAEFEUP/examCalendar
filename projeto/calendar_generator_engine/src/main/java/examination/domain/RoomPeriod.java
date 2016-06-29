@@ -10,21 +10,12 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  * @created 18-fev-2016 16:42:19
  */
 @PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class)
-public class RoomPeriod implements Comparable<RoomPeriod> {
-	private static int currId = 0;
+public class RoomPeriod {
+	private static int currID = 0;
 	private int id;
 	private Room room;
 	public Exam exam;
 	private Period period;
-
-	public RoomPeriod() {
-		this.attributeId();
-	}
-
-	private void attributeId(){
-		this.currId++;
-		this.id = this.currId;
-	}
 
 	@PlanningVariable(nullable = true,valueRangeProviderRefs = {"examRange"})
 	public Exam getExam() {
@@ -32,6 +23,15 @@ public class RoomPeriod implements Comparable<RoomPeriod> {
 	}
 	public void setExam(Exam exam){
 		this.exam = exam;}
+
+	public RoomPeriod(){
+		assignID();
+	}
+
+	private void assignID(){
+		this.id = currID;
+		currID++;
+	}
 
 	public Period getPeriod() {
 		return period;
@@ -60,15 +60,5 @@ public class RoomPeriod implements Comparable<RoomPeriod> {
 				", exam=" + exam +
 				", period=" + period +
 				'}';
-	}
-
-	@Override
-	public int compareTo(RoomPeriod o) {
-		int cmp = period.compareTo(o.period);
-		if (exam == null || o.exam == null || cmp == 0) {
-			return cmp;
-		}
-
-		return exam.compareTo(o.exam);
 	}
 }
