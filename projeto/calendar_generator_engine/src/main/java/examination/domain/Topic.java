@@ -1,39 +1,29 @@
 package examination.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Gustavo
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-public class Topic {
+public class Topic{
 
-	private static int currId = 0;
-	public int id;
+	public String id;
 	private int year;
 	private String name;
-	private List<Student> studentList = new ArrayList<Student>();
-	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
+	private HashSet<Student> studentList = new HashSet<Student>();
+	public Set<Auxiliar> auxiliarList = new HashSet<Auxiliar>();
 	private Regent regent;
 	private int difficulty = 2;
 
-	public Topic(){
-		this.attributeId();
-		this.auxiliarList = new ArrayList<Auxiliar>();
-		this.studentList = new ArrayList<Student>();
-	}
-
-	public Topic(int year, String name){
-		this();
+	public Topic(String id, int year, String name){
+		this.id = id;
 		this.year = year;
 		this.name = name;
-	}
-
-	private void attributeId(){
-		this.currId++;
-		this.id = this.currId;
 	}
 
 	public void finalize() throws Throwable {
@@ -48,7 +38,7 @@ public class Topic {
 		this.difficulty = difficulty;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -79,5 +69,15 @@ public class Topic {
 
 	public void setRegent(Regent regent) {
 		this.regent = regent;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+		if(!(obj instanceof Topic))
+			return false;
+
+		return getId().equals(((Topic) obj).getId());
 	}
 }
