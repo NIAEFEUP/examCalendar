@@ -117,7 +117,7 @@ rule "periodPenalty"
         scoreHolder.addSoftConstraintMatch(kcontext, - (int) ($period.getPenalty() * $exam.getNumStudents() * $institutionParametrization.getPeriodPenalty()));
 end
 
-// Tries to spread the exams from one another as much as possible, giving priority to the most difficult exams
+// Tries to spread the exams from one another as much as possible, giving priority to the most difficult exams. Exams separated by more than a week are not considered.
 rule "periodSpread"
     when
         $institutionParametrization : InstitutionParametrization(spreadPenalty != 0)
