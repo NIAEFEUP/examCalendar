@@ -12,4 +12,8 @@ public class ParserException extends Exception {
         super(message);
         this.type = type;
     }
+
+    public Type getType() {
+        return type;
+    }
 }

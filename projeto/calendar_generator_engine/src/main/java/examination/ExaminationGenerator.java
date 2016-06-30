@@ -7,8 +7,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ *
  * Created by Gustavo on 10/02/2016.
  */
+
 public class ExaminationGenerator {
     public Examination createExamination() {
         Examination examination = new Examination();
@@ -63,7 +65,7 @@ public class ExaminationGenerator {
         List<Exam> examList = new ArrayList<Exam>();
         //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
-        examList.add(new Exam(120, false, new Topic(1, "FISI1")));
+        /*examList.add(new Exam(120, false, new Topic(1, "FISI1")));
         examList.add(new Exam(120, false, new Topic(1, "MPCP")));
         examList.add(new Exam(120, false, new Topic(1, "MEST")));
         examList.add(new Exam(120, false, new Topic(1, "PROG")));
@@ -88,7 +90,7 @@ public class ExaminationGenerator {
 
         //3 year 2 semester
         examList.add(new Exam(120, false, new Topic(3, "IART")));
-        examList.add(new Exam(120, false, new Topic(3, "SDIS")));
+        examList.add(new Exam(120, false, new Topic(3, "SDIS")));*/
 
         return examList;
     }

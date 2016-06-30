@@ -25,13 +25,13 @@ public class Feedback {
         this.result = result;
     }
 
-    public void addWarning(String message, String line, String column, String file){
-        String s = "WARNING Line:"+line +" Column:"+column +" -"+message;
+    public void addWarning(String message, String row, String column){
+        String s = "WARNING Line:"+row +" Column:"+column +" -"+message;
         warnings.add(s);
     }
 
-    public void addError(String message, String line, String column, String file){
-        String s = "ERROR Line:"+line +" Column:"+column +" -"+message;
+    public void addError(String message, String row, String column){
+        String s = "ERROR Line:"+row +" Column:"+column +" -"+message;
         errors.add(s);
     }
 
