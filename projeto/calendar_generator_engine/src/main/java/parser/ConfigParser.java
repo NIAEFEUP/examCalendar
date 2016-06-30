@@ -49,6 +49,7 @@ public class ConfigParser {
             institutionParametrization.setPeriodPenalty(periodPenalty);
 
             List<Period> periods = createPeriods(startingDay, startingMonth, startingYear, maxDays);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
