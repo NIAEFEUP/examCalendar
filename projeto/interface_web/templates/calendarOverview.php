@@ -5,9 +5,9 @@
 
 <link rel="stylesheet" href="css/calendarOverview.css">
 <meta name="viewport" content="width=device-width, user-scalable=no"/><!-- "position: fixed" fix for Android 2.2+ -->
-<script type="text/javascript" src="js/calendarOverview-header.js"></script>
-<script type="text/javascript" src="js/redips-drag-min.js"></script>
-<script type="text/javascript" src="js/calendarOverview-script.js"></script>
+<script type="text/javascript" src="js/calendarOverview/header.js"></script>
+<script type="text/javascript" src="js/calendarOverview/redips-drag-min.js"></script>
+<script type="text/javascript" src="js/calendarOverview/script.js"></script>
 
 <div align="right">
 	<input type="checkbox" name="request-checkbox" checked>
@@ -113,7 +113,7 @@
 </div>
 
 <script src="js/bootstrap-switch.js"></script>
-<script src="js/calendarOverview.js"></script>
+<script src="js/calendarOverview/jQuery.js"></script>
 
 <?php
 	include 'footer.html';
