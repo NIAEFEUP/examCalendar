@@ -55,6 +55,7 @@ rule "notEnoughRoomsForExam"
         )
     then
         scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+        //scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 // The difference of days between the date of two exams of the same year must be bigger than InstitutionParametrization.minDaysBetweenSameYearExams
@@ -88,13 +89,6 @@ rule "gapBetweenSameTopicExams"
         scoreHolder.addHardConstraintMatch(kcontext, -1);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
 end
-
-/*rule "normalInNormalSeason"
-    when
-        RoomPeriod(exam != null, exam.isNormal(), period.isAppeal())
-    then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
-end*/
 
 // A student cant' have two exams at the same time
 rule "examsWithSameStudentsAtSamePeriods"

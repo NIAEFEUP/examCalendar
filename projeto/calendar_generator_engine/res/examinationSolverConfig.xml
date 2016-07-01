@@ -16,7 +16,7 @@
   <localSearch>
     <unionMoveSelector>
       <swapMoveSelector>
-        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+        <fixedProbabilityWeight>9</fixedProbabilityWeight>
         <filterClass>examination.domain.solver.SwapMoveFilter</filterClass>
       </swapMoveSelector>
       <moveListFactory>
