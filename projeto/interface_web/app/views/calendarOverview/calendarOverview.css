@@ -1,0 +1,158 @@
+h3 {
+	display: inline;
+}
+
+h4 {
+	display: inline;
+}
+
+.row-head {
+	color: white;
+	background-color: #9B9EA2;
+}
+
+.row-type1 {
+	background-color: #eee;
+}
+
+.row-type2 {
+	background-color: #ddd;
+}
+
+.elem-empty {
+	background-color: #fff;
+}
+
+.row-dates {
+	background-color: #aba;
+}
+
+.elem-time-interval {
+	background-color: #eee;
+}
+
+/*
+Darko Bunic
+http://www.redips.net/
+Jun, 2011.
+*/
+
+body {
+	font-family: arial;
+	margin: 0px; /* for IE6 / IE7 */
+}
+
+/* add bottom margin between tables */
+#table1{
+	margin-bottom: 20px;
+}
+
+/* drag container */
+#redips-drag {
+	margin: auto;
+	width: 50%;
+}
+
+/* set border for images inside DRAG region - exclude image margin inheritance */
+/* my WordPress theme had some funny margin settings */
+#redips-drag img {
+	margin: 1px;
+}
+
+/* drag objects (DIV inside table cells) */
+.redips-drag {
+	cursor: move;
+	margin: auto;
+	margin-bottom: 1px;
+	margin-top: 1px;
+	z-index: 10;
+	background-color: white;
+	text-align: center;
+	font-size: 10pt; /* needed for cloned object */
+	width: 87px;
+	/*height: 20px;*/
+	line-height: 20px;
+	/* round corners */
+	border-radius: 4px; /* Opera, Chrome */
+	-moz-border-radius: 4px; /* FF */
+}
+
+
+/* drag objects border for the first table */
+.t1 {
+	border: 2px solid #499B33;
+}
+/* drag object border for the second table */
+.t2 {
+	border: 2px solid SteelBlue;
+}
+/* cloned objects - third table */
+.t3 {
+	border: 2px solid #FF8A58;
+}
+/* allow / deny access to cells marked with 'mark' class name */
+.redips-mark {
+	/*color: white;
+	background-color: #9B9EA2;*/
+}
+/* trash cell */
+.redips-trash {
+	color: white;
+	background-color: #2D4B7A;
+}
+
+/* tables */
+div#redips-drag table {
+	background-color: #e0e0e0;
+	border-collapse: collapse;
+}
+
+
+/* input elements in dragging container */
+div#redips-drag input {
+	cursor: auto;
+}
+	/* height for input text in DIV element */
+	div#drag #d13 input {
+		height: 13px;
+	}
+	/* height for dropdown menu in DIV element */
+	div#drag #d5 select {
+		height: 20px;
+	}
+
+/* table cells */
+div#redips-drag td {
+	height: 32px;
+	border: 1px solid white;
+	text-align: center;
+	font-size: 10pt;
+	padding: 2px;
+}
+
+/* "Click" button */
+.button {
+	margin-bottom: 2px;
+	background-color: #6A93D4;
+	color: white;
+	border-width: 1px;
+	width: 44px;
+	padding: 0px;
+}
+
+
+/* toggle checkboxes at the bottom */
+.checkbox {
+	margin-left: 13px;
+	margin-right: 14px;
+	width: 13px; /* needed for IE ?! */
+}
+
+
+/* message cell */
+.message_line {
+	padding-left: 10px;
+	margin-bottom: 3px;
+	font-size: 10pt;
+	color: #888;
+}

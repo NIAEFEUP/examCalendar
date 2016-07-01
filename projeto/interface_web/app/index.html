@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exam Calendar</title>
+    <meta charset="utf-8">
+    <base href="http://localhost/examCalendar/app/">
+    <link rel="stylesheet" href="template.css"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  </head>
+
+  <body ng-app="ExamCalendar">
+  	<header>
+  		<a id="home_button" href="./#login/">Home</a>
+      <!--TODO logout is not implemented yet-->
+  		<a id="logout_button" href="https://www.youtube.com/watch?v=dys8KUnwGGg">Logout</a>
+  		<p id="user_name">Dona Lina</p>
+  	</header>
+
+    <div ng-view>
+    </div>
+
+    <footer>
+    	Desenvolvido por:
+    	<a href="//ni.fe.up.pt">NIAEFEUP</a>
+    </footer>
+
+  </body>
+
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+  <script src="https://code.angularjs.org/1.5.7/angular-route.min.js"></script>
+  <script src="app.js"></script>
+
+</html>
