@@ -1,6 +1,8 @@
 package examination;
 
 import examination.domain.Examination;
+import org.optaplanner.benchmark.api.PlannerBenchmark;
+import org.optaplanner.benchmark.api.PlannerBenchmarkFactory;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 
