@@ -14,7 +14,16 @@
   </constructionHeuristic>
 
   <localSearch>
-      <swapMoveSelector/>
+    <unionMoveSelector>
+      <swapMoveSelector>
+        <fixedProbabilityWeight>0.9</fixedProbabilityWeight>
+        <filterClass>examination.domain.solver.SwapMoveFilter</filterClass>
+      </swapMoveSelector>
+      <moveListFactory>
+        <fixedProbabilityWeight>0.1</fixedProbabilityWeight>
+        <moveListFactoryClass>examination.domain.solver.ExamMoveFactory</moveListFactoryClass>
+      </moveListFactory>
+    </unionMoveSelector>
   </localSearch>
 
   <termination>
