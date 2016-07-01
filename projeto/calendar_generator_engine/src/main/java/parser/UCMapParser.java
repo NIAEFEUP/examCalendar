@@ -2,66 +2,43 @@ package parser;
 
 import examination.domain.Student;
 import examination.domain.Topic;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static parser.ExcelRegex.CLASS;
+import static parser.ExcelRegex.UC;
+
 /**
  * Created by Duarte on 29/06/2016.
  */
-public class UCMapParser {
+public class UCMapParser extends ExcelParser {
     enum State{
         START,
         UC_ID,
         UC_YEAR,
-        STUDENT,
-        FINISHED
+        STUDENT
     }
     public static final int NUM_COLUMNS = 3;
-    public static final String UC_REGEX = "^([A-z]{1,5}\\d{4})\\s*-\\s*(.+)$";
-    public static final String CLASS_REGEX = "^Turma\\s*:\\s*(\\d)[A-z]{1,7}\\w*$";
 
     private State state = State.START;
-    File file;
-    Feedback feedback;
     Hashtable<Topic, Set<Student>> topics = new Hashtable<Topic, Set<Student>>();
     Hashtable<String,Student> students = new Hashtable<String, Student>();
 
     public UCMapParser(String file){
-        this.file = new File(file);
-        this.feedback = new Feedback(file);
+        super(file);
     }
 
 
-
-    // TODO: 29/06/2016 Não está acabado 
-    boolean generate() throws IOException {
-        Workbook wb;
-        if(FilenameUtils.getExtension(file.getName()).equals("xlsx"))
-            wb = new XSSFWorkbook(new FileInputStream(file));
-        else if(FilenameUtils.getExtension(file.getName()).equals("xls")) {
-            POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
-            wb= new HSSFWorkbook(fs);
-        }else{
-            return false;
-        }
-        Sheet sheet = wb.getSheetAt(0);
-        Row row;
-        Cell cell;
+    @Override
+    protected boolean parseSheet(Sheet sheet) {
+        Row row = null;
+        Cell cell = null;
         String cellContent;
-
         String currTopicName = null;
         String currTopicID = null;
         int currTopicYear;
@@ -85,10 +62,10 @@ public class UCMapParser {
                         }
                         break;
                     case UC_ID:
-                        if(isBlankCell(cellContent) || !cellContent.matches(CLASS_REGEX))
+                        if(isBlankCell(cellContent) || !cellContent.matches(CLASS))
                             continue;
                         else {
-                            Matcher matcherYear = Pattern.compile(CLASS_REGEX).matcher(cellContent);
+                            Matcher matcherYear = Pattern.compile(CLASS).matcher(cellContent);
                             matcherYear.matches();
                             currTopicYear = Integer.parseInt(matcherYear.group(1));
 
@@ -117,9 +94,9 @@ public class UCMapParser {
                         }
                         break;
                     case STUDENT:
-                        if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS_REGEX))
+                        if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS))
                             continue;
-                        else if(cellContent.matches(UC_REGEX)) {
+                        else if(cellContent.matches(UC)) {
                             currTopicID = extractTopicID(cellContent);
                             currTopicName = extractTopicName(cellContent);
                             this.state = State.UC_ID;
@@ -134,32 +111,33 @@ public class UCMapParser {
                             }
                         }
                         break;
-                    case FINISHED:
-                        return true;
                     default:
                         feedback.addError("Input inexperado",row.getRowNum()+"",cell.getColumnIndex()+"");
                         return false;
                 }
             }
         }
-        if(state.equals(State.FINISHED)|| state.equals(State.STUDENT)){
-            this.state = State.FINISHED;
+
+        if(state.equals(UCMapParser.State.STUDENT)){
             feedback.setResult(true);
             return true;
         }else {
+            feedback.addError("Erro inesperado. Parsing interrompido.", row == null? (0+"") : (row.getRowNum()+""),0+"");
             return false;
         }
     }
 
+
+
     private String extractTopicName(String cellContent) {
-        String currTopicName;Matcher matcherName = Pattern.compile(UC_REGEX).matcher(cellContent);
+        String currTopicName;Matcher matcherName = Pattern.compile(UC).matcher(cellContent);
         matcherName.matches();
         currTopicName = matcherName.group(2);
         return currTopicName;
     }
 
     private String extractTopicID(String cellContent) {
-        String currTopicID;Matcher matcherID = Pattern.compile(UC_REGEX).matcher(cellContent);
+        String currTopicID;Matcher matcherID = Pattern.compile(UC).matcher(cellContent);
         matcherID.matches();
         currTopicID = matcherID.group(1);
         return currTopicID;
@@ -167,9 +145,9 @@ public class UCMapParser {
 
     private void handleParserException(Row row, Cell cell, ParserException e) {
         if(e.getType().equals(ParserException.Type.WARNING)){
-            feedback.addWarning(e.getMessage(), row.getRowNum() + "", cell.getColumnIndex() + "");
+            getFeedback().addWarning(e.getMessage(), row.getRowNum() + "", cell.getColumnIndex() + "");
         }else{
-            feedback.addError(e.getMessage(), row.getRowNum() + "", cell.getColumnIndex() + "");
+            getFeedback().addError(e.getMessage(), row.getRowNum() + "", cell.getColumnIndex() + "");
         }
     }
 
@@ -205,18 +183,6 @@ public class UCMapParser {
         topics.put(topic, new HashSet<Student>());
     }
 
-    protected boolean isBlankCell(String cell){
-        return cell.isEmpty() || cell.matches("^\\s+$");
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public Feedback getFeedback() {
-        return feedback;
-    }
-
     public Hashtable<Topic, Set<Student>> getTopics() {
         return topics;
     }
@@ -242,12 +208,9 @@ public class UCMapParser {
     public static void main(String[] args) {
         String file = "../../mapa_exames_mieic.xls";
         UCMapParser parser = new UCMapParser(file);
-        try {
-            parser.generate();
-            System.out.println(parser.toString());
-            System.out.println(parser.getFeedback().toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        parser.generate();
+        System.out.println(parser.toString());
+        System.out.println(parser.getFeedback().toString());
+
     }
 }
