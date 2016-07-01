@@ -15,6 +15,7 @@ public class Exam implements Comparable<Exam> {
 	//private String name;
 	private Topic topic;
 	private boolean pc;
+	private boolean normal; // or appeal
 	/**
 	 * shadow variable
 	 */
@@ -24,10 +25,11 @@ public class Exam implements Comparable<Exam> {
 		this.attributeId();
 	}
 
-	public Exam(int numStudents, boolean pc, Topic topic){
+	public Exam(int numStudents, boolean normal, boolean pc, Topic topic){
 		this();
 		this.topic = topic;
 		this.numStudents = numStudents;
+		this.normal = normal;
 		this.pc = pc;
 	}
 
@@ -52,6 +54,12 @@ public class Exam implements Comparable<Exam> {
 	public int getId() {
 		return id;
 	}
+
+	public boolean isNormal() { return normal; }
+	public boolean isAppeal() { return !normal; }
+
+	public void setNormal() { normal = true; };
+	public void setAppeal() { normal = false; };
 
 	@Override
 	public String toString() {

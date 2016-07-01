@@ -81,14 +81,20 @@ rule "gapBetweenSameTopicExams"
         $institutionParametrization : InstitutionParametrization(minDaysBetweenSameTopicExams > 0)
         $exam1 : Exam($topic : topic)
         $exam2 : Exam(id < $exam1.getId(), $topic == topic)
-        RoomPeriod($exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod($exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex())
-        //$dist : Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
-        Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from Math.abs($leftDayIndex - $rightDayIndex)
+        RoomPeriod(exam != null, $exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex(), exam.isNormal())
+        RoomPeriod(exam != null, $exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex(), exam != null, exam.isAppeal())
+        Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from $rightDayIndex - $leftDayIndex
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
 end
+
+/*rule "normalInNormalSeason"
+    when
+        RoomPeriod(exam != null, exam.isNormal(), period.isAppeal())
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end*/
 
 // A student cant' have two exams at the same time
 rule "examsWithSameStudentsAtSamePeriods"
