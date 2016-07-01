@@ -16,11 +16,11 @@
   <localSearch>
     <unionMoveSelector>
       <swapMoveSelector>
-        <fixedProbabilityWeight>0.9</fixedProbabilityWeight>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
         <filterClass>examination.domain.solver.SwapMoveFilter</filterClass>
       </swapMoveSelector>
       <moveListFactory>
-        <fixedProbabilityWeight>0.1</fixedProbabilityWeight>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
         <moveListFactoryClass>examination.domain.solver.ExamMoveFactory</moveListFactoryClass>
       </moveListFactory>
     </unionMoveSelector>

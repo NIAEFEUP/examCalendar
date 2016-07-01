@@ -31,9 +31,9 @@ public class ExaminationGenerator {
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
             for (int j = 0; j < 5; j++) {
-                periodList.add(new Period(offset + j, PeriodTime.NINE_AM));
-                periodList.add(new Period(offset + j, PeriodTime.ONE_PM));
-                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM));
+                periodList.add(new Period(offset + j, PeriodTime.NINE_AM, j < 3));
+                periodList.add(new Period(offset + j, PeriodTime.ONE_PM, j < 3));
+                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM, j < 3));
             }
         }
         return periodList;
@@ -120,7 +120,11 @@ public class ExaminationGenerator {
     private void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
-                RoomPeriod rp = new RoomPeriod();
+                RoomPeriod rp;
+                if (periods.get(j).isNormal())
+                    rp = new NormalRoomPeriod();
+                else
+                    rp = new AppealRoomPeriod();
                 rp.setRoom(rooms.get(i));
                 rp.setPeriod(periods.get(j));
                 examination.addRoomPeriod(rp);
