@@ -31,9 +31,10 @@ public class ExaminationGenerator {
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
             for (int j = 0; j < 5; j++) {
-                periodList.add(new Period(offset + j, PeriodTime.NINE_AM, i < 3));
-                periodList.add(new Period(offset + j, PeriodTime.ONE_PM, i < 3));
-                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM, i < 3));
+                int day = offset + j;
+                periodList.add(new Period(day, PeriodTime.NINE_AM, day < numWeeks * 7 * 2/3));
+                periodList.add(new Period(day, PeriodTime.ONE_PM, day < numWeeks * 7 * 2/3));
+                periodList.add(new Period(day, PeriodTime.FIVE_PM, day < numWeeks * 7 * 2/3));
             }
         }
         return periodList;
