@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Gustavo on 10/02/2016.
  */
 public class ExaminationGenerator {
-    public Examination createExamination() {
+    public static Examination createExamination() {
         Examination examination = new Examination();
 
         //5 weeks
@@ -26,20 +26,20 @@ public class ExaminationGenerator {
         return examination;
     }
 
-    private ArrayList<Period> createPeriods(int numWeeks) {
+    private static ArrayList<Period> createPeriods(int numWeeks) {
         ArrayList<Period> periodList = new ArrayList<Period>();
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
             for (int j = 0; j < 5; j++) {
-                periodList.add(new Period(offset + j, PeriodTime.NINE_AM, j < 3));
-                periodList.add(new Period(offset + j, PeriodTime.ONE_PM, j < 3));
-                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM, j < 3));
+                periodList.add(new Period(offset + j, PeriodTime.NINE_AM, i < 3));
+                periodList.add(new Period(offset + j, PeriodTime.ONE_PM, i < 3));
+                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM, i < 3));
             }
         }
         return periodList;
     }
 
-    private ArrayList<Room> createRooms() {
+    private static ArrayList<Room> createRooms() {
         ArrayList<Room> roomList = new ArrayList<Room>();
         //Room(ID, Capacity, pc_room?)
         roomList.add(new Room("B116", 69, false));
@@ -59,7 +59,7 @@ public class ExaminationGenerator {
         return roomList;
     }
 
-    private List<Exam> createExams() {
+    private static List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
         //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
@@ -117,7 +117,7 @@ public class ExaminationGenerator {
         return examList;
     }
 
-    private void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
+    private static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
                 RoomPeriod rp;

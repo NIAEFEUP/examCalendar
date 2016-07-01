@@ -139,7 +139,7 @@ public class Examination implements Solution<HardSoftScore> {
 	}
 
 	private String sameDayMoreExams(RoomPeriod rp) {
-		return "\n\t" + rp.getExam().getTopic().getName() + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
+		return "\n\t" + rp.getExam().getTopic().getName() + (rp.getExam().isNormal() ? " N" : " A") + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
 	}
 
 	private String continueExam(RoomPeriod rp) {

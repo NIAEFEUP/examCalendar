@@ -19,6 +19,9 @@
         <fixedProbabilityWeight>9</fixedProbabilityWeight>
         <filterClass>examination.domain.solver.SwapMoveFilter</filterClass>
       </swapMoveSelector>
+      <changeMoveSelector>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+      </changeMoveSelector>
       <moveListFactory>
         <fixedProbabilityWeight>1</fixedProbabilityWeight>
         <moveListFactoryClass>examination.domain.solver.ExamMoveFactory</moveListFactoryClass>
@@ -27,7 +30,7 @@
   </localSearch>
 
   <termination>
-    <secondsSpentLimit>1000</secondsSpentLimit>
+    <secondsSpentLimit>100</secondsSpentLimit>
     <bestScoreLimit>-0hard/-0soft</bestScoreLimit>
   </termination>
 </solver>
