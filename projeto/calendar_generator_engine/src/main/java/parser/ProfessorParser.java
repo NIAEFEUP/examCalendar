@@ -69,8 +69,12 @@ public class ProfessorParser extends ExcelParser{
                 }
             }
         }
-
-        feedback.setResult(true);
+        if(professors.size() > 0) {
+            feedback.setResult(true);
+        }else{
+            feedback.addError("Erro a ler a lista de professores", row.getRowNum()+"",0+"");
+            return false;
+        }
         return true;
     }
 
