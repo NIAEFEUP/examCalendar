@@ -33,7 +33,7 @@ rule "differentPeriodsSameExam"
         RoomPeriod(exam != null, $period : period, $exam : exam)
         RoomPeriod($exam == exam, $period != period)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -10);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 //An exam can't be scheduled when a professor is unavailable
