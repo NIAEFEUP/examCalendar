@@ -14,6 +14,10 @@ public class ExamScheduler {
         SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
         Solver solver = solverFactory.buildSolver();
 
+        /*PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromXmlResource("examinationBenchmarkConfig.xml");
+        PlannerBenchmark plannerBenchmark = benchmarkFactory.buildPlannerBenchmark();
+        plannerBenchmark.benchmark();*/
+
         Examination unsolvedExamination = new ExaminationGenerator().createExamination();
         solver.solve(unsolvedExamination);
         Examination solvedExamination = (Examination) solver.getBestSolution();

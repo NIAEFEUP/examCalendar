@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Gustavo on 10/02/2016.
  */
 public class ExaminationGenerator {
-    public Examination createExamination() {
+    public static Examination createExamination() {
         Examination examination = new Examination();
 
         //5 weeks
@@ -28,20 +28,21 @@ public class ExaminationGenerator {
         return examination;
     }
 
-    private ArrayList<Period> createPeriods(int numWeeks) {
+    private static ArrayList<Period> createPeriods(int numWeeks) {
         ArrayList<Period> periodList = new ArrayList<Period>();
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
             for (int j = 0; j < 5; j++) {
-                periodList.add(new Period(offset + j, PeriodTime.NINE_AM));
-                periodList.add(new Period(offset + j, PeriodTime.ONE_PM));
-                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM));
+                int day = offset + j;
+                periodList.add(new Period(day, PeriodTime.NINE_AM, day < numWeeks * 7 * 2/3));
+                periodList.add(new Period(day, PeriodTime.ONE_PM, day < numWeeks * 7 * 2/3));
+                periodList.add(new Period(day, PeriodTime.FIVE_PM, day < numWeeks * 7 * 2/3));
             }
         }
         return periodList;
     }
 
-    private ArrayList<Room> createRooms() {
+    private static ArrayList<Room> createRooms() {
         ArrayList<Room> roomList = new ArrayList<Room>();
         //Room(ID, Capacity, pc_room?)
         roomList.add(new Room("B116", 69, false));
@@ -61,41 +62,65 @@ public class ExaminationGenerator {
         return roomList;
     }
 
-    private List<Exam> createExams() {
+    private static List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
         //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
-        examList.add(new Exam(120, false, new Topic(1, "FISI1")));
-        examList.add(new Exam(120, false, new Topic(1, "MPCP")));
-        examList.add(new Exam(120, false, new Topic(1, "MEST")));
-        examList.add(new Exam(120, false, new Topic(1, "PROG")));
+        examList.add(new Exam(120, true, false, new Topic(1, "FISI1")));
+        examList.add(new Exam(120, true, false, new Topic(1, "MPCP")));
+        examList.add(new Exam(120, true, false, new Topic(1, "MEST")));
+        examList.add(new Exam(120, true, false, new Topic(1, "PROG")));
+
+        examList.add(new Exam(120, false, false, new Topic(1, "FISI1")));
+        examList.add(new Exam(120, false, false, new Topic(1, "MPCP")));
+        examList.add(new Exam(120, false, false, new Topic(1, "MEST")));
+        examList.add(new Exam(120, false, false, new Topic(1, "PROG")));
 
         //2 year 1 semester
-        examList.add(new Exam(120, false, new Topic(2, "AEDA")));
-        examList.add(new Exam(120, false, new Topic(2, "FISI2")));
-        examList.add(new Exam(120, true, new Topic(2, "MNUM")));
-        examList.add(new Exam(120, false, new Topic(2, "TCOM")));
+        examList.add(new Exam(120, true, false, new Topic(2, "AEDA")));
+        examList.add(new Exam(120, true, false, new Topic(2, "FISI2")));
+        examList.add(new Exam(120, true, true, new Topic(2, "MNUM")));
+        examList.add(new Exam(120, true, false, new Topic(2, "TCOM")));
+
+        examList.add(new Exam(120, false, false, new Topic(2, "AEDA")));
+        examList.add(new Exam(120, false, false, new Topic(2, "FISI2")));
+        examList.add(new Exam(120, false, true, new Topic(2, "MNUM")));
+        examList.add(new Exam(120, false, false, new Topic(2, "TCOM")));
 
         //2 year 2 semester
-        examList.add(new Exam(120, false, new Topic(2, "BDAD")));
-        examList.add(new Exam(120, false, new Topic(2, "CGRA")));
-        examList.add(new Exam(120, false, new Topic(2, "CAL")));
-        examList.add(new Exam(120, false, new Topic(2, "SOPE")));
+        examList.add(new Exam(120, true, false, new Topic(2, "BDAD")));
+        examList.add(new Exam(120, true, false, new Topic(2, "CGRA")));
+        examList.add(new Exam(120, true, false, new Topic(2, "CAL")));
+        examList.add(new Exam(120, true, false, new Topic(2, "SOPE")));
+
+        examList.add(new Exam(120, false, false, new Topic(2, "BDAD")));
+        examList.add(new Exam(120, false, false, new Topic(2, "CGRA")));
+        examList.add(new Exam(120, false, false, new Topic(2, "CAL")));
+        examList.add(new Exam(120, false, false, new Topic(2, "SOPE")));
 
         //3 year 1 semester
-        examList.add(new Exam(120, false, new Topic(3, "ESOF")));
-        examList.add(new Exam(120, false, new Topic(3, "LTW")));
-        examList.add(new Exam(120, true, new Topic(3, "PLOG")));
-        examList.add(new Exam(120, false, new Topic(3, "RCOM")));
+        examList.add(new Exam(120, true, false, new Topic(3, "ESOF")));
+        examList.add(new Exam(120, true, false, new Topic(3, "LTW")));
+        examList.add(new Exam(120, true, true, new Topic(3, "PLOG")));
+        examList.add(new Exam(120, true, false, new Topic(3, "RCOM")));
+
+        examList.add(new Exam(120, false, false, new Topic(3, "ESOF")));
+        examList.add(new Exam(120, false, false, new Topic(3, "LTW")));
+        examList.add(new Exam(120, false, true, new Topic(3, "PLOG")));
+        examList.add(new Exam(120, false, false, new Topic(3, "RCOM")));
 
         //3 year 2 semester
-        examList.add(new Exam(120, false, new Topic(3, "IART")));
-        examList.add(new Exam(120, false, new Topic(3, "SDIS")));
+        examList.add(new Exam(120, true, false, new Topic(3, "IART")));
+        examList.add(new Exam(120, true, false, new Topic(3, "SDIS")));
+
+        examList.add(new Exam(120, false, false, new Topic(3, "IART")));
+        examList.add(new Exam(120, false, false, new Topic(3, "SDIS")));
+        examList.add(new Exam(120, false, false, new Topic(3, "COMP")));
 
         return examList;
     }
 
-    private void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
+    private static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
                 RoomPeriod rp = new RoomPeriod();
