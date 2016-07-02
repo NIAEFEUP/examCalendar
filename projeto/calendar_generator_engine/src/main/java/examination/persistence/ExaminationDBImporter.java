@@ -74,7 +74,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             List<Room> rooms = readRooms(requestConfig.creator, conn);
             if (rooms == null) return null;
 
-            List<Period> periods = generatePeriods(requestConfig.startingDate, requestConfig.maxDays);
+            List<Period> periods = generatePeriods(requestConfig);
             if (periods == null) return null;
 
             List<ProfessorUnavailable> professorUnavailables = readProfessorUnavailables(requestConfig.creator, conn, requestConfig.startingDate, periods, professors);
@@ -114,7 +114,8 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
 
         rc.creator = rs.getInt("creator");
         rc.timeout = rs.getInt("timeout");
-        rc.maxDays = rs.getInt("maxDays");
+        rc.normalSeasonDuration = rs.getInt("normalSeasonDuration");
+        rc.appealSeasonDuration = rs.getInt("appealSeasonDuration");
         rc.startingDate = rs.getDate("startingDate");
         ip.setMinDaysBetweenSameTopicExams(rs.getInt("minDaysBetweenSameTopicExams"));
         ip.setMinDaysBetweenSameYearExams(rs.getInt("minDaysBetweenSameYearExams"));
@@ -228,16 +229,16 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return rooms;
     }
 
-    private List<Period> generatePeriods(java.util.Date startingDay, int maxDays) {
+    private List<Period> generatePeriods(RequestConfig requestConfig) {
         List<Period> periods = new ArrayList<Period>();
 
-        Date currentDay = new Date(startingDay.getTime());
+        Date currentDay = new Date(requestConfig.startingDate.getTime());
         Calendar c = Calendar.getInstance();
         c.setTime(currentDay);
-        for (int dayIndex = 0; dayIndex < maxDays; dayIndex++) {
-            Period period1 = new Period(dayIndex, PeriodTime.NINE_AM, true); // TODO appeal season
-            Period period2 = new Period(dayIndex, PeriodTime.ONE_PM, true); // TODO appeal season
-            Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM, true); // TODO appeal season
+        for (int dayIndex = 0; dayIndex < requestConfig.normalSeasonDuration + requestConfig.appealSeasonDuration; dayIndex++) {
+            Period period1 = new Period(dayIndex, PeriodTime.NINE_AM, dayIndex < requestConfig.normalSeasonDuration);
+            Period period2 = new Period(dayIndex, PeriodTime.ONE_PM, dayIndex < requestConfig.normalSeasonDuration);
+            Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM, dayIndex < requestConfig.normalSeasonDuration);
             period1.setDate(c.getTime());
             period2.setDate(c.getTime());
             period3.setDate(c.getTime());

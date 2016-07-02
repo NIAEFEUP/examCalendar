@@ -10,7 +10,8 @@ import java.util.Date;
 public class RequestConfig {
     InstitutionParametrization institutionParametrization;
     int creator;
-    int maxDays = 32;
+    int normalSeasonDuration = 21;
+    int appealSeasonDuration = 14;
     Date startingDate;
     int timeout = 1000;
 }
