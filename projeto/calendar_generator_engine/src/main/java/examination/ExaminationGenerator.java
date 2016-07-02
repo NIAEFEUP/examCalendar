@@ -121,11 +121,7 @@ public class ExaminationGenerator {
     private static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
-                RoomPeriod rp;
-                if (periods.get(j).isNormal())
-                    rp = new NormalRoomPeriod();
-                else
-                    rp = new AppealRoomPeriod();
+                RoomPeriod rp = new RoomPeriod();
                 rp.setRoom(rooms.get(i));
                 rp.setPeriod(periods.get(j));
                 examination.addRoomPeriod(rp);
