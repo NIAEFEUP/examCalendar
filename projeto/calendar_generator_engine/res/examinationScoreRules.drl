@@ -100,16 +100,6 @@ rule "examsWithSameStudentsAtSamePeriods"
         scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
 end
 
-rule "normalExamInNormalSeason"
-    when RoomPeriod(exam != null, exam.isNormal(), !period.isNormal())
-    then scoreHolder.addHardConstraintMatch(kcontext, -1);
-end
-
-rule "appealExamInAppealSeason"
-    when RoomPeriod(exam != null, exam.isAppeal(), !period.isAppeal())
-    then scoreHolder.addHardConstraintMatch(kcontext, -1);
-end
-
 // ############################################################################
 // Soft constraints
 // ############################################################################

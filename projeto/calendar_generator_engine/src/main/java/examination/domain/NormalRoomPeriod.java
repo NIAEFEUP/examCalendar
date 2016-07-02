@@ -12,6 +12,7 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
+@PlanningEntity
 public class NormalRoomPeriod extends RoomPeriod {
 	@PlanningVariable(nullable = true,valueRangeProviderRefs = {"normalExamRange"})
 	public Exam getExam() {
