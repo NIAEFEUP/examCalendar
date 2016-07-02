@@ -6,10 +6,7 @@ import org.optaplanner.core.api.domain.solution.Solution;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 
 /**
@@ -40,6 +37,30 @@ public class Examination implements Solution<HardSoftScore> {
 	@ValueRangeProvider(id = "examRange")
 	public List<Exam> getExamList() {
 		return this.examList;
+	}
+
+	@ValueRangeProvider(id = "normalExamRange")
+	public List<Exam> getNormalExamList() {
+		List<Exam> l = new ArrayList<Exam>(this.examList);
+		for (Iterator<Exam> iter = l.listIterator(); iter.hasNext(); ) {
+			Exam a = iter.next();
+			if (!a.isNormal()) {
+				iter.remove();
+			}
+		}
+		return l;
+	}
+
+	@ValueRangeProvider(id = "appealExamRange")
+	public List<Exam> getAppealExamList() {
+		List<Exam> l = new ArrayList<Exam>(this.examList);
+		for (Iterator<Exam> iter = l.listIterator(); iter.hasNext(); ) {
+			Exam a = iter.next();
+			if (!a.isAppeal()) {
+				iter.remove();
+			}
+		}
+		return l;
 	}
 
 	public void setExamList(List<Exam> periodList) {
@@ -118,7 +139,7 @@ public class Examination implements Solution<HardSoftScore> {
 	}
 
 	private String sameDayMoreExams(RoomPeriod rp) {
-		return "\n\t" + rp.getExam().getTopic().getName() + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
+		return "\n\t" + rp.getExam().getTopic().getName() + (rp.getExam().isNormal() ? " N" : " A") + " (" + rp.getExam().getId() + ") - " + rp.getRoom().getCodRoom() + " ";
 	}
 
 	private String continueExam(RoomPeriod rp) {

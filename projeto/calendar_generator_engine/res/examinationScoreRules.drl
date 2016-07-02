@@ -33,7 +33,7 @@ rule "differentPeriodsSameExam"
         RoomPeriod(exam != null, $period : period, $exam : exam)
         RoomPeriod($exam == exam, $period != period)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        scoreHolder.addHardConstraintMatch(kcontext, -10);
 end
 
 //An exam can't be scheduled when a professor is unavailable
@@ -54,7 +54,8 @@ rule "notEnoughRoomsForExam"
             sum($room.getCapacity())
         )
     then
-        scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+        //scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 // The difference of days between the date of two exams of the same year must be bigger than InstitutionParametrization.minDaysBetweenSameYearExams
@@ -81,10 +82,9 @@ rule "gapBetweenSameTopicExams"
         $institutionParametrization : InstitutionParametrization(minDaysBetweenSameTopicExams > 0)
         $exam1 : Exam($topic : topic)
         $exam2 : Exam(id < $exam1.getId(), $topic == topic)
-        RoomPeriod($exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod($exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex())
-        //$dist : Number(intValue < 14) from Math.abs($leftDayIndex - $rightDayIndex)
-        Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from Math.abs($leftDayIndex - $rightDayIndex)
+        RoomPeriod(exam != null, $exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex(), exam.isNormal())
+        RoomPeriod(exam != null, $exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex(), exam != null, exam.isAppeal())
+        Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from $rightDayIndex - $leftDayIndex
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
@@ -100,7 +100,15 @@ rule "examsWithSameStudentsAtSamePeriods"
         scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
 end
 
+rule "normalExamInAppealSeason"
+    when RoomPeriod(exam != null, exam.isNormal(), !period.isNormal())
+    then scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
 
+rule "appealExamInNormalSeason"
+    when RoomPeriod(exam != null, exam.isAppeal(), !period.isAppeal())
+    then scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
 
 // ############################################################################
 // Soft constraints
