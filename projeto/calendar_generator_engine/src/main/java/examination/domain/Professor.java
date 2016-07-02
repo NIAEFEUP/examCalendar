@@ -11,6 +11,7 @@ import java.util.List;
 public class Professor {
 	private int id;
 	private String name;
+	private String initials;
 	private String cod;
 
 	public void finalize() throws Throwable {
@@ -32,6 +33,10 @@ public class Professor {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getInitials() { return initials; }
+
+	public void setInitials(String initials) { this.initials = initials; }
 
 	public String getCod() {
 		return cod;

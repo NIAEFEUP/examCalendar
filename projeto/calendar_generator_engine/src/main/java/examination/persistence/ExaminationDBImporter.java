@@ -138,6 +138,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             Professor professor = new Professor();
             professor.setId(rs.getInt("id"));
             professor.setName(rs.getString("name"));
+            professor.setInitials(rs.getString("initials"));
             professor.setCod(rs.getString("cod"));
             professors.add(professor);
         }
