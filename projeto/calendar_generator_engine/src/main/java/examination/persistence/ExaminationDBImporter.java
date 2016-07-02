@@ -235,9 +235,9 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Calendar c = Calendar.getInstance();
         c.setTime(currentDay);
         for (int dayIndex = 0; dayIndex < maxDays; dayIndex++) {
-            Period period1 = new Period(dayIndex, PeriodTime.NINE_AM);
-            Period period2 = new Period(dayIndex, PeriodTime.ONE_PM);
-            Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM);
+            Period period1 = new Period(dayIndex, PeriodTime.NINE_AM, true); // TODO appeal season
+            Period period2 = new Period(dayIndex, PeriodTime.ONE_PM, true); // TODO appeal season
+            Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM, true); // TODO appeal season
             period1.setDate(c.getTime());
             period2.setDate(c.getTime());
             period3.setDate(c.getTime());
