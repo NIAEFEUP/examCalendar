@@ -43,8 +43,7 @@ public class ProfessorParser extends ExcelParser{
             if (row != null) {
                 cell = row.getCell(0);
                 cellContent = cell.getStringCellValue().trim();
-
-                if(isBlankCell(cellContent) || !cellContent.trim().matches(UC_ID))
+                if(isBlankCell(cellContent) || !cellContent.matches(UC_ID))
                     continue;
 
                 currTopicID = UCMapParser.extractTopicID(cellContent);
@@ -86,5 +85,34 @@ public class ProfessorParser extends ExcelParser{
             }
         }
         return currTopic;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder();
+
+        for(Topic topic : topics){
+            str.append(topic.getId() + " " +topic.getName()+"\n");
+            for(Professor professor:topic.getProfessors()){
+                str.append(professor.getId()+"\n");
+            }
+            str.append("\n");
+        }
+
+        return  str.toString();
+    }
+
+    public static void main(String[] args) {
+        String ucFile = "../../mapa_exames_mieic.xls";
+        UCMapParser parser = new UCMapParser(ucFile);
+        parser.generate();
+
+        String profFile = "../../professors.xlsx";
+        ProfessorParser professorParser = new ProfessorParser(profFile,parser.getTopics());
+        professorParser.generate();
+        System.out.println(professorParser.toString());
+        System.out.println(professorParser.feedback.toString());
+
+
     }
 }
