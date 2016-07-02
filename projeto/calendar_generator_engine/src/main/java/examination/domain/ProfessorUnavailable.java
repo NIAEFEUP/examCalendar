@@ -21,4 +21,6 @@ public class ProfessorUnavailable {
     public Period getPeriod() {
         return this.period;
     }
+    public void setProfessor(Professor professor) { this.professor = professor; }
+    public void setPeriod(Period period) { this.period = period; }
 }

@@ -1,5 +1,7 @@
 package examination.domain;
 
+import java.util.Date;
+
 /**
  * @author Gustavo
  * @version 1.0
@@ -8,6 +10,8 @@ package examination.domain;
 public class Period implements Comparable<Period> {
 
 	private int dayIndex;
+
+	private Date date;
 	private PeriodTime time;
 	private int penalty;
 
@@ -43,6 +47,14 @@ public class Period implements Comparable<Period> {
 
 	public void setTime(PeriodTime time) {
 		this.time = time;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	@Override

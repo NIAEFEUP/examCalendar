@@ -16,7 +16,7 @@ public class Topic {
 	private String name;
 	private List<Student> studentList = new ArrayList<Student>();
 	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
-	private Regent regent;
+	private Professor regent;
 	private int difficulty = 2;
 
 	public Topic(){
@@ -73,11 +73,11 @@ public class Topic {
 		this.year = year;
 	}
 
-	public Regent getRegent() {
+	public Professor getRegent() {
 		return regent;
 	}
 
-	public void setRegent(Regent regent) {
+	public void setRegent(Professor regent) {
 		this.regent = regent;
 	}
 }

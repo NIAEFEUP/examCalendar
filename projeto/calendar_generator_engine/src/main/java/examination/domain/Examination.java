@@ -21,9 +21,11 @@ import java.util.function.Predicate;
 public class Examination implements Solution<HardSoftScore> {
 	private HardSoftScore score;
 	private List<RoomPeriod> roomPeriodList;
+	private List<Topic> topicList;
 	public List<Exam> examList;
 	private List<Period> periodList;
 	private List<Room> roomList;
+	private List<ProfessorUnavailable> professorUnavailableList;
 	public InstitutionParametrization institutionParametrization = new InstitutionParametrization();
 
 	public Examination(){
@@ -59,9 +61,11 @@ public class Examination implements Solution<HardSoftScore> {
 	@Override
 	public Collection<?> getProblemFacts() {
 		List<Object> facts = new ArrayList<Object>();
+		facts.addAll(topicList);
 		facts.addAll(examList);
 		facts.addAll(periodList);
 		facts.addAll(roomList);
+		facts.addAll(professorUnavailableList);
 		facts.add(institutionParametrization);
 		return facts;
 	}
@@ -77,6 +81,14 @@ public class Examination implements Solution<HardSoftScore> {
 	public List<Room> getRoomList() { return roomList; }
 
 	public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
+
+	public List<ProfessorUnavailable> getProfessorUnavailableList() { return professorUnavailableList; }
+
+	public void setProfessorUnavailableList(List<ProfessorUnavailable> professorUnavailableList) { this.professorUnavailableList = professorUnavailableList; }
+
+	public List<Topic> getTopicList() { return topicList; }
+
+	public void setTopicList(List<Topic> topicList) { this.topicList = topicList; }
 
 	public void sort() {
 		Collections.sort(roomPeriodList);
