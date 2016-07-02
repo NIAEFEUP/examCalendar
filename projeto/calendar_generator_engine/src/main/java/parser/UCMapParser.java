@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import static parser.ExcelRegex.CLASS;
 import static parser.ExcelRegex.UC;
+import static parser.ExcelRegex.UC_ID;
 
 /**
  * Created by Duarte on 29/06/2016.
@@ -26,7 +27,7 @@ public class UCMapParser extends ExcelParser {
     public static final int NUM_COLUMNS = 3;
 
     private State state = State.START;
-    Hashtable<Topic, Set<Student>> topics = new Hashtable<Topic, Set<Student>>();
+    HashSet<Topic> topics = new HashSet<Topic>();
     Hashtable<String,Student> students = new Hashtable<String, Student>();
 
     public UCMapParser(String file){
@@ -49,7 +50,7 @@ public class UCMapParser extends ExcelParser {
             row = sheet.getRow(i);
             if(row != null){
                 cell = row.getCell(0);
-                cellContent = cell.getStringCellValue();
+                cellContent = cell.getStringCellValue().trim();
                 switch (state){
                     case START:
                         if(isBlankCell(cellContent) || !cellContent.matches("^[A-z]{1,5}\\d{4}\\s*-\\s*.+$"))
@@ -136,8 +137,8 @@ public class UCMapParser extends ExcelParser {
         return currTopicName;
     }
 
-    private String extractTopicID(String cellContent) {
-        String currTopicID;Matcher matcherID = Pattern.compile(UC).matcher(cellContent);
+    public static String extractTopicID(String cellContent) {
+        String currTopicID;Matcher matcherID = Pattern.compile(UC_ID+".*").matcher(cellContent);
         matcherID.matches();
         currTopicID = matcherID.group(1);
         return currTopicID;
@@ -161,7 +162,7 @@ public class UCMapParser extends ExcelParser {
 
     void addStudentToTopic(Topic topic, Student givenStudent) throws ParserException {
         Student student = students.get(givenStudent.getId());
-        Set<Student> studentsList = getTopics().get(topic);
+        Set<Student> studentsList = topic.getStudentList();
         if(student == null){
             student = givenStudent;
             students.put(student.getId()+"",student);
@@ -175,15 +176,15 @@ public class UCMapParser extends ExcelParser {
     }
 
     void addTopic(Topic topic) throws ParserException {
-        if(topics.get(topic) != null){
+        if(topics.contains(topic)){
             String message = "A UC "+topic.getId()+" encontra-se referenciada mais que uma vez";
             throw new ParserException(message, ParserException.Type.WARNING);
         }
 
-        topics.put(topic, new HashSet<Student>());
+        topics.add(topic);
     }
 
-    public Hashtable<Topic, Set<Student>> getTopics() {
+    public HashSet<Topic> getTopics() {
         return topics;
     }
 
@@ -194,10 +195,10 @@ public class UCMapParser extends ExcelParser {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        Set<Topic> keys = topics.keySet();
+        Set<Topic> keys = topics;
         for(Topic topic : keys){
             str.append(topic.getId() + " - "+topic.getName() + " "+ topic.getYear()+"\n");
-            for(Student student: topics.get(topic)){
+            for(Student student: topic.getStudentList()){
                 str.append(student.getName()+" "+student.getId()+"\n");
             }
             str.append("\n\n");

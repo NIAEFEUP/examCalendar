@@ -16,8 +16,7 @@ public class Topic{
 	private int year;
 	private String name;
 	private HashSet<Student> studentList = new HashSet<Student>();
-	public Set<Auxiliar> auxiliarList = new HashSet<Auxiliar>();
-	private Regent regent;
+	private Set<Professor> professors = new HashSet<Professor>();
 	private int difficulty = 2;
 
 	public Topic(String id, int year, String name){
@@ -63,12 +62,16 @@ public class Topic{
 		this.year = year;
 	}
 
-	public Regent getRegent() {
-		return regent;
+	public void addProfessor(Professor prof){
+		this.professors.add(prof);
 	}
 
-	public void setRegent(Regent regent) {
-		this.regent = regent;
+	public HashSet<Student> getStudentList() {
+		return studentList;
+	}
+
+	public Set<Professor> getProfessors() {
+		return professors;
 	}
 
 	@Override
