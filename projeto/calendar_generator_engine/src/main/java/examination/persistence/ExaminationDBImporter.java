@@ -194,7 +194,12 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             if (topic == null) return null; // Topic does not exist in the database
 
             exam.setTopic(topic);
+            if (rs.getBoolean("normal"))
+                exam.setNormal();
+            else
+                exam.setAppeal();
             exam.setPC(rs.getBoolean("pc"));
+            exam.setNumStudents(120); // TODO
             exams.add(exam);
         }
 
