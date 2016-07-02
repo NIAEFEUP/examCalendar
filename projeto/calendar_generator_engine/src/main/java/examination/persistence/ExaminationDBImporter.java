@@ -54,13 +54,13 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Examination examination = new Examination();
         Connection conn = null;
         try {
+            Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql://localhost/", "postgres", "123456"); // TODO (hardcoded)
 
             RequestConfig requestConfig = readRequestConfig(requestId, conn);
             if (requestConfig == null) return null;
 
             List<Professor> professors = readProfessors(requestConfig.creator, conn);
-            if (professors == null) return null;
 
             List<Topic> topics = readTopics(requestConfig.creator, conn, professors);
             if (topics == null) return null;
@@ -69,23 +69,26 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             if (exams == null) return null;
 
             List<Student> students = readStudents(requestConfig.creator, conn);
-            if (students == null) return null;
 
             List<Room> rooms = readRooms(requestConfig.creator, conn);
-            if (rooms == null) return null;
 
             List<Period> periods = generatePeriods(requestConfig);
-            if (periods == null) return null;
 
             List<ProfessorUnavailable> professorUnavailables = readProfessorUnavailables(requestConfig.creator, conn, requestConfig.startingDate, periods, professors);
             if (professorUnavailables == null) return null;
+
+            List<RoomPeriod> roomPeriods = generateRoomPeriods(rooms, periods);
 
             examination.setTopicList(topics);
             examination.setExamList(exams);
             examination.setRoomList(rooms);
             examination.setPeriodList(periods);
             examination.setProfessorUnavailableList(professorUnavailables);
+            examination.setRoomPeriodList(roomPeriods);
 
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -252,6 +255,36 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         }
 
         return periods;
+    }
+
+    private List<RoomPeriod> generateRoomPeriods(List<Room> rooms, List<Period> periods) {
+        List<RoomPeriod> roomPeriods = new ArrayList<RoomPeriod>();
+        for (Room room : rooms) {
+            for (Period period : periods) {
+                RoomPeriod roomPeriod = new RoomPeriod();
+                roomPeriod.setRoom(room);
+                roomPeriod.setPeriod(period);
+            }
+        }
+        return roomPeriods;
+    }
+
+    private void removeUnavailableRoomPeriods(int creator, Connection conn, List<RoomPeriod> roomPeriods) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM roomPeriodUnavailable WHERE creator = ?");
+        ps.setInt(1, creator);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int roomId = rs.getInt("room");
+            Date day = rs.getDate("day");
+            int time = rs.getInt("time");
+            for (int i = 0; i < roomPeriods.size(); i++) {
+                RoomPeriod rp = roomPeriods.get(i);
+                if (rp.getRoom().getId() == roomId && rp.getPeriod().getDate().equals(day) && rp.getPeriod().getTime().ordinal() == time) {
+                    roomPeriods.remove(i);
+                    i--;
+                }
+            }
+        }
     }
 
     private List<ProfessorUnavailable> readProfessorUnavailables(int creator, Connection conn, java.util.Date startingDay, List<Period> periods, List<Professor> professors) throws SQLException {

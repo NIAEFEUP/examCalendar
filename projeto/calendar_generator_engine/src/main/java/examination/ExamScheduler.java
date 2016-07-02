@@ -1,6 +1,7 @@
 package examination;
 
 import examination.domain.Examination;
+import examination.persistence.ExaminationDBImporter;
 import org.optaplanner.benchmark.api.PlannerBenchmark;
 import org.optaplanner.benchmark.api.PlannerBenchmarkFactory;
 import org.optaplanner.core.api.solver.Solver;
@@ -18,7 +19,8 @@ public class ExamScheduler {
         PlannerBenchmark plannerBenchmark = benchmarkFactory.buildPlannerBenchmark();
         plannerBenchmark.benchmark();*/
 
-        Examination unsolvedExamination = new ExaminationGenerator().createExamination();
+        //Examination unsolvedExamination = new ExaminationGenerator().createExamination();
+        Examination unsolvedExamination = new ExaminationDBImporter(true).readSolution(1);
         solver.solve(unsolvedExamination);
         Examination solvedExamination = (Examination) solver.getBestSolution();
         solvedExamination.removeNullPeriodsExams();

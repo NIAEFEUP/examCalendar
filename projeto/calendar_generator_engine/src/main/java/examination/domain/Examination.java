@@ -35,6 +35,7 @@ public class Examination implements Solution<HardSoftScore> {
 		return roomPeriodList;
 	}
 	public void addRoomPeriod(RoomPeriod roomPeriod){ this.roomPeriodList.add(roomPeriod); }
+    public void setRoomPeriodList(List<RoomPeriod> roomPeriodList) { this.roomPeriodList = roomPeriodList; };
 
 	@ValueRangeProvider(id = "examRange")
 	public List<Exam> getExamList() {
