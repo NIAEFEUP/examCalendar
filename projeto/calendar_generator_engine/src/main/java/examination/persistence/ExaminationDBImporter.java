@@ -3,12 +3,9 @@ package examination.persistence;
 import common.persistence.AbstractSolutionImporter;
 import common.persistence.SolutionDao;
 import examination.domain.*;
-import org.omg.CORBA.Request;
-import org.optaplanner.core.api.domain.solution.Solution;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -138,7 +135,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             Professor professor = new Professor();
             professor.setId(rs.getInt("id"));
             professor.setName(rs.getString("name"));
-            professor.setInitials(rs.getString("initials"));
+            professor.setAcronym(rs.getString("acronym"));
             professor.setCod(rs.getString("cod"));
             professors.add(professor);
         }
@@ -165,6 +162,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
 
             Topic topic = new Topic();
             topic.setName(rs.getString("name"));
+            topic.setAcronym(rs.getString("acronym"));
             topic.setYear(rs.getInt("year"));
             topic.setDifficulty(rs.getInt("difficulty"));
             topic.setRegent(regent);

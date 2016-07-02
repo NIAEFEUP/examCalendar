@@ -1,8 +1,5 @@
 package examination.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author Duarte
  * @version 1.0
@@ -11,7 +8,7 @@ import java.util.List;
 public class Professor {
 	private int id;
 	private String name;
-	private String initials;
+	private String acronym;
 	private String cod;
 
 	public void finalize() throws Throwable {
@@ -34,9 +31,9 @@ public class Professor {
 		this.name = name;
 	}
 
-	public String getInitials() { return initials; }
+	public String getAcronym() { return acronym; }
 
-	public void setInitials(String initials) { this.initials = initials; }
+	public void setAcronym(String acronym) { this.acronym = acronym; }
 
 	public String getCod() {
 		return cod;

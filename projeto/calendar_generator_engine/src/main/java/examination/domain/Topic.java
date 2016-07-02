@@ -14,6 +14,7 @@ public class Topic {
 	public int id;
 	private int year;
 	private String name;
+	private String acronym;
 	private List<Student> studentList = new ArrayList<Student>();
 	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
 	private Professor regent;
@@ -64,6 +65,10 @@ public class Topic {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getAcronym() { return acronym; }
+
+	public void setAcronym(String acronym) { this.acronym = acronym; }
 
 	public int getYear() {
 		return year;
