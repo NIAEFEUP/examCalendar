@@ -7,12 +7,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- *
  * Created by Gustavo on 10/02/2016.
  */
-
 public class ExaminationGenerator {
-    public Examination createExamination() {
+    public static Examination createExamination() {
         Examination examination = new Examination();
 
         //5 weeks
@@ -28,20 +26,21 @@ public class ExaminationGenerator {
         return examination;
     }
 
-    private ArrayList<Period> createPeriods(int numWeeks) {
+    private static ArrayList<Period> createPeriods(int numWeeks) {
         ArrayList<Period> periodList = new ArrayList<Period>();
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
             for (int j = 0; j < 5; j++) {
-                periodList.add(new Period(offset + j, PeriodTime.NINE_AM));
-                periodList.add(new Period(offset + j, PeriodTime.ONE_PM));
-                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM));
+                int day = offset + j;
+                periodList.add(new Period(day, PeriodTime.NINE_AM, day < numWeeks * 7 * 3/5));
+                periodList.add(new Period(day, PeriodTime.ONE_PM, day < numWeeks * 7 * 3/5));
+                periodList.add(new Period(day, PeriodTime.FIVE_PM, day < numWeeks * 7 * 3/5));
             }
         }
         return periodList;
     }
 
-    private ArrayList<Room> createRooms() {
+    private static ArrayList<Room> createRooms() {
         ArrayList<Room> roomList = new ArrayList<Room>();
         //Room(ID, Capacity, pc_room?)
         roomList.add(new Room("B116", 69, false));
@@ -61,41 +60,45 @@ public class ExaminationGenerator {
         return roomList;
     }
 
-    private List<Exam> createExams() {
+    private static List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
-        //Exam(int numStudents, boolean pc, Topic topic)
-        //1 year 2 semester
-        examList.add(new Exam(120, false, new Topic("FIS1", 1, "Física 1")));
-        examList.add(new Exam(120, false, new Topic("MPCP", 1, "Microprocessadores e Computadores Pessoais")));
-        examList.add(new Exam(120, false, new Topic("MEST", 1, "Métodos Estatísticos")));
-        examList.add(new Exam(120, false, new Topic("PROG", 1, "Programação")));
+        //Exam(int numStudents, boolean normal, boolean pc, Topic topic)
 
         //2 year 1 semester
-        examList.add(new Exam(120, false, new Topic("AEDA", 2, "Algoritmos e Estruturas de Dados")));
-        examList.add(new Exam(120, false, new Topic("FIS2", 2, "Física 2")));
-        examList.add(new Exam(120, true, new Topic("MNUM", 2, "Métodos Numéricos")));
-        examList.add(new Exam(120, false, new Topic("TCOM", 2, "Teoria da Computação")));
+        examList.add(new Exam(120, true, false, new Topic(2, "FISI2")));
+        examList.add(new Exam(120, true, true, new Topic(2, "MNUM")));
+        examList.add(new Exam(120, true, false, new Topic(2, "TCOM")));
 
-        //2 year 2 semester
-        examList.add(new Exam(120, false, new Topic("BDAD", 2, "Bases de Dados")));
-        examList.add(new Exam(120, false, new Topic("CGRA", 2, "Computação Gráfica")));
-        examList.add(new Exam(120, false, new Topic("CAL", 2, "Concepção e Análise de Algoritmos")));
-        examList.add(new Exam(120, false, new Topic("SOPE", 2, "Sistemas Operativos")));
+        examList.add(new Exam(120, false, false, new Topic(2, "FISI2")));
+        examList.add(new Exam(120, false, true, new Topic(2, "MNUM")));
+        examList.add(new Exam(120, false, false, new Topic(2, "TCOM")));
 
         //3 year 1 semester
-        examList.add(new Exam(120, false, new Topic("ESOF", 3, "Engenharia de Software")));
-        examList.add(new Exam(120, false, new Topic("LTW", 3, "Linguagens e Tecnologias Web")));
-        examList.add(new Exam(120, true, new Topic("PLOG", 3, "Programação em Lógica")));
-        examList.add(new Exam(120, false, new Topic("RCOM", 3, "Redes de Computadores")));
+        examList.add(new Exam(120, true, true, new Topic(3, "ESOF")));
+        examList.add(new Exam(120, true, false, new Topic(3, "LTW")));
+        examList.add(new Exam(120, true, true, new Topic(3, "PLOG")));
+        examList.add(new Exam(120, true, false, new Topic(3, "RCOM")));
 
-        //3 year 2 semester
-        examList.add(new Exam(120, false, new Topic("IART", 3, "Inteligência Artificial")));
-        examList.add(new Exam(120, false, new Topic("SDIS", 3, "Sistemas Distribuídos")));
+        examList.add(new Exam(120, false, true, new Topic(3, "ESOF")));
+        examList.add(new Exam(120, false, false, new Topic(3, "LTW")));
+        examList.add(new Exam(120, false, true, new Topic(3, "PLOG")));
+        examList.add(new Exam(120, false, false, new Topic(3, "RCOM")));
+
+        //4 year 1 semester
+        examList.add(new Exam(120, true, false, new Topic(4, "SINF")));
+        examList.add(new Exam(120, true, false, new Topic(4, "GEMP")));
+        examList.add(new Exam(120, true, false, new Topic(4, "AIAD")));
+        examList.add(new Exam(120, true, false, new Topic(4, "MFES")));
+
+        examList.add(new Exam(120, false, false, new Topic(4, "SINF")));
+        examList.add(new Exam(120, false, false, new Topic(4, "GEMP")));
+        examList.add(new Exam(120, false, false, new Topic(4, "AIAD")));
+        examList.add(new Exam(120, false, false, new Topic(4, "MFES")));
 
         return examList;
     }
 
-    private void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
+    private static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
                 RoomPeriod rp = new RoomPeriod();

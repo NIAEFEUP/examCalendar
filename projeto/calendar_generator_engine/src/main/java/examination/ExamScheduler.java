@@ -1,6 +1,8 @@
 package examination;
 
 import examination.domain.Examination;
+import org.optaplanner.benchmark.api.PlannerBenchmark;
+import org.optaplanner.benchmark.api.PlannerBenchmarkFactory;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 
@@ -11,6 +13,10 @@ public class ExamScheduler {
     public static void main(String [] args){
         SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
         Solver solver = solverFactory.buildSolver();
+
+        /*PlannerBenchmarkFactory benchmarkFactory = PlannerBenchmarkFactory.createFromXmlResource("examinationBenchmarkConfig.xml");
+        PlannerBenchmark plannerBenchmark = benchmarkFactory.buildPlannerBenchmark();
+        plannerBenchmark.benchmark();*/
 
         Examination unsolvedExamination = new ExaminationGenerator().createExamination();
         solver.solve(unsolvedExamination);
