@@ -90,6 +90,7 @@ public class Examination implements Solution<HardSoftScore> {
 		facts.addAll(roomList);
 		facts.addAll(professorUnavailableList);
 		facts.add(institutionParametrization);
+
 		return facts;
 	}
 

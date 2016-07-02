@@ -75,6 +75,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             if (professorUnavailables == null) return null;
 
             List<RoomPeriod> roomPeriods = generateRoomPeriods(rooms, periods);
+            removeUnavailableRoomPeriods(requestConfig.creator, conn, roomPeriods);
 
             examination.setTopicList(topics);
             examination.setExamList(exams);
@@ -264,6 +265,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
                 RoomPeriod roomPeriod = new RoomPeriod();
                 roomPeriod.setRoom(room);
                 roomPeriod.setPeriod(period);
+                roomPeriods.add(roomPeriod);
             }
         }
         return roomPeriods;
