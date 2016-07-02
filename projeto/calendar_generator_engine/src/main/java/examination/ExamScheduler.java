@@ -19,8 +19,8 @@ public class ExamScheduler {
         PlannerBenchmark plannerBenchmark = benchmarkFactory.buildPlannerBenchmark();
         plannerBenchmark.benchmark();*/
 
-        Examination unsolvedExamination = new ExaminationGenerator().createExamination();
-        //Examination unsolvedExamination = new ExaminationDBImporter(true).readSolution(1);
+        //Examination unsolvedExamination = new ExaminationGenerator().createExamination();
+        Examination unsolvedExamination = new ExaminationDBImporter(true).readSolution(1);
         solver.solve(unsolvedExamination);
         Examination solvedExamination = (Examination) solver.getBestSolution();
         solvedExamination.removeNullPeriodsExams();

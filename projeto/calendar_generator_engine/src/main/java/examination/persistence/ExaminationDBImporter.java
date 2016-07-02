@@ -95,9 +95,9 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
                     conn.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    return null;
                 }
         }
-
 
         return examination;
     }
@@ -158,6 +158,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
                     break;
                 }
             }
+
             if (regent == null) return null; // Regent does not exist in the database
 
             Topic topic = new Topic();
