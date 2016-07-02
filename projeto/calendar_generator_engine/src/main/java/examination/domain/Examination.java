@@ -48,6 +48,7 @@ public class Examination implements Solution<HardSoftScore> {
 				iter.remove();
 			}
 		}
+        System.exit(0);
 		return l;
 	}
 

@@ -13,7 +13,7 @@ package examination.domain;
 public class InstitutionParametrization {
 
 	private int minDaysBetweenSameTopicExams = 14;
-	private int minDaysBetweenSameYearExams = 2;
+	private int minDaysBetweenSameYearExams = 3;
 	private float roomUsableRatio = 0.7f;
 	private int roomUsableMargin = 10;
 	private float spreadPenalty = 10;
