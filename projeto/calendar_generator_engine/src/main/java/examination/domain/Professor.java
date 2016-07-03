@@ -13,6 +13,10 @@ public class Professor {
 	private String id;
 	ProfessorUnavailable unavailability;
 
+	public Professor(String id){
+		this.id = id;
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -20,5 +24,14 @@ public class Professor {
 	public void finalize() throws Throwable {
 
 	}
+
+	public ProfessorUnavailable getUnavailability() {
+		return unavailability;
+	}
+
+	public void setUnavailability(ProfessorUnavailable unavailability) {
+		this.unavailability = unavailability;
+	}
+
 
 }

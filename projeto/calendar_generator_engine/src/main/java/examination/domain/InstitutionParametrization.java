@@ -55,4 +55,32 @@ public class InstitutionParametrization {
 	public int getMinDaysBetweenSameYearExams() {
 		return minDaysBetweenSameYearExams;
 	}
+
+	public void setMinDaysBetweenSameTopicExams(int minDaysBetweenSameTopicExams) {
+		this.minDaysBetweenSameTopicExams = minDaysBetweenSameTopicExams;
+	}
+
+	public void setMinDaysBetweenSameYearExams(int minDaysBetweenSameYearExams) {
+		this.minDaysBetweenSameYearExams = minDaysBetweenSameYearExams;
+	}
+
+	public void setRoomUsableRatio(float roomUsableRatio) {
+		this.roomUsableRatio = roomUsableRatio;
+	}
+
+	public void setRoomUsableMargin(int roomUsableMargin) {
+		this.roomUsableMargin = roomUsableMargin;
+	}
+
+	public void setSpreadPenalty(float spreadPenalty) {
+		this.spreadPenalty = spreadPenalty;
+	}
+
+	public void setDifficultyPenalty(float difficultyPenalty) {
+		this.difficultyPenalty = difficultyPenalty;
+	}
+
+	public void setPeriodPenalty(float periodPenalty) {
+		this.periodPenalty = periodPenalty;
+	}
 }
