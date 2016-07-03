@@ -5,13 +5,13 @@
     <warmUpSecondsSpentLimit>10</warmUpSecondsSpentLimit>
     <inheritedSolverBenchmark>
         <problemBenchmarks>
-            <solutionFileIOClass>examination.persistence.ExaminationIO</solutionFileIOClass>
+            <solutionFileIOClass>examcalendar.optimizer.persistence.ExaminationIO</solutionFileIOClass>
             <inputSolutionFile>res/test/unsolved/unsolvedExamination.xml</inputSolutionFile>
             <problemStatisticType>BEST_SCORE</problemStatisticType>
         </problemBenchmarks>
         <solver>
-            <solutionClass>examination.domain.Examination</solutionClass>
-            <entityClass>examination.domain.RoomPeriod</entityClass>
+            <solutionClass>examcalendar.optimizer.domain.Examination</solutionClass>
+            <entityClass>examcalendar.optimizer.domain.RoomPeriod</entityClass>
 
             <scoreDirectorFactory>
                 <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
