@@ -178,7 +178,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
     private List<Exam> readExams(int creator, Connection conn, List<Topic> topics) throws SQLException {
         List<Exam> exams = new ArrayList<Exam>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM exams WHERE creator = ?");
+        PreparedStatement ps = conn.prepareStatement("SELECT *, (SELECT count(*) FROM studenttopic WHERE studenttopic.topic = exams.topic) AS numStudents FROM exams WHERE creator = ?");
         ps.setInt(1, creator);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
@@ -199,7 +199,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             else
                 exam.setAppeal();
             exam.setPC(rs.getBoolean("pc"));
-            exam.setNumStudents(120); // TODO
+            exam.setNumStudents(rs.getInt("numStudents"));
             exams.add(exam);
         }
 
