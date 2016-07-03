@@ -1,10 +1,10 @@
-import examination.ExaminationGenerator;
-import examination.domain.*;
+import examcalendar.optimizer.ExaminationGenerator;
+import examcalendar.optimizer.domain.*;
+import examcalendar.parser.ProfessorParser;
+import examcalendar.parser.RoomsParser;
+import examcalendar.parser.UCMapParser;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
-import parser.ProfessorParser;
-import parser.RoomsParser;
-import parser.UCMapParser;
 
 import java.util.ArrayList;
 import java.util.Collections;

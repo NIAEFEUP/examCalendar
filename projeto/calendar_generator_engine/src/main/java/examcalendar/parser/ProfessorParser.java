@@ -67,7 +67,7 @@ public class ProfessorParser extends ExcelParser{
             }
         }
         if(professors.size() > 0) {
-            feedback.setResult(true);
+            feedback.setGenerated(true);
         }else{
             feedback.addError("Erro a ler a lista de professores", row.getRowNum()+"",0+"");
             return false;
@@ -83,6 +83,10 @@ public class ProfessorParser extends ExcelParser{
             }
         }
         return currTopic;
+    }
+
+    public Hashtable<String, Professor> getProfessors() {
+        return professors;
     }
 
     @Override

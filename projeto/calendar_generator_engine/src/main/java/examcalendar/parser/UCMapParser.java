@@ -158,6 +158,7 @@ public class UCMapParser extends ExcelParser {
 
     private Student parseStudent(Row row) {
         String name = row.getCell(0).getStringCellValue();
+        row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
         String code = row.getCell(1).getStringCellValue();
         if(!row.getCell(2).getStringCellValue().equalsIgnoreCase("sim"))
             return null;
