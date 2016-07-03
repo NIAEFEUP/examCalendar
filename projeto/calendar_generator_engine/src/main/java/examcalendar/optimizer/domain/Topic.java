@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public class Topic {
 
-	public int id;
+	public int id = 0;
 	private int year;
 	private String name;
 	private String acronym;
@@ -19,7 +19,7 @@ public class Topic {
 	private Professor regent;
 	private int difficulty = 2;
 
-	public Topic(){	}
+	public Topic(){}
 
 	public Topic(int id, int year, String name, String acronym, String code){
 		this.id = id;
@@ -27,6 +27,12 @@ public class Topic {
 		this.name = name;
 		this.acronym = acronym;
 		this.code = code;
+	}
+
+	public Topic(int year, String code, String name){
+		this.year = year;
+		this.code = code;
+		this.name = name;
 	}
 
 	public void finalize() throws Throwable {
@@ -97,8 +103,10 @@ public class Topic {
 
 		Topic topic = (Topic) o;
 
-		if (id == topic.id) return true;
-		return code.equals(topic.code);
+		if (id == topic.id)
+			return code.equals(topic.code);
+		else
+			return false;
 	}
 
 	@Override

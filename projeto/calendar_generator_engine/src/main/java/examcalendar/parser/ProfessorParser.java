@@ -30,12 +30,12 @@ public class ProfessorParser extends ExcelParser{
         Cell cell = null;
         String cellContent;
 
-        String currTopicID;
-        String currProfessorID;
+        String currTopicCode;
+        String currProfessorAcronym;
         Professor currProf = null;
         Topic currTopic = null;
 
-        for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+        for (int i = 0; i < sheet.getLastRowNum(); i++) {
             row = sheet.getRow(i);
             if (row != null) {
                 cell = row.getCell(0);
@@ -43,20 +43,18 @@ public class ProfessorParser extends ExcelParser{
                 if(isBlankCell(cellContent) || !cellContent.matches(UC_ID))
                     continue;
 
-                currTopicID = UCMapParser.extractTopicCode(cellContent);
-                currTopic = getTopic(currTopicID);
+                currTopicCode = UCMapParser.extractTopicCode(cellContent);
+                currTopic = getTopic(currTopicCode);
                 if(currTopic == null){
-                    feedback.addError("UC não existe", row.getRowNum()+"", cell.getColumnIndex()+"");
+                    feedback.addError("UC não existe", (row.getRowNum()+1)+"", cell.getColumnIndex()+"");
                     return false;
                 }
-
-                currProfessorID = row.getCell(1).getStringCellValue();
-                if(professors.containsKey(currProfessorID)){
-                    currProf = professors.get(currProfessorID);
+                currProfessorAcronym = row.getCell(1).getStringCellValue();
+                if(professors.containsKey(currProfessorAcronym)){
+                    currProf = professors.get(currProfessorAcronym);
                 }else {
-                    currProf = new Professor();
-                    currProf.setCod(currProfessorID);
-                    professors.put(currProfessorID,currProf);
+                    currProf = new Professor(currProfessorAcronym);
+                    professors.put(currProfessorAcronym,currProf);
                 }
 
                 if(currTopic.getRegent() != null){
@@ -93,11 +91,13 @@ public class ProfessorParser extends ExcelParser{
     public String toString() {
         StringBuilder str = new StringBuilder();
 
-        for(Topic topic : topics){
-            str.append(topic.getId() + " " +topic.getName()+"\n");
-            str.append(topic.getRegent().getAcronym()+"\n");
-            str.append("\n");
-        }
+            for (Topic topic : topics) {
+                str.append(topic.getCode() + " " + topic.getName() + "\n");
+                if(topic.getRegent() != null)
+                    str.append(topic.getRegent().getAcronym() + "\n");
+                str.append("\n");
+            }
+
 
         return  str.toString();
     }
@@ -106,6 +106,7 @@ public class ProfessorParser extends ExcelParser{
         String ucFile = "src/test/java/mapa_exames_mieic.xls";
         UCMapParser parser = new UCMapParser(ucFile);
         parser.generate();
+        System.out.println(parser.toString());
 
         String profFile = "src/test/java/professors.xlsx";
         ProfessorParser professorParser = new ProfessorParser(profFile,parser.getTopics());

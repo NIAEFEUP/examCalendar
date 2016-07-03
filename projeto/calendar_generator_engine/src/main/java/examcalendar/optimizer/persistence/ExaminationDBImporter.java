@@ -137,7 +137,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             professor.setId(rs.getInt("id"));
             professor.setName(rs.getString("name"));
             professor.setAcronym(rs.getString("acronym"));
-            professor.setCod(rs.getString("cod"));
+            professor.setCode(rs.getString("cod"));
             professors.add(professor);
         }
 
@@ -217,7 +217,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         while (rs.next()) {
             Student student = new Student();
             student.setName(rs.getString("name"));
-            student.setCod(rs.getString("cod"));
+            student.setCode(rs.getString("cod"));
             students.add(student);
         }
 

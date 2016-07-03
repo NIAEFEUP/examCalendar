@@ -46,7 +46,7 @@ public class UCMapParser extends ExcelParser {
         Topic currTopic = null;
 
 
-        for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+        for (int i = 0; i < sheet.getLastRowNum(); i++) {
             row = sheet.getRow(i);
             if(row != null){
                 cell = row.getCell(0);
@@ -70,11 +70,7 @@ public class UCMapParser extends ExcelParser {
                             Matcher matcherYear = Pattern.compile(CLASS).matcher(cellContent);
                             matcherYear.matches();
                             currTopicYear = Integer.parseInt(matcherYear.group(1));
-
-                            currTopic = new Topic();
-                            currTopic.setCode(currTopicCode);
-                            currTopic.setName(currTopicName);
-                            currTopic.setYear(currTopicYear);
+                            currTopic = new Topic(currTopicYear,currTopicCode,currTopicName);
                             try {
                                 addTopic(currTopic);
                             } catch (ParserException e) {
@@ -99,9 +95,9 @@ public class UCMapParser extends ExcelParser {
                         }
                         break;
                     case STUDENT:
-                        if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS))
+                        if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS)){
                             continue;
-                        else if(cellContent.matches(UC)) {
+                        }else if(cellContent.matches(UC)) {
                             currTopicCode = extractTopicCode(cellContent);
                             currTopicName = extractTopicName(cellContent);
                             this.state = State.UC_ID;
@@ -164,16 +160,16 @@ public class UCMapParser extends ExcelParser {
             return null;
         Student student = new Student();
         student.setName(name);
-        student.setCod(code);
+        student.setCode(code);
         return student;
     }
 
     private void addStudentToTopic(Topic topic, Student givenStudent) throws ParserException {
-        Student student = students.get(givenStudent.getId());
+        Student student = students.get(givenStudent.getCode());
         Set<Student> studentsList = topic.getStudentList();
         if(student == null){
             student = givenStudent;
-            students.put(student.getId()+"",student);
+            students.put(student.getCode()+"",student);
         }
 
         if(studentsList.contains(student)){
@@ -205,9 +201,9 @@ public class UCMapParser extends ExcelParser {
         StringBuilder str = new StringBuilder();
         Set<Topic> keys = topics;
         for(Topic topic : keys){
-            str.append(topic.getId() + " - "+topic.getName() + " "+ topic.getYear()+"\n");
+            str.append(topic.getCode() + " - "+topic.getName() + " "+ topic.getYear()+"\n");
             for(Student student: topic.getStudentList()){
-                str.append(student.getName()+" "+student.getId()+"\n");
+                str.append(student.getName()+" "+student.getCode()+"\n");
             }
             str.append("\n\n");
         }
