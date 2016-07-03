@@ -41,7 +41,7 @@ public class UCMapParser extends ExcelParser {
         Cell cell = null;
         String cellContent;
         String currTopicName = null;
-        String currTopicID = null;
+        String currTopicCode = null;
         int currTopicYear;
         Topic currTopic = null;
 
@@ -50,13 +50,14 @@ public class UCMapParser extends ExcelParser {
             row = sheet.getRow(i);
             if(row != null){
                 cell = row.getCell(0);
+                cell.setCellType(Cell.CELL_TYPE_STRING);
                 cellContent = cell.getStringCellValue().trim();
                 switch (state){
                     case START:
                         if(isBlankCell(cellContent) || !cellContent.matches("^[A-z]{1,5}\\d{4}\\s*-\\s*.+$"))
                             continue;
                         else{
-                            currTopicID = extractTopicID(cellContent);
+                            currTopicCode = extractTopicCode(cellContent);
 
                             currTopicName = extractTopicName(cellContent);
                             this.state = State.UC_ID;
@@ -70,7 +71,10 @@ public class UCMapParser extends ExcelParser {
                             matcherYear.matches();
                             currTopicYear = Integer.parseInt(matcherYear.group(1));
 
-                            currTopic = new Topic(currTopicID,currTopicYear,currTopicName);
+                            currTopic = new Topic();
+                            currTopic.setCode(currTopicCode);
+                            currTopic.setName(currTopicName);
+                            currTopic.setYear(currTopicYear);
                             try {
                                 addTopic(currTopic);
                             } catch (ParserException e) {
@@ -98,7 +102,7 @@ public class UCMapParser extends ExcelParser {
                         if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS))
                             continue;
                         else if(cellContent.matches(UC)) {
-                            currTopicID = extractTopicID(cellContent);
+                            currTopicCode = extractTopicCode(cellContent);
                             currTopicName = extractTopicName(cellContent);
                             this.state = State.UC_ID;
                         }else{
@@ -137,7 +141,7 @@ public class UCMapParser extends ExcelParser {
         return currTopicName;
     }
 
-    public static String extractTopicID(String cellContent) {
+    public static String extractTopicCode(String cellContent) {
         String currTopicID;Matcher matcherID = Pattern.compile(UC_ID+".*").matcher(cellContent);
         matcherID.matches();
         currTopicID = matcherID.group(1);
@@ -154,13 +158,16 @@ public class UCMapParser extends ExcelParser {
 
     private Student parseStudent(Row row) {
         String name = row.getCell(0).getStringCellValue();
-        long id = (long) row.getCell(1).getNumericCellValue();
+        String code = row.getCell(1).getStringCellValue();
         if(!row.getCell(2).getStringCellValue().equalsIgnoreCase("sim"))
             return null;
-        return new Student(id, name);
+        Student student = new Student();
+        student.setName(name);
+        student.setCod(code);
+        return student;
     }
 
-    void addStudentToTopic(Topic topic, Student givenStudent) throws ParserException {
+    private void addStudentToTopic(Topic topic, Student givenStudent) throws ParserException {
         Student student = students.get(givenStudent.getId());
         Set<Student> studentsList = topic.getStudentList();
         if(student == null){
@@ -175,7 +182,7 @@ public class UCMapParser extends ExcelParser {
         studentsList.add(student);
     }
 
-    void addTopic(Topic topic) throws ParserException {
+    private void addTopic(Topic topic) throws ParserException {
         if(topics.contains(topic)){
             String message = "A UC "+topic.getId()+" encontra-se referenciada mais que uma vez";
             throw new ParserException(message, ParserException.Type.WARNING);

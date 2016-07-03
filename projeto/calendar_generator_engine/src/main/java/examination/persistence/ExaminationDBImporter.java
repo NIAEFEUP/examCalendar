@@ -163,8 +163,10 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             if (regent == null) return null; // Regent does not exist in the database
 
             Topic topic = new Topic();
+            topic.setId(rs.getInt("id"));
             topic.setName(rs.getString("name"));
             topic.setAcronym(rs.getString("acronym"));
+            topic.setCode(rs.getString("code"));
             topic.setYear(rs.getInt("year"));
             topic.setDifficulty(rs.getInt("difficulty"));
             topic.setRegent(regent);
@@ -216,8 +218,6 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             Student student = new Student();
             student.setName(rs.getString("name"));
             student.setCod(rs.getString("cod"));
-            student.setEntryYear(rs.getInt("entryYear"));
-            student.setCurrentYear(rs.getInt("currentYear"));
             students.add(student);
         }
 

@@ -42,4 +42,20 @@ public class Professor {
 	public void setCod(String cod) {
 		this.cod = cod;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Professor professor = (Professor) o;
+
+		if (id == professor.id) return true;
+		return acronym.equals(professor.acronym);
+	}
+
+	@Override
+	public int hashCode() {
+		return id;
+	}
 }

@@ -68,7 +68,7 @@ public class ExaminationGenerator {
         List<Exam> examList = new ArrayList<Exam>();
         //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
-        examList.add(new Exam(120, false,true, new Topic("FIS1", 1, "Física 1")));
+        /*examList.add(new Exam(120, false,true, new Topic("FIS1", 1, "Física 1")));
         examList.add(new Exam(120, false,true, new Topic("MPCP", 1, "Microprocessadores e Computadores Pessoais")));
         examList.add(new Exam(120, false,true, new Topic("MEST", 1, "Métodos Estatísticos")));
         examList.add(new Exam(120, false,true, new Topic("PROG", 1, "Programação")));
@@ -95,7 +95,7 @@ public class ExaminationGenerator {
         examList.add(new Exam(120, true, false, new Topic("SINF",4, "Sistemas de Informação")));
         examList.add(new Exam(120, true, false, new Topic("GEMP",4, "Gestão de Empresas") ));
         examList.add(new Exam(120, true, false, new Topic("AIAD",4, "Agentes e Inteligência Artificial Distribuída")));
-        examList.add(new Exam(120, true, false, new Topic("MFES",4, "Métodos Formais em Engenharia de Software" )));
+        examList.add(new Exam(120, true, false, new Topic("MFES",4, "Métodos Formais em Engenharia de Software" )));*/
 
         return examList;
     }

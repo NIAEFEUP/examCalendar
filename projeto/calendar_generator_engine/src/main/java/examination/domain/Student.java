@@ -47,4 +47,20 @@ public class Student {
 	public String toString() {
 		return "Student id = " + id;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Student student = (Student) o;
+
+		if(id == student.id) return true;
+		return cod.equals(student.cod);
+	}
+
+	@Override
+	public int hashCode() {
+		return id;
+	}
 }

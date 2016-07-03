@@ -21,9 +21,7 @@ public class Topic {
 	private Professor regent;
 	private int difficulty = 2;
 
-	public Topic(int id){
-		this.id = id;
-	}
+	public Topic(){	}
 
 	public Topic(int id, int year, String name, String acronym, String code){
 		this.id = id;
@@ -49,6 +47,8 @@ public class Topic {
 		return id;
 	}
 
+	public void setId(int id) { this.id = id; }
+
 	@Override
 	public String toString() {
 		return "Topic with id = "+this.id;
@@ -66,6 +66,10 @@ public class Topic {
 
 	public void setAcronym(String acronym) { this.acronym = acronym; }
 
+	public String getCode() { return code; }
+
+	public void setCode(String code) { this.code = code; }
+
 	public int getYear() {
 		return year;
 	}
@@ -74,11 +78,33 @@ public class Topic {
 		this.year = year;
 	}
 
+	public Set<Student> getStudentList() { return studentList; }
+
+	public void setStudentList(Set<Student> studentList) { this.studentList = studentList; }
+
+	public void addStudent(Student student) { studentList.add(student); }
+
 	public Professor getRegent() {
 		return regent;
 	}
 
 	public void setRegent(Professor regent) {
 		this.regent = regent;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Topic topic = (Topic) o;
+
+		if (id == topic.id) return true;
+		return code.equals(topic.code);
+	}
+
+	@Override
+	public int hashCode() {
+		return id;
 	}
 }

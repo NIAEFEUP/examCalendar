@@ -7,11 +7,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
-import static parser.ExcelRegex.UC;
 import static parser.ExcelRegex.UC_ID;
 
 /**
@@ -46,7 +43,7 @@ public class ProfessorParser extends ExcelParser{
                 if(isBlankCell(cellContent) || !cellContent.matches(UC_ID))
                     continue;
 
-                currTopicID = UCMapParser.extractTopicID(cellContent);
+                currTopicID = UCMapParser.extractTopicCode(cellContent);
                 currTopic = getTopic(currTopicID);
                 if(currTopic == null){
                     feedback.addError("UC não existe", row.getRowNum()+"", cell.getColumnIndex()+"");
@@ -57,14 +54,15 @@ public class ProfessorParser extends ExcelParser{
                 if(professors.containsKey(currProfessorID)){
                     currProf = professors.get(currProfessorID);
                 }else {
-                    currProf = new Professor(currProfessorID);
+                    currProf = new Professor();
+                    currProf.setCod(currProfessorID);
                     professors.put(currProfessorID,currProf);
                 }
 
-                if(currTopic.getProfessors().contains(currProf)){
-                    feedback.addWarning("Professor já está adicionado a esta UC", row.getRowNum()+"", cell.getColumnIndex()+"");
+                if(currTopic.getRegent() != null){
+                    feedback.addWarning("Um professor já está adicionado a esta UC", row.getRowNum()+"", cell.getColumnIndex()+"");
                 }else{
-                    currTopic.addProfessor(currProf);
+                    currTopic.setRegent(currProf);
                 }
             }
         }
@@ -77,10 +75,10 @@ public class ProfessorParser extends ExcelParser{
         return true;
     }
 
-    private Topic getTopic(String currTopicID) {
+    private Topic getTopic(String code) {
         Topic currTopic = null;
         for(Topic topic: topics){
-            if(topic.getId().equals(currTopicID)){
+            if(topic.getCode().equals(code)){
                 currTopic=topic;
             }
         }
@@ -93,9 +91,7 @@ public class ProfessorParser extends ExcelParser{
 
         for(Topic topic : topics){
             str.append(topic.getId() + " " +topic.getName()+"\n");
-            for(Professor professor:topic.getProfessors()){
-                str.append(professor.getId()+"\n");
-            }
+            str.append(topic.getRegent().getAcronym()+"\n");
             str.append("\n");
         }
 
