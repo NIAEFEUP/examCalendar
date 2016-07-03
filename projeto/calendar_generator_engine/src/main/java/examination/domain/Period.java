@@ -10,11 +10,13 @@ public class Period implements Comparable<Period> {
 	private int dayIndex;
 	private PeriodTime time;
 	private int penalty;
+	private boolean normal; // or appeal
 
-	public Period(int dayIndex, PeriodTime time){
+	public Period(int dayIndex, PeriodTime time, boolean normal){
 		this.dayIndex = dayIndex;
 		this.time = time;
 		this.penalty = this.time.ordinal();
+		this.normal = normal;
 	}
 
 	public int getDayIndex() {
@@ -28,6 +30,12 @@ public class Period implements Comparable<Period> {
 	public int getPenalty() {
 		return penalty;
 	}
+
+	public boolean isNormal() { return normal; }
+	public boolean isAppeal() { return !normal; }
+
+	public void setNormal() { normal = true; };
+	public void setAppeal() { normal = false; };
 
 	@Override
 	public String toString() {

@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class ExaminationGenerator {
-    public Examination createExamination() {
+    public static Examination createExamination() {
         Examination examination = new Examination();
 
         //5 weeks
@@ -28,20 +28,21 @@ public class ExaminationGenerator {
         return examination;
     }
 
-    private ArrayList<Period> createPeriods(int numWeeks) {
+    private static ArrayList<Period> createPeriods(int numWeeks) {
         ArrayList<Period> periodList = new ArrayList<Period>();
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
             for (int j = 0; j < 5; j++) {
-                periodList.add(new Period(offset + j, PeriodTime.NINE_AM));
-                periodList.add(new Period(offset + j, PeriodTime.ONE_PM));
-                periodList.add(new Period(offset + j, PeriodTime.FIVE_PM));
+                int day = offset + j;
+                periodList.add(new Period(day, PeriodTime.NINE_AM, day < numWeeks * 7 * 3/5));
+                periodList.add(new Period(day, PeriodTime.ONE_PM, day < numWeeks * 7 * 3/5));
+                periodList.add(new Period(day, PeriodTime.FIVE_PM, day < numWeeks * 7 * 3/5));
             }
         }
         return periodList;
     }
 
-    private ArrayList<Room> createRooms() {
+    private static ArrayList<Room> createRooms() {
         ArrayList<Room> roomList = new ArrayList<Room>();
         //Room(ID, Capacity, pc_room?)
         roomList.add(new Room("B116", 69, false));
@@ -61,7 +62,7 @@ public class ExaminationGenerator {
         return roomList;
     }
 
-    private List<Exam> createExams() {
+    private static List<Exam> createExams() {
         List<Exam> examList = new ArrayList<Exam>();
         //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
@@ -88,14 +89,16 @@ public class ExaminationGenerator {
         examList.add(new Exam(120, true, new Topic("PLOG", 3, "Programação em Lógica")));
         examList.add(new Exam(120, false, new Topic("RCOM", 3, "Redes de Computadores")));
 
-        //3 year 2 semester
-        examList.add(new Exam(120, false, new Topic("IART", 3, "Inteligência Artificial")));
-        examList.add(new Exam(120, false, new Topic("SDIS", 3, "Sistemas Distribuídos")));
+        //4 year 1 semester
+        examList.add(new Exam(120, true, false, new Topic("SINF",4, "Sistemas de Informação")));
+        examList.add(new Exam(120, true, false, new Topic("GEMP",4, "Gestão de Empresas") ));
+        examList.add(new Exam(120, true, false, new Topic("AIAD",4, "Agentes e Inteligência Artificial Distribuída")));
+        examList.add(new Exam(120, true, false, new Topic("MFES",4, "Métodos Formais em Engenharia de Software" )));
 
         return examList;
     }
 
-    private void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
+    private static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
                 RoomPeriod rp = new RoomPeriod();

@@ -14,11 +14,23 @@
   </constructionHeuristic>
 
   <localSearch>
-      <swapMoveSelector/>
+    <unionMoveSelector>
+      <swapMoveSelector>
+        <fixedProbabilityWeight>9</fixedProbabilityWeight>
+        <filterClass>examination.domain.solver.SwapMoveFilter</filterClass>
+      </swapMoveSelector>
+      <changeMoveSelector>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+      </changeMoveSelector>
+      <moveListFactory>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+        <moveListFactoryClass>examination.domain.solver.ExamMoveFactory</moveListFactoryClass>
+      </moveListFactory>
+    </unionMoveSelector>
   </localSearch>
 
   <termination>
-    <secondsSpentLimit>200</secondsSpentLimit>
+    <secondsSpentLimit>100</secondsSpentLimit>
     <bestScoreLimit>-0hard/-0soft</bestScoreLimit>
   </termination>
 </solver>
