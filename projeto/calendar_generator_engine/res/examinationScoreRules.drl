@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package examination.solver;
+package examcalendar.solver;
     dialect "java"
 
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
-import examination.domain.*;
+import examcalendar.optimizer.domain.*;
 
 
 global HardSoftScoreHolder scoreHolder;
