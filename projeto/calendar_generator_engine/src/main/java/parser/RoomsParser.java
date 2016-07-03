@@ -81,7 +81,7 @@ public class RoomsParser extends ExcelParser {
     }
 
     public static void main(String[] args) {
-        String file = "../../rooms.xlsx";
+        String file = "src/test/java/rooms.xlsx";
         RoomsParser parser = new RoomsParser(file);
         parser.generate();
         System.out.println(parser.toString());

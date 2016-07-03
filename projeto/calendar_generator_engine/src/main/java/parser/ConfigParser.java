@@ -62,9 +62,9 @@ public class ConfigParser {
         ArrayList<Period> periodList = new ArrayList<Period>();
         for (int i = 0; i < maxDays; i++) {
             if ((dayOfWeek + i) % 7 < 5) { // Working days only
-                periodList.add(new Period(startingDay + i, PeriodTime.NINE_AM));
-                periodList.add(new Period(startingDay + i, PeriodTime.ONE_PM));
-                periodList.add(new Period(startingDay + i, PeriodTime.FIVE_PM));
+                periodList.add(new Period(startingDay + i, PeriodTime.NINE_AM,true));
+                periodList.add(new Period(startingDay + i, PeriodTime.ONE_PM,true));
+                periodList.add(new Period(startingDay + i, PeriodTime.FIVE_PM,true));
             }
         }
         return periodList;

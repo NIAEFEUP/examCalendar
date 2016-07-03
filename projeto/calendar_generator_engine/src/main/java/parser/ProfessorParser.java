@@ -103,11 +103,11 @@ public class ProfessorParser extends ExcelParser{
     }
 
     public static void main(String[] args) {
-        String ucFile = "../../mapa_exames_mieic.xls";
+        String ucFile = "src/test/java/mapa_exames_mieic.xls";
         UCMapParser parser = new UCMapParser(ucFile);
         parser.generate();
 
-        String profFile = "../../professors.xlsx";
+        String profFile = "src/test/java/professors.xlsx";
         ProfessorParser professorParser = new ProfessorParser(profFile,parser.getTopics());
         professorParser.generate();
         System.out.println(professorParser.toString());
