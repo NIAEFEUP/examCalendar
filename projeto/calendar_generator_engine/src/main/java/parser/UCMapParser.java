@@ -207,7 +207,7 @@ public class UCMapParser extends ExcelParser {
     }
 
     public static void main(String[] args) {
-        String file = "../../mapa_exames_mieic.xls";
+        String file = "src/test/java/mapa_exames_mieic.xls";
         UCMapParser parser = new UCMapParser(file);
         parser.generate();
         System.out.println(parser.toString());
