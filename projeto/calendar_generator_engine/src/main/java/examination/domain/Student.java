@@ -10,8 +10,6 @@ public class Student {
 	private int id;
 	private String name;
 	private String cod;
-	private int entryYear;
-	private int currentYear;
 
 	public Student(){
 
@@ -43,22 +41,6 @@ public class Student {
 
 	public void setCod(String cod) {
 		this.cod = cod;
-	}
-
-	public int getEntryYear() {
-		return entryYear;
-	}
-
-	public void setEntryYear(int entryYear) {
-		this.entryYear = entryYear;
-	}
-
-	public int getCurrentYear() {
-		return currentYear;
-	}
-
-	public void setCurrentYear(int currentYear) {
-		this.currentYear = currentYear;
 	}
 
 	@Override

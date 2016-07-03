@@ -1,0 +1,41 @@
+{
+  "timeout": 1000,
+  "minDaysBetweenSameTopicExams": 14,
+  "roomUsableRatio": 0.8,
+  "roomUsableMargin": 10,
+  "spreadPenalty": 10,
+  "difficultyPenalty": 1,
+  "periodPenalty": 1,
+  "startingDay": 4,
+  "startingMonth": 10,
+  "startingYear": 2017,
+  "maxDays": 30,
+  "unavailableRoomPeriods": [
+    {
+      "room": "B232C",
+      "period": {
+        "time": "NINE_AM",
+        "day": 4,
+        "month": 10,
+        "year": 2017
+      }
+    }
+  ],
+  "unavailableProfessors": [
+    {
+      "id": "adafsfadgf",
+      "startingPeriod": {
+        "time": "NINE_AM",
+        "day": 5,
+        "month": 10,
+        "year": 2017
+      },
+      "endingPeriod": {
+        "time": "NINE_AM",
+        "day": 5,
+        "month": 10
+        "year": 2017
+      }
+    }
+  ]
+}

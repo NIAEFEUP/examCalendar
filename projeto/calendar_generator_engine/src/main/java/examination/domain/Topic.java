@@ -1,7 +1,9 @@
 package examination.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Gustavo
@@ -10,31 +12,25 @@ import java.util.List;
  */
 public class Topic {
 
-	private static int currId = 0;
 	public int id;
 	private int year;
 	private String name;
 	private String acronym;
-	private List<Student> studentList = new ArrayList<Student>();
-	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
+	private String code;
+	private Set<Student> studentList = new HashSet<Student>();
 	private Professor regent;
 	private int difficulty = 2;
 
-	public Topic(){
-		this.attributeId();
-		this.auxiliarList = new ArrayList<Auxiliar>();
-		this.studentList = new ArrayList<Student>();
+	public Topic(int id){
+		this.id = id;
 	}
 
-	public Topic(int year, String name){
-		this();
+	public Topic(int id, int year, String name, String acronym, String code){
+		this.id = id;
 		this.year = year;
 		this.name = name;
-	}
-
-	private void attributeId(){
-		this.currId++;
-		this.id = this.currId;
+		this.acronym = acronym;
+		this.code = code;
 	}
 
 	public void finalize() throws Throwable {
