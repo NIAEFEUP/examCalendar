@@ -28,7 +28,7 @@ public class ExaminationGenerator {
         return examination;
     }
 
-    private static ArrayList<Period> createPeriods(int numWeeks) {
+    public static ArrayList<Period> createPeriods(int numWeeks) {
         ArrayList<Period> periodList = new ArrayList<Period>();
         for (int i = 0; i < numWeeks; i++) {
             int offset = 7 * i;
@@ -98,7 +98,7 @@ public class ExaminationGenerator {
         return examList;
     }
 
-    private static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
+    public static void addRoomPeriods(Examination examination, List<Room> rooms, List<Period> periods) {
         for (int i = 0; i < rooms.size(); i++) {
             for (int j = 0; j < periods.size(); j++) {
                 RoomPeriod rp = new RoomPeriod();
@@ -107,5 +107,14 @@ public class ExaminationGenerator {
                 examination.addRoomPeriod(rp);
             }
         }
+    }
+
+    public static void addExamsFromTopics(Examination examination, List<Topic> topics){
+        List<Exam> exams = new ArrayList<Exam>();
+        for(Topic topic : topics){
+            exams.add(new Exam(true, topic));
+            exams.add(new Exam(false, topic));
+        }
+
     }
 }

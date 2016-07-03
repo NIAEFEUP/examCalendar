@@ -59,7 +59,7 @@ public class RoomsParser extends ExcelParser {
             }
         }
 
-        feedback.setResult(true);
+        feedback.setGenerated(true);
         return true;
     }
 

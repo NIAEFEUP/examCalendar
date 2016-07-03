@@ -14,7 +14,7 @@ public class Exam implements Comparable<Exam> {
 	private int numStudents;
 	//private String name;
 	private Topic topic;
-	private boolean pc;
+	private boolean pc = false;
 	private boolean normal; // or appeal
 	/**
 	 * shadow variable
@@ -31,6 +31,13 @@ public class Exam implements Comparable<Exam> {
 		this.numStudents = numStudents;
 		this.normal = normal;
 		this.pc = pc;
+	}
+
+	public Exam(boolean normal, Topic topic){
+		this();
+		this.topic = topic;
+		this.normal = normal;
+		this.numStudents = topic.getStudentList().size();
 	}
 
 	private void attributeId(){

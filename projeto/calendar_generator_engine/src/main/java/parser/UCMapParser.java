@@ -120,7 +120,7 @@ public class UCMapParser extends ExcelParser {
         }
 
         if(state.equals(UCMapParser.State.STUDENT)){
-            feedback.setResult(true);
+            feedback.setGenerated(true);
             return true;
         }else {
             feedback.addError("Erro inesperado. Parsing interrompido.", row == null? (0+"") : (row.getRowNum()+""),0+"");

@@ -7,11 +7,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
-import static parser.ExcelRegex.UC;
 import static parser.ExcelRegex.UC_ID;
 
 /**
@@ -69,7 +66,7 @@ public class ProfessorParser extends ExcelParser{
             }
         }
         if(professors.size() > 0) {
-            feedback.setResult(true);
+            feedback.setGenerated(true);
         }else{
             feedback.addError("Erro a ler a lista de professores", row.getRowNum()+"",0+"");
             return false;
@@ -85,6 +82,10 @@ public class ProfessorParser extends ExcelParser{
             }
         }
         return currTopic;
+    }
+
+    public Hashtable<String, Professor> getProfessors() {
+        return professors;
     }
 
     @Override
