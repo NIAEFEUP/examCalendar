@@ -6,7 +6,7 @@ package examination.domain;
  * @created 18-fev-2016 16:42:19
  */
 public class Room {
-
+	private int id;
 	private int capacity;
 	private String codRoom;
 	private boolean pc;
@@ -20,6 +20,10 @@ public class Room {
 	public void finalize() throws Throwable {
 
 	}
+
+	public int getId() { return id; }
+
+	public void setId(int id) { this.id = id; }
 
 	public String getCodRoom() {
 		return codRoom;

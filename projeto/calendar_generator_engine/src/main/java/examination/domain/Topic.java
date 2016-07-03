@@ -10,19 +10,33 @@ import java.util.Set;
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-public class Topic{
+public class Topic {
 
-	public String id;
+	private static int currId = 0;
+	public int id;
 	private int year;
 	private String name;
-	private HashSet<Student> studentList = new HashSet<Student>();
-	private Set<Professor> professors = new HashSet<Professor>();
+	private String acronym;
+	private List<Student> studentList = new ArrayList<Student>();
+	public List<Auxiliar> auxiliarList = new ArrayList<Auxiliar>();
+	private Professor regent;
 	private int difficulty = 2;
 
-	public Topic(String id, int year, String name){
-		this.id = id;
+	public Topic(){
+		this.attributeId();
+		this.auxiliarList = new ArrayList<Auxiliar>();
+		this.studentList = new ArrayList<Student>();
+	}
+
+	public Topic(int year, String name){
+		this();
 		this.year = year;
 		this.name = name;
+	}
+
+	private void attributeId(){
+		this.currId++;
+		this.id = this.currId;
 	}
 
 	public void finalize() throws Throwable {
@@ -37,7 +51,7 @@ public class Topic{
 		this.difficulty = difficulty;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
@@ -54,6 +68,10 @@ public class Topic{
 		this.name = name;
 	}
 
+	public String getAcronym() { return acronym; }
+
+	public void setAcronym(String acronym) { this.acronym = acronym; }
+
 	public int getYear() {
 		return year;
 	}
@@ -62,25 +80,11 @@ public class Topic{
 		this.year = year;
 	}
 
-	public void addProfessor(Professor prof){
-		this.professors.add(prof);
+	public Professor getRegent() {
+		return regent;
 	}
 
-	public HashSet<Student> getStudentList() {
-		return studentList;
-	}
-
-	public Set<Professor> getProfessors() {
-		return professors;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if(obj == null)
-			return false;
-		if(!(obj instanceof Topic))
-			return false;
-
-		return getId().equals(((Topic) obj).getId());
+	public void setRegent(Professor regent) {
+		this.regent = regent;
 	}
 }

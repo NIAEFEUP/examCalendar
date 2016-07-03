@@ -9,31 +9,25 @@ import java.util.Random;
  */
 public class Student {
 
-	private long id;
+	private int id;
 	private String name;
+	private String cod;
+	private int entryYear;
+	private int currentYear;
 
 	public Student(){
-		this.id = new Random().nextLong();
-	}
 
-	public Student(long id){
-		this.id = id;
-	}
-
-	public Student(long id, String name){
-		this.id = id;
-		this.name = name;
 	}
 
 	public void finalize() throws Throwable {
 
 	}
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -43,6 +37,30 @@ public class Student {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCod() {
+		return cod;
+	}
+
+	public void setCod(String cod) {
+		this.cod = cod;
+	}
+
+	public int getEntryYear() {
+		return entryYear;
+	}
+
+	public void setEntryYear(int entryYear) {
+		this.entryYear = entryYear;
+	}
+
+	public int getCurrentYear() {
+		return currentYear;
+	}
+
+	public void setCurrentYear(int currentYear) {
+		this.currentYear = currentYear;
 	}
 
 	@Override

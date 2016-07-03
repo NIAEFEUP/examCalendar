@@ -21,9 +21,11 @@ public class ExaminationGenerator {
 
         addRoomPeriods(examination, roomList, periodList);
 
+        examination.setTopicList(new ArrayList<Topic>()); // TODO
         examination.setExamList(createExams());
         examination.setPeriodList(periodList);
         examination.setRoomList(roomList);
+        examination.setProfessorUnavailableList(new ArrayList<ProfessorUnavailable>()); // TODO
 
         return examination;
     }
