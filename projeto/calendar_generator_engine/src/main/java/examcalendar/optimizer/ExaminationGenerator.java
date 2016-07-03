@@ -116,6 +116,6 @@ public class ExaminationGenerator {
             exams.add(new Exam(true, topic));
             exams.add(new Exam(false, topic));
         }
-
+        examination.setExamList(exams);
     }
 }

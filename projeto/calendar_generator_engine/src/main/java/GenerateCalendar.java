@@ -11,8 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Duarte on 03/07/2016.
- */
+* Created by Duarte on 03/07/2016.
+*/
 public class GenerateCalendar {
 
     public static void main(String[] args) {
@@ -47,11 +47,13 @@ public class GenerateCalendar {
         List<Topic> topics = new ArrayList<Topic>(ucMapParser.getTopics());
         List<Room> rooms = new ArrayList<Room>(roomsParser.getRooms().values());
         List<Professor> professors = new ArrayList<Professor>(professorParser.getProfessors().values());
-        List<Period> periods= ExaminationGenerator.createPeriods(5);
+        List<Period> periods= ExaminationGenerator.createPeriods(100);
+        System.out.println(periods.toString());
 
         Examination unsolvedExamination = new Examination();
         unsolvedExamination.setRoomList(rooms);
         unsolvedExamination.setPeriodList(periods);
+        unsolvedExamination.setTopicList(topics);
         ExaminationGenerator.addRoomPeriods(unsolvedExamination,rooms,periods);
         ExaminationGenerator.addExamsFromTopics(unsolvedExamination,topics);
 
