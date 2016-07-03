@@ -66,28 +66,28 @@ public class ExaminationGenerator {
         List<Exam> examList = new ArrayList<Exam>();
         //Exam(int numStudents, boolean pc, Topic topic)
         //1 year 2 semester
-        examList.add(new Exam(120, false, new Topic("FIS1", 1, "Física 1")));
-        examList.add(new Exam(120, false, new Topic("MPCP", 1, "Microprocessadores e Computadores Pessoais")));
-        examList.add(new Exam(120, false, new Topic("MEST", 1, "Métodos Estatísticos")));
-        examList.add(new Exam(120, false, new Topic("PROG", 1, "Programação")));
+        examList.add(new Exam(120, false,true, new Topic("FIS1", 1, "Física 1")));
+        examList.add(new Exam(120, false,true, new Topic("MPCP", 1, "Microprocessadores e Computadores Pessoais")));
+        examList.add(new Exam(120, false,true, new Topic("MEST", 1, "Métodos Estatísticos")));
+        examList.add(new Exam(120, false,true, new Topic("PROG", 1, "Programação")));
 
         //2 year 1 semester
-        examList.add(new Exam(120, false, new Topic("AEDA", 2, "Algoritmos e Estruturas de Dados")));
-        examList.add(new Exam(120, false, new Topic("FIS2", 2, "Física 2")));
-        examList.add(new Exam(120, true, new Topic("MNUM", 2, "Métodos Numéricos")));
-        examList.add(new Exam(120, false, new Topic("TCOM", 2, "Teoria da Computação")));
+        examList.add(new Exam(120, false,true, new Topic("AEDA", 2, "Algoritmos e Estruturas de Dados")));
+        examList.add(new Exam(120, false,true, new Topic("FIS2", 2, "Física 2")));
+        examList.add(new Exam(120, true,true, new Topic("MNUM", 2, "Métodos Numéricos")));
+        examList.add(new Exam(120, false,true, new Topic("TCOM", 2, "Teoria da Computação")));
 
         //2 year 2 semester
-        examList.add(new Exam(120, false, new Topic("BDAD", 2, "Bases de Dados")));
-        examList.add(new Exam(120, false, new Topic("CGRA", 2, "Computação Gráfica")));
-        examList.add(new Exam(120, false, new Topic("CAL", 2, "Concepção e Análise de Algoritmos")));
-        examList.add(new Exam(120, false, new Topic("SOPE", 2, "Sistemas Operativos")));
+        examList.add(new Exam(120, false,true, new Topic("BDAD", 2, "Bases de Dados")));
+        examList.add(new Exam(120, false,true, new Topic("CGRA", 2, "Computação Gráfica")));
+        examList.add(new Exam(120, false,true, new Topic("CAL", 2, "Concepção e Análise de Algoritmos")));
+        examList.add(new Exam(120, false,true, new Topic("SOPE", 2, "Sistemas Operativos")));
 
         //3 year 1 semester
-        examList.add(new Exam(120, false, new Topic("ESOF", 3, "Engenharia de Software")));
-        examList.add(new Exam(120, false, new Topic("LTW", 3, "Linguagens e Tecnologias Web")));
-        examList.add(new Exam(120, true, new Topic("PLOG", 3, "Programação em Lógica")));
-        examList.add(new Exam(120, false, new Topic("RCOM", 3, "Redes de Computadores")));
+        examList.add(new Exam(120, false,true, new Topic("ESOF", 3, "Engenharia de Software")));
+        examList.add(new Exam(120, false,true, new Topic("LTW", 3, "Linguagens e Tecnologias Web")));
+        examList.add(new Exam(120, true,true, new Topic("PLOG", 3, "Programação em Lógica")));
+        examList.add(new Exam(120, false,true, new Topic("RCOM", 3, "Redes de Computadores")));
 
         //4 year 1 semester
         examList.add(new Exam(120, true, false, new Topic("SINF",4, "Sistemas de Informação")));
