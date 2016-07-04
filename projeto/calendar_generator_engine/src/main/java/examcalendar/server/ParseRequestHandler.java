@@ -34,7 +34,7 @@ public class ParseRequestHandler implements HttpHandler {
         File file = getUploadedFile(httpExchange);
         UCMapParser ucMapParser = new UCMapParser(file.getPath());
         ucMapParser.generate();
-        if (ucMapParser.getFeedback().isResult()) {
+        if (ucMapParser.getFeedback().isGenerated()) {
             PreparedStatement ps;
 
             ps = conn.prepareStatement("DELETE FROM topics WHERE creator = ?");
@@ -59,7 +59,7 @@ public class ParseRequestHandler implements HttpHandler {
                 ps = conn.prepareStatement("INSERT INTO students (creator, name, cod) VALUES (?, ?, ?)");
                 ps.setInt(1, clientID);
                 ps.setString(2, student.getName());
-                ps.setString(3, student.getCod());
+                ps.setString(3, student.getCode());
                 ps.execute();
             }
         }
@@ -73,7 +73,7 @@ public class ParseRequestHandler implements HttpHandler {
         File file = getUploadedFile(httpExchange);
         RoomsParser roomsParser = new RoomsParser(file.getPath());
         roomsParser.generate();
-        if (roomsParser.getFeedback().isResult()) {
+        if (roomsParser.getFeedback().isGenerated()) {
             PreparedStatement ps;
             ps = conn.prepareStatement("DELETE FROM rooms WHERE creator = ?");
             ps.setInt(1, clientID);
