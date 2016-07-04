@@ -20,6 +20,6 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     redirectTo: '/login'
   });
 
-  $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(false);
 
 }]);

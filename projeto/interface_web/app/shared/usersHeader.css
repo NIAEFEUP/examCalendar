@@ -3,22 +3,30 @@
   border-radius: 0 !important;
 }
 
-#home_button {
-  margin: auto;
-  margin-top: 7%;
-  width: 150%;
-}
-
 #users_button {
   margin: auto;
   margin-top: 7%;
-  width: 150%;
+  width: 190%;
 }
 
 #logout_button {
   margin: auto;
   margin-top: 7%;
   width: 170%;
+}
+
+#middle_column {
+  width: 2%;
+}
+
+#left_column {
+  width: 40%;
+}
+
+#dropdown_button {
+  color: #53799F;
+  font-size: 170%;
+  margin-top: 2.5%;
 }
 
 #ni {

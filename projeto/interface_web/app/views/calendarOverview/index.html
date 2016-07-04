@@ -1,109 +1,128 @@
 <link rel="stylesheet" href="views/calendarOverview/calendarOverview.css">
+<link rel="stylesheet" href="shared/adminListing.css">
+
+<div id="usersHeader"></div>
+
+<ul class="row">
+
+  <div class="col-12 col-sm-3" id="usersSidebar"></div>
+
+  <div class="col-12 col-sm-6">
+
+    <div id="examCalendar">
+
+      <h1>Exam Calendar</h1>
+      <button type="button" class="btn btn-danger">Export Calendar</button>  
+      <button type="button" class="btn btn-success">Import Calendar</button>
+      <br><br><br>
+      <hr>
+
+    	<div id="redips-drag">
+    		<table id="calendar1">
+    			<tr class="row-head">
+    				<td class="elem-empty redips-mark"></td>
+    				<td class="redips-mark">Monday</td>
+    				<td class="redips-mark">Tuesday</td>
+    				<td class="redips-mark">Wednesday</td>
+    				<td class="redips-mark">Thursday</td>
+    				<td class="redips-mark">Friday</td>
+    				<td class="redips-mark">Saturday</td>
+    			</tr>
+    			<tr class="row-dates">
+    				<td class="elem-empty redips-mark"></td>
+    				<td class="redips-mark"><b>1 of July</b></td>
+    				<td class="redips-mark"><b>2 of July</b></td>
+    				<td class="redips-mark"><b>3 of July</b></td>
+    				<td class="redips-mark"><b>4 of July</b></td>
+    				<td class="redips-mark"><b>5 of July</b></td>
+    				<td class="redips-mark"><b>6 of July</b></td>
+    			</tr>
+    			<tr class="row-type1">
+    				<td class="elem-time-interval redips-mark"><b>09h00 - 12h00</b></td>
+    				<td><div id="d1" class="redips-drag t1">IART</div></td>
+    				<td></td>
+    				<td><div id="d2" class="redips-drag t1">COMP</div></td>
+    				<td><div id="d3" class="redips-drag t1">SDIS</div></td>
+    				<td></td>
+    				<td></td>
+    			</tr>
+    			<tr class="row-type2">
+    				<td class="elem-time-interval redips-mark"><b>13h30 - 16h30</b></td>
+    				<td><div id="d4" class="redips-drag t1">LBAW</div></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    			</tr>
+    			<tr class="row-type1">
+    				<td class="elem-time-interval redips-mark"><b>17h00 - 20h00</b></td>
+    				<td></td>
+    				<td><div id="d6" class="redips-drag t1">PPIN</div></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    			</tr>
+    		</table>
+        <br><br>
+        <table id="calendar2">
+    			<tr class="row-head">
+    				<td class="elem-empty redips-mark"></td>
+    				<td class="redips-mark">Monday</td>
+    				<td class="redips-mark">Tuesday</td>
+    				<td class="redips-mark">Wednesday</td>
+    				<td class="redips-mark">Thursday</td>
+    				<td class="redips-mark">Friday</td>
+    				<td class="redips-mark">Saturday</td>
+    			</tr>
+    			<tr class="row-dates">
+    				<td class="elem-empty redips-mark"></td>
+    				<td class="redips-mark"><b>1 of July</b></td>
+    				<td class="redips-mark"><b>2 of July</b></td>
+    				<td class="redips-mark"><b>3 of July</b></td>
+    				<td class="redips-mark"><b>4 of July</b></td>
+    				<td class="redips-mark"><b>5 of July</b></td>
+    				<td class="redips-mark"><b>6 of July</b></td>
+    			</tr>
+    			<tr class="row-type1">
+    				<td class="elem-time-interval redips-mark"><b>09h00 - 12h00</b></td>
+    				<td><div id="d7" class="redips-drag t1">IART</div></td>
+    				<td></td>
+    				<td><div id="d8" class="redips-drag t1">COMP</div></td>
+    				<td><div id="d9" class="redips-drag t1">SDIS</div></td>
+    				<td></td>
+    				<td></td>
+    			</tr>
+    			<tr class="row-type2">
+    				<td class="elem-time-interval redips-mark"><b>13h30 - 16h30</b></td>
+    				<td><div id="d10" class="redips-drag t1">LBAW</div></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    			</tr>
+    			<tr class="row-type1">
+    				<td class="elem-time-interval redips-mark"><b>17h00 - 20h00</b></td>
+    				<td></td>
+    				<td><div id="d11" class="redips-drag t1">PPIN</div></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    				<td></td>
+    			</tr>
+    		</table>
+
+
+    	</div>
+    </div>
+  </div>
+
+</ul>
+
+<script src="shared/usersSidebar.js"></script>
+<script src="shared/usersHeader.js"></script>
 <script type="text/javascript" src="views/calendarOverview/redips-drag-min.js"></script>
 <script type="text/javascript" src="views/calendarOverview/script.js"></script>
-<script>
-	REDIPS.drag.init();
-</script>
-
-<div align="right">
-	<input type="checkbox" name="request-checkbox" checked>
-	<h4>Pedir/Cancelar Gerador Calendário</h4>
-</div>
-<div align="right">
-	<button type="button">
-	<h4>Verificar Calendário</h4></button>
-</div>
-
-<div class="page-header">
-	<h1>Lista de Calendários</h1>
-</div>
-
-<!-- tables inside this DIV could have draggable content -->
-<div id="redips-drag">
-	<table id="table1">
-		<colgroup><col width="100"/><col width="100"/><col width="100"/><col width="100"/><col width="100"/><col width="100"/><col width="100"/></colgroup>
-		<tr class="row-head">
-			<td class="elem-empty redips-mark"></td>
-			<td class="redips-mark">Segunda-feira</td>
-			<td class="redips-mark">Terça-feira</td>
-			<td class="redips-mark">Quarta-feira</td>
-			<td class="redips-mark">Quinta-feira</td>
-			<td class="redips-mark">Sexta-feira</td>
-			<td class="redips-mark">Sábado</td>
-		</tr>
-		<tr class="row-dates">
-			<td class="elem-empty redips-mark"></td>
-			<td class="redips-mark"><b>1 de Julho</b></td>
-			<td class="redips-mark"><b>2 de Julho</b></td>
-			<td class="redips-mark"><b>3 de Julho</b></td>
-			<td class="redips-mark"><b>4 de Julho</b></td>
-			<td class="redips-mark"><b>5 de Julho</b></td>
-			<td class="redips-mark"><b>6 de Julho</b></td>
-		</tr>
-		<tr class="row-type1">
-			<td class="elem-time-interval redips-mark">09h00 - 12h00</td>
-			<td><div id="d1" class="redips-drag t1">IART</div></td>
-			<td></td>
-			<td><div id="d2" class="redips-drag t1">COMP</div></td>
-			<td><div id="d3" class="redips-drag t1">SDIS</div></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr class="row-type2">
-			<td class="elem-time-interval redips-mark">13h30 - 16h30</td>
-			<td><div id="d4" class="redips-drag t1">LBAW</div></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr class="row-type1">
-			<td class="elem-time-interval redips-mark">17h00 - 20h00</td>
-			<td></td>
-			<td><div id="d6" class="redips-drag t1">PPIN</div></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-
-		<!--Just for show-->
-		<tr class="row-dates">
-			<td class="elem-empty redips-mark"></td>
-			<td class="redips-mark"><b>8 de Julho</b></td>
-			<td class="redips-mark"><b>9 de Julho</b></td>
-			<td class="redips-mark"><b>10 de Julho</b></td>
-			<td class="redips-mark"><b>11 de Julho</b></td>
-			<td class="redips-mark"><b>12 de Julho</b></td>
-			<td class="redips-mark"><b>13 de Julho</b></td>
-		</tr>
-		<tr class="row-type1">
-			<td class="elem-time-interval redips-mark">09h00 - 12h00</td>
-			<td><div id="d1" class="redips-drag t1">IART</div></td>
-			<td></td>
-			<td><div id="d2" class="redips-drag t1">COMP</div></td>
-			<td><div id="d3" class="redips-drag t1">SDIS</div></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr class="row-type2">
-			<td class="elem-time-interval redips-mark">13h30 - 16h30</td>
-			<td><div id="d4" class="redips-drag t1">LBAW</div></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr class="row-type1">
-			<td class="elem-time-interval redips-mark">17h00 - 20h00</td>
-			<td></td>
-			<td><div id="d6" class="redips-drag t1">PPIN</div></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-	</table>
-</div>
+<script> REDIPS.drag.init(); </script>
