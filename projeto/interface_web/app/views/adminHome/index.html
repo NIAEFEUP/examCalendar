@@ -1,25 +1,46 @@
-<link rel="stylesheet" href="shared/admin.css">
-<script src="shared/admin.js" async></script>
+<link rel="stylesheet" href="views/adminHome/adminHome.css">
+<link rel="stylesheet" href="shared/adminListing.css">
 
-<div align="right">
-	<button type="button" class="btn btn-default btn-lg" onclick="">
-	<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"> Exportar Log File</span>
-	</button>
-</div>
+<div id="adminHeader"></div>
 
-<div class="page-header">
-  <h1>Atividade Recente</h1>
-</div>
+<div class="row">
 
-<!--
-Vai ser preciso tornar dinâmica a parte das ações realizadas pelos utilizadores
-Em baixo está apenas um exemplo.
--->
-<div class="restricoes">
-	<div class="restricao">
-		<h3>1. Atividade</h3>
+  <div class="col-sm-4" id="exportSection">
+
+		<button type="button" class="btn btn-success btn-lg">Export Log File</button>
+
+  </div>
+
+  <div class="col-sm-8" id="listSection">
+
+    <h1>Activity List</h1><hr>
+
+    <div class="userEmail">
+  		<span class="emailContent">1. Activity</span>
+      <button class="btn btn-primary" type="button">Delete</button>
+      <br><br><br>
+  	</div>
+
+    <div class="userEmail">
+      <span class="emailContent">2. Activity</span>
+      <button class="btn btn-primary" type="button">Delete</button>
+      <br><br><br>
+    </div>
+
+    <div class="userEmail">
+      <span class="emailContent">3. Activity</span>
+      <button class="btn btn-primary" type="button">Delete</button>
+      <br><br><br>
+    </div>
+
+    <div class="userEmail">
+      <span class="emailContent">4. Activity</span>
+      <button class="btn btn-primary" type="button">Delete</button>
+      <br><br><br>
+    </div>
+
 	</div>
-	<div class="restricao">
-		<h3>2. Atividade</h3>
-	</div>
+
 </div>
+
+<script src="shared/adminHeader.js"></script>

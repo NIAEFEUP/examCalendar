@@ -1,6 +1,10 @@
-#addingSection{
+#exportSection{
   float: right;
   width: 30%;
   margin-right: 3%;
   margin-top: 7.5%;
+}
+
+#exportSection button{
+  width: 90%;
 }
