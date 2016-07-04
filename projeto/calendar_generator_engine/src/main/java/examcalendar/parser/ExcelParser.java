@@ -25,7 +25,7 @@ public abstract class ExcelParser {
         this.feedback = new Feedback(file);
     }
 
-    boolean generate(){
+    public boolean generate(){
         try {
             Workbook wb;
             if (FilenameUtils.getExtension(file.getName()).equals("xlsx"))

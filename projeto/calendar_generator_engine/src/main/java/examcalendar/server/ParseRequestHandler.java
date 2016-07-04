@@ -2,6 +2,7 @@ package examcalendar.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import examcalendar.optimizer.domain.Room;
+import examcalendar.parser.RoomsParser;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -12,8 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.util.List;
-import java.util.UUID;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * Created by Gustavo on 03/07/2016.
@@ -27,6 +29,28 @@ public class ParseRequestHandler {
         this.conn = connection;
         this.t = t;
         this.clientID = clientID;
+    }
+
+    private void roomsFileHandler() throws SQLException {
+        File file = getUploadedFile();
+        RoomsParser roomsParser = new RoomsParser(file.getPath());
+        roomsParser.generate();
+        if (roomsParser.getFeedback().isResult()) {
+            Hashtable<String, Room> rooms = roomsParser.getRooms();
+            Iterator<Map.Entry<String, Room>> it = rooms.entrySet().iterator();
+            while (it.hasNext()) {
+                Room room = it.next().getValue();
+                PreparedStatement ps = this.conn.prepareStatement("INSERT INTO rooms (creator, cod, capacity, pc) VALUES (?, ?, ?, ?)");
+                ps.setInt(1, clientID);
+                ps.setString(2, room.getCodRoom());
+                ps.setInt(3, room.getCapacity());
+                ps.setBoolean(4, room.isPc());
+                ps.execute();
+            }
+        }
+        else {
+            // TODO
+        }
     }
 
     private File getUploadedFile() {
