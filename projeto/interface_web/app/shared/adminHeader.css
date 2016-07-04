@@ -1,0 +1,22 @@
+#fullNavbar {
+  background-color: #132639;
+  border-radius: 0 !important;
+}
+
+#home_button {
+  margin: auto;
+  margin-top: 7%;
+  width: 150%;
+}
+
+#users_button {
+  margin: auto;
+  margin-top: 7%;
+  width: 150%;
+}
+
+#logout_button {
+  margin: auto;
+  margin-top: 7%;
+  width: 170%;
+}
