@@ -3,7 +3,10 @@ package examcalendar.server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import examcalendar.optimizer.domain.Room;
+import examcalendar.optimizer.domain.Student;
+import examcalendar.optimizer.domain.Topic;
 import examcalendar.parser.RoomsParser;
+import examcalendar.parser.UCMapParser;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -25,6 +28,45 @@ import java.util.*;
 public class ParseRequestHandler implements HttpHandler {
     public static final String TEMP_DIR = "tmp/";
     public ParseRequestHandler() {
+    }
+
+    private void ucMapFileHandler(Connection conn, HttpExchange httpExchange, int clientID) throws SQLException {
+        File file = getUploadedFile(httpExchange);
+        UCMapParser ucMapParser = new UCMapParser(file.getPath());
+        ucMapParser.generate();
+        if (ucMapParser.getFeedback().isResult()) {
+            PreparedStatement ps;
+
+            ps = conn.prepareStatement("DELETE FROM topics WHERE creator = ?");
+            ps.setInt(1, clientID);
+            ps.execute();
+
+            Set<Topic> topics = ucMapParser.getTopics();
+            for (Topic topic : topics) {
+                ps = conn.prepareStatement("INSERT INTO topics (creator, name, acronym, code, year) VALUES (?, ?, ?, ?, ?)");
+                ps.setInt(1, clientID);
+                ps.setString(2, topic.getName());
+                ps.setString(3, topic.getAcronym());
+                ps.setString(4, topic.getCode());
+                ps.setInt(5, topic.getYear());
+                ps.execute();
+            }
+
+            Hashtable<String, Student> students = ucMapParser.getStudents();
+            Iterator<Map.Entry<String, Student>> it = students.entrySet().iterator();
+            while (it.hasNext()) {
+                Student student = it.next().getValue();
+                ps = conn.prepareStatement("INSERT INTO students (creator, name, cod) VALUES (?, ?, ?)");
+                ps.setInt(1, clientID);
+                ps.setString(2, student.getName());
+                ps.setString(3, student.getCod());
+                ps.execute();
+            }
+        }
+        else {
+            System.err.println(ucMapParser.getFeedback());
+        }
+        file.delete();
     }
 
     private void roomsFileHandler(Connection conn, HttpExchange httpExchange, int clientID) throws SQLException {
@@ -100,7 +142,8 @@ public class ParseRequestHandler implements HttpHandler {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
-            roomsFileHandler(conn, httpExchange, 1); // TODO
+            //roomsFileHandler(conn, httpExchange, 1); // TODO
+            ucMapFileHandler(conn, httpExchange, 1); // TODO
         } catch (SQLException e) {
             e.printStackTrace();
         }
