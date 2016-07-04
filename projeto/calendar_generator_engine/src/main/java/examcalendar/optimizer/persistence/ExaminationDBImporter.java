@@ -51,8 +51,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Examination examination = new Examination();
         Connection conn = null;
         try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost/", "postgres", "123456"); // TODO (hardcoded)
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
             RequestConfig requestConfig = readRequestConfig(requestId, conn);
             if (requestConfig == null) return null;
@@ -84,9 +83,6 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             examination.setProfessorUnavailableList(professorUnavailables);
             examination.setRoomPeriodList(roomPeriods);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

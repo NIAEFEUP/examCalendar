@@ -32,12 +32,15 @@ public class ParseRequestHandler implements HttpHandler {
         RoomsParser roomsParser = new RoomsParser(file.getPath());
         roomsParser.generate();
         if (roomsParser.getFeedback().isResult()) {
+            PreparedStatement ps;
+            ps = conn.prepareStatement("DELETE FROM rooms WHERE creator = ?");
+            ps.setInt(1, clientID);
+            ps.execute();
             Hashtable<String, Room> rooms = roomsParser.getRooms();
             Iterator<Map.Entry<String, Room>> it = rooms.entrySet().iterator();
             while (it.hasNext()) {
                 Room room = it.next().getValue();
-                PreparedStatement ps =
-                        conn.prepareStatement("INSERT INTO rooms (creator, cod, capacity, pc) VALUES (?, ?, ?, ?)");
+                ps = conn.prepareStatement("INSERT INTO rooms (creator, cod, capacity, pc) VALUES (?, ?, ?, ?)");
                 ps.setInt(1, clientID);
                 ps.setString(2, room.getCodRoom());
                 ps.setInt(3, room.getCapacity());
@@ -96,7 +99,7 @@ public class ParseRequestHandler implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost/", "postgres", "123456"); // TODO (hardcoded)
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
             roomsFileHandler(conn, httpExchange, 1); // TODO
         } catch (SQLException e) {
             e.printStackTrace();
