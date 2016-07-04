@@ -12,7 +12,7 @@ CREATE TABLE requests (
     minDaysBetweenSameTopicExams INTEGER NOT NULL DEFAULT 14,
 	minDaysBetweenSameYearExams INTEGER NOT NULL DEFAULT 2,
     difficultyPenalty FLOAT NOT NULL DEFAULT 1.0,
-    startingDate DATE NOT NULL DEFAULT CURRENT_DATE,
+    startingDate DATE NOT NULL,
     normalSeasonDuration INTEGER NOT NULL DEFAULT 21,
 	appealSeasonDuration INTEGER NOT NULL DEFAULT 14,
     spreadPenalty FLOAT NOT NULL DEFAULT 10.0,
@@ -106,9 +106,9 @@ CREATE TABLE roomPeriodUnavailable (
 );
 
 INSERT INTO users (email) VALUES ('up201304143@fe.up.pt');
-INSERT INTO requests (creator) VALUES (1);
-INSERT INTO professors (creator, name, acronym, cod) VALUES (1, 'AntÛnio Augusto de Sousa', 'AAS', 209500);
-INSERT INTO topics (creator, name, acronym, code, year, difficulty, regent) VALUES (1, 'ComputaÁ„o Gr·fica', 'CGRA', 'EIC0019', 2, 1, 1);
+INSERT INTO requests (creator, startingDate) VALUES (1, '2014-11-22');
+INSERT INTO professors (creator, name, acronym, cod) VALUES (1, 'Ant√≥nio Augusto de Sousa', 'AAS', 209500);
+INSERT INTO topics (creator, name, acronym, code, year, difficulty, regent) VALUES (1, 'Computa√ß√£o Gr√°fica', 'CGRA', 'EIC0019', 2, 1, 1);
 INSERT INTO exams (creator, topic, normal, pc) VALUES (1, 1, TRUE, FALSE);
 INSERT INTO exams (creator, topic, normal, pc) VALUES (1, 1, FALSE, FALSE);
 INSERT INTO rooms (creator, cod, capacity, pc) VALUES (1, 'B116', 69, FALSE);
@@ -116,3 +116,5 @@ INSERT INTO rooms (creator, cod, capacity, pc) VALUES (1, 'B120', 69, FALSE);
 INSERT INTO rooms (creator, cod, capacity, pc) VALUES (1, 'B232C', 44, FALSE);
 INSERT INTO students (creator, name, cod) VALUES (1, 'Test student', '201301234');
 INSERT INTO studentTopic (student, topic) VALUES (1, 1);
+
+SELECT * FROM requests;
