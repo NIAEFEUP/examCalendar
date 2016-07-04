@@ -16,10 +16,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -37,30 +34,47 @@ public class ParseRequestHandler implements HttpHandler {
         if (ucMapParser.getFeedback().isGenerated()) {
             PreparedStatement ps;
 
-            ps = conn.prepareStatement("DELETE FROM topics WHERE creator = ?");
+            ps = conn.prepareStatement("DELETE FROM students WHERE creator = ?");
             ps.setInt(1, clientID);
             ps.execute();
 
-            Set<Topic> topics = ucMapParser.getTopics();
-            for (Topic topic : topics) {
-                ps = conn.prepareStatement("INSERT INTO topics (creator, name, acronym, code, year) VALUES (?, ?, ?, ?, ?)");
-                ps.setInt(1, clientID);
-                ps.setString(2, topic.getName());
-                ps.setString(3, topic.getAcronym());
-                ps.setString(4, topic.getCode());
-                ps.setInt(5, topic.getYear());
-                ps.execute();
-            }
+            ps = conn.prepareStatement("DELETE FROM topics WHERE creator = ?");
+            ps.setInt(1, clientID);
+            ps.execute();
 
             Hashtable<String, Student> students = ucMapParser.getStudents();
             Iterator<Map.Entry<String, Student>> it = students.entrySet().iterator();
             while (it.hasNext()) {
                 Student student = it.next().getValue();
-                ps = conn.prepareStatement("INSERT INTO students (creator, name, cod) VALUES (?, ?, ?)");
+                ps = conn.prepareStatement("INSERT INTO students (creator, name, cod) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, clientID);
                 ps.setString(2, student.getName());
                 ps.setString(3, student.getCode());
-                ps.execute();
+                int id = ps.executeUpdate();
+
+                student.setId(id);
+            }
+
+            Set<Topic> topics = ucMapParser.getTopics();
+            for (Topic topic : topics) {
+                ps = conn.prepareStatement("INSERT INTO topics (creator, name, acronym, code, year) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, clientID);
+                ps.setString(2, topic.getName());
+                ps.setString(3, topic.getCode()); // TODO
+                ps.setString(4, topic.getCode());
+                ps.setInt(5, topic.getYear());
+                int id = ps.executeUpdate();
+
+                topic.setId(id);
+
+                Set<Student> topicStudents = topic.getStudentList();
+                for (Student student : topicStudents) {
+                    System.out.println(student.getId() + " " + topic.getId());
+                    ps = conn.prepareStatement("INSERT INTO studentTopic (student, topic) VALUES (?, ?)");
+                    ps.setInt(1, student.getId());
+                    ps.setInt(2, topic.getId());
+                    ps.execute();
+                }
             }
         }
         else {
