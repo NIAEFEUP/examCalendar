@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <solver>
   <!--<environmentMode>FAST_ASSERT</environmentMode>-->
-  <solutionClass>examination.domain.Examination</solutionClass>
-  <entityClass>examination.domain.RoomPeriod</entityClass>
+  <solutionClass>examcalendar.optimizer.domain.Examination</solutionClass>
+  <entityClass>examcalendar.optimizer.domain.RoomPeriod</entityClass>
 
   <scoreDirectorFactory>
     <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
@@ -17,20 +17,20 @@
     <unionMoveSelector>
       <swapMoveSelector>
         <fixedProbabilityWeight>9</fixedProbabilityWeight>
-        <filterClass>examination.domain.solver.SwapMoveFilter</filterClass>
+        <filterClass>examcalendar.optimizer.domain.solver.SwapMoveFilter</filterClass>
       </swapMoveSelector>
       <changeMoveSelector>
         <fixedProbabilityWeight>1</fixedProbabilityWeight>
       </changeMoveSelector>
       <moveListFactory>
         <fixedProbabilityWeight>1</fixedProbabilityWeight>
-        <moveListFactoryClass>examination.domain.solver.ExamMoveFactory</moveListFactoryClass>
+        <moveListFactoryClass>examcalendar.optimizer.domain.solver.ExamMoveFactory</moveListFactoryClass>
       </moveListFactory>
     </unionMoveSelector>
   </localSearch>
 
   <termination>
-    <secondsSpentLimit>100</secondsSpentLimit>
+    <secondsSpentLimit>200</secondsSpentLimit>
     <bestScoreLimit>-0hard/-0soft</bestScoreLimit>
   </termination>
 </solver>
