@@ -1,5 +1,6 @@
 package examcalendar.server;
 
+import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import examcalendar.optimizer.domain.Room;
@@ -50,8 +51,10 @@ public class ParseRequestHandler implements HttpHandler {
                 ps.setInt(1, clientID);
                 ps.setString(2, student.getName());
                 ps.setString(3, student.getCode());
-                int id = ps.executeUpdate();
-
+                ps.execute();
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                int id = rs.getInt(1);
                 student.setId(id);
             }
 
@@ -63,7 +66,10 @@ public class ParseRequestHandler implements HttpHandler {
                 ps.setString(3, topic.getCode()); // TODO
                 ps.setString(4, topic.getCode());
                 ps.setInt(5, topic.getYear());
-                int id = ps.executeUpdate();
+                ps.execute();
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                int id = rs.getInt(1);
 
                 topic.setId(id);
 
