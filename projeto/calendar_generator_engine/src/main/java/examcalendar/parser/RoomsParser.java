@@ -31,7 +31,7 @@ public class RoomsParser extends ExcelParser {
         boolean isPc;
         Room currRoom;
 
-        for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+        for (int i = 0; i < sheet.getLastRowNum(); i++) {
             row = sheet.getRow(i);
             if(row != null) {
                 cell = row.getCell(0);
@@ -59,7 +59,7 @@ public class RoomsParser extends ExcelParser {
             }
         }
 
-        feedback.setResult(true);
+        feedback.setGenerated(true);
         return true;
     }
 

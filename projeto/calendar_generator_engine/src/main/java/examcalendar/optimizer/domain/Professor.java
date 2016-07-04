@@ -9,10 +9,12 @@ public class Professor {
 	private int id;
 	private String name;
 	private String acronym;
-	private String cod;
+	private String code;
 
-	public void finalize() throws Throwable {
+	public Professor(){ }
 
+	public Professor(String acronym) {
+		this.acronym = acronym;
 	}
 
 	public int getId() {
@@ -35,12 +37,12 @@ public class Professor {
 
 	public void setAcronym(String acronym) { this.acronym = acronym; }
 
-	public String getCod() {
-		return cod;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCod(String cod) {
-		this.cod = cod;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@Override
@@ -50,8 +52,10 @@ public class Professor {
 
 		Professor professor = (Professor) o;
 
-		if (id == professor.id) return true;
-		return acronym.equals(professor.acronym);
+		if (id == professor.id)
+			return acronym.equals(professor.acronym);
+		else
+			return false;
 	}
 
 	@Override

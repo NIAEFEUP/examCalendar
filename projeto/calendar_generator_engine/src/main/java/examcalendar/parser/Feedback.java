@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Duarte on 29/06/2016.
  */
 public class Feedback {
-    boolean result = false;
+    boolean generated = false;
     String file;
     List<String> warnings = new ArrayList<String>();
     List<String> errors =  new ArrayList<String>();
@@ -16,12 +16,12 @@ public class Feedback {
         this.file = file;
     }
 
-    public boolean isResult() {
-        return result;
+    public boolean isGenerated() {
+        return generated;
     }
 
-    public void setResult(boolean result) {
-        this.result = result;
+    public void setGenerated(boolean generated) {
+        this.generated = generated;
     }
 
     public void addWarning(String message, String row, String column){
@@ -55,7 +55,7 @@ public class Feedback {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("FILE: "+file+"\n");
-        stringBuilder.append("RESULT: " + result+"\n");
+        stringBuilder.append("RESULT: " + generated +"\n");
 
         for(String message : getErrors()){
             stringBuilder.append(message);

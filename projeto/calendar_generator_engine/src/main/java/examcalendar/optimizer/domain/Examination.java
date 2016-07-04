@@ -16,12 +16,12 @@ import java.util.*;
 @PlanningSolution()
 public class Examination implements Solution<HardSoftScore> {
 	private HardSoftScore score;
-	private List<RoomPeriod> roomPeriodList;
-	private List<Topic> topicList;
-	public List<Exam> examList;
-	private List<Period> periodList;
-	private List<Room> roomList;
-	private List<ProfessorUnavailable> professorUnavailableList;
+	private List<RoomPeriod> roomPeriodList = new ArrayList<RoomPeriod>();
+	private List<Topic> topicList = new ArrayList<Topic>();
+	public List<Exam> examList = new ArrayList<Exam>();
+	private List<Period> periodList = new ArrayList<Period>();
+	private List<Room> roomList = new ArrayList<Room>();
+	private List<ProfessorUnavailable> professorUnavailableList = new ArrayList<ProfessorUnavailable>();
 	public InstitutionParametrization institutionParametrization = new InstitutionParametrization();
 
 	public Examination(){

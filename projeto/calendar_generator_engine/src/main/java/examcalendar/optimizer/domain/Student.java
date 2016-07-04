@@ -9,7 +9,7 @@ public class Student {
 
 	private int id;
 	private String name;
-	private String cod;
+	private String code;
 
 	public Student(){
 
@@ -35,12 +35,12 @@ public class Student {
 		this.name = name;
 	}
 
-	public String getCod() {
-		return cod;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCod(String cod) {
-		this.cod = cod;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@Override
@@ -55,8 +55,10 @@ public class Student {
 
 		Student student = (Student) o;
 
-		if(id == student.id) return true;
-		return cod.equals(student.cod);
+		if(id == student.id)
+			return code.equals(student.code);
+		else
+			return false;
 	}
 
 	@Override
