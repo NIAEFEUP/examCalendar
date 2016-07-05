@@ -161,8 +161,10 @@ public class ParseRequestHandler implements HttpHandler {
             emptyDB(conn, clientID);
             insertProfessorsInDB(conn, clientID, professors);
             insertTopicsInDB(conn, clientID, topics);
+            insertExamsInDB(conn, clientID, topics);
             insertStudentsInDB(conn, clientID, students);
             insertStudentTopicAssociationsInDB(conn, clientID, topics);
+            insertRoomsInDB(conn, clientID, rooms);
             conn.commit();
             return true;
         } catch (SQLException e) {
@@ -217,6 +219,28 @@ public class ParseRequestHandler implements HttpHandler {
             rs.next();
             int id = rs.getInt(1);
             topic.setId(id);
+        }
+    }
+
+    private void insertExamsInDB(Connection conn, int clientID, Set<Topic> topics) throws SQLException {
+        // TODO
+        for (Topic topic : topics) {
+            if (Math.random() < 0.7f) {
+                boolean pc = Math.random() < 0.3f;
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, TRUE, ?)");
+                ps.setInt(1, clientID);
+                ps.setInt(2, topic.getId());
+                ps.setBoolean(3, pc);
+                ps.execute();
+
+                if (Math.random() < 0.9f) {
+                    ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, FALSE, ?)");
+                    ps.setInt(1, clientID);
+                    ps.setInt(2, topic.getId());
+                    ps.setBoolean(3, pc);
+                    ps.execute();
+                }
+            }
         }
     }
 
