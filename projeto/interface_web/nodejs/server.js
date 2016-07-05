@@ -18,6 +18,13 @@ var calendar = require('./controllers/calendar');
 var constraints = require('./controllers/constraints');
 var importDB = require('./controllers/importDB');
 
+/* TODO delete this block
+Example
+console.log(typeof login.foo); // => 'function'
+console.log(typeof login.new_foo); // => 'function'
+console.log(typeof login.bar); // => undefined
+*/
+
 var sess;
 
 //TODO the code bellow is not suitable for this project, but is useful as an example. Customize it!
