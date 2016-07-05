@@ -58,13 +58,13 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
 
             List<Professor> professors = readProfessors(requestConfig.creator, conn);
 
-            List<Topic> topics = readTopics(requestConfig.creator, conn, professors);
+            List<Student> students = readStudents(requestConfig.creator, conn);
+
+            List<Topic> topics = readTopics(requestConfig.creator, conn, students, professors);
             if (topics == null) return null;
 
             List<Exam> exams = readExams(requestConfig.creator, conn, topics);
             if (exams == null) return null;
-
-            List<Student> students = readStudents(requestConfig.creator, conn);
 
             List<Room> rooms = readRooms(requestConfig.creator, conn);
 
@@ -140,7 +140,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return professors;
     }
 
-    private List<Topic> readTopics(int creator, Connection conn, List<Professor> professors) throws SQLException {
+    private List<Topic> readTopics(int creator, Connection conn, List<Student> students, List<Professor> professors) throws SQLException {
         List<Topic> topics = new ArrayList<Topic>();
 
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM topics WHERE creator = ?");
@@ -156,6 +156,21 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             topic.setDifficulty(rs.getInt("difficulty"));
 
             topics.add(topic);
+
+            ps = conn.prepareStatement("SELECT student FROM studenttopic WHERE studenttopic.topic = ?");
+            ps.setInt(1, topic.getId());
+            ResultSet rs2 = ps.executeQuery();
+            while (rs2.next()) {
+                Student student = null;
+                for (Student s : students) {
+                    if (s.getId() == rs2.getInt("student")) {
+                        student = s;
+                        break;
+                    }
+                }
+                if (student == null) return null; // Student not found
+                topic.addStudent(student);
+            }
         }
 
         return topics;
@@ -202,6 +217,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             Student student = new Student();
             student.setName(rs.getString("name"));
             student.setCode(rs.getString("cod"));
+            student.setId(rs.getInt("id"));
             students.add(student);
         }
 

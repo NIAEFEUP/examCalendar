@@ -90,6 +90,8 @@ public class Topic {
 
 	public void addStudent(Student student) { studentList.add(student); }
 
+	public int numStudents() { return studentList.size(); }
+
 	public List<Professor> getRegentList() {
 		return regentList;
 	}
