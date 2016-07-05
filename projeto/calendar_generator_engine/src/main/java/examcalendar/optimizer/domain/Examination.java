@@ -90,6 +90,8 @@ public class Examination implements Solution<HardSoftScore> {
 		facts.addAll(professorUnavailableList);
 		facts.add(institutionParametrization);
 
+		System.out.println("Nº topics: " + topicList.size() + " Nº exams: " + examList.size() + " Nº periods: " + periodList.size() + " Nº rooms: " + roomList.size() + " Nº professor unavailabilities: " + professorUnavailableList.size());
+
 		return facts;
 	}
 

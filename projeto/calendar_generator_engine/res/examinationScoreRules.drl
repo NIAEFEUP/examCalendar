@@ -39,8 +39,9 @@ end
 //An exam can't be scheduled when a professor is unavailable
 rule "professorUnavailable"
     when
-        RoomPeriod(exam != null, $professor : exam.getTopic().getRegent(), $period : period)
-        ProfessorUnavailable($professor == getProfessor(), $period == getPeriod())
+        ProfessorUnavailable($professor : professor, $period : period)
+        TopicRegent($topic : topic, $professor == getRegent())
+        RoomPeriod(exam != null, $topic == exam.getTopic(), $period == getPeriod())
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end

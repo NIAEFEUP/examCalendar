@@ -147,17 +147,6 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         ps.setInt(1, creator);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            int regentId = rs.getInt("regent");
-            Professor regent = null;
-            for (Professor professor : professors) {
-                if (professor.getId() == regentId) {
-                    regent = professor;
-                    break;
-                }
-            }
-
-            if (regent == null) return null; // Regent does not exist in the database
-
             Topic topic = new Topic();
             topic.setId(rs.getInt("id"));
             topic.setName(rs.getString("name"));
@@ -165,7 +154,6 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             topic.setCode(rs.getString("code"));
             topic.setYear(rs.getInt("year"));
             topic.setDifficulty(rs.getInt("difficulty"));
-            topic.setRegent(regent);
 
             topics.add(topic);
         }
