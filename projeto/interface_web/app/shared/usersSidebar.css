@@ -1,8 +1,8 @@
 #sidebar-wrapper{
   float: left;
 	margin: 0;
-	width: 180px;
-  height: 100%;
+	width: 75%;;
+  height: 100vh;
   background-color: #3973ac;
   -webkit-transition: all 0.5s ease;
 }

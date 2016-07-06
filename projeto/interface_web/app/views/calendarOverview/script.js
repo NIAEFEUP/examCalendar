@@ -1,3 +1,25 @@
+function change_autorefreshdiv(){
+    var NAME = document.getElementById("options_icon");
+    var currentClass = NAME.className;
+    if (currentClass == "fa fa-cog fa-3x fa-fw") { // Check the current class name
+        NAME.className = "fa fa-cog fa-spin fa-3x fa-fw";   // Set other class name
+
+					document.getElementById("export_button").style.display = "inline";
+					document.getElementById("import_button").style.display = "inline";
+					document.getElementById("validate_button").style.display = "inline";
+					document.getElementById("generate_button").style.display = "inline";
+					document.getElementById("optimize_button").style.display = "inline";
+    } else {
+        NAME.className = "fa fa-cog fa-3x fa-fw";  // Otherwise, use `second_name`
+
+						document.getElementById("export_button").style.display = "none";
+						document.getElementById("import_button").style.display = "none";
+						document.getElementById("validate_button").style.display = "none";
+						document.getElementById("generate_button").style.display = "none";
+						document.getElementById("optimize_button").style.display = "none";
+    }
+}
+
 /*jslint white: true, browser: true, undef: true, nomen: true, eqeqeq: true, plusplus: false, bitwise: true, regexp: true, strict: true, newcap: true, immed: true, maxerr: 14 */
 /*global window: false, REDIPS: true */
 

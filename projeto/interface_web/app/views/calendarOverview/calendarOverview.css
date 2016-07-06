@@ -1,18 +1,22 @@
 #examCalendar {
 	margin: auto;
+	margin-top: 10%;
 	width: 100%;
 }
 
 #examCalendar h1 {
-	float: left;
+	text-align: center;
 }
 
-#examCalendar button {
-	float: right;
-	margin-top: 3.5%;
-	margin-left: 2%;
-	width: 25%;
-	font-size: 100%;
+#import_button , #generate_button {
+	background-color: #3973ac;
+	border-color: #132639;
+	font-size: 100% !important;
+}
+
+#export_button, #validate_button, #optimize_button {
+	border-color: #132639;
+	font-size: 100% !important;
 }
 
 .row-head {
@@ -78,4 +82,29 @@
 	margin: auto;
 	width: 120%;
 	margin-left: -70px;
+}
+
+.row.ng-scope{
+	padding: 0;
+}
+
+#usersSidebar {
+	position: fixed;
+	top: 8.3% !important;
+}
+
+#usersHeader {
+	position: fixed;
+	width: 100%;
+}
+
+#right_buttons {
+	text-align: center;
+	margin-top: 7.5%;
+}
+
+#right_buttons button{
+	display:none;
+	width: 60%;
+	margin-top: 2%;
 }

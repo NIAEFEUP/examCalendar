@@ -6,15 +6,12 @@
 <ul class="row">
 
   <div class="col-12 col-sm-3" id="usersSidebar"></div>
-
+  <div class="col-12 col-sm-3"></div>
   <div class="col-12 col-sm-6">
 
     <div id="examCalendar">
-
+      <br>
       <h1>Exam Calendar</h1>
-      <button type="button" class="btn btn-danger">Export Calendar</button>  
-      <button type="button" class="btn btn-success">Import Calendar</button>
-      <br><br><br>
       <hr>
 
     	<div id="redips-drag">
@@ -113,13 +110,21 @@
     				<td></td>
     			</tr>
     		</table>
-
-
     	</div>
     </div>
   </div>
 
+  <div class="col-12 col-sm-3" id="right_buttons">
+    <i class="fa fa-cog fa-3x fa-fw" id="options_icon" onclick="change_autorefreshdiv();"></i><br><br>
+    <button type="button" class="btn btn-danger" id="export_button">Export Calendar</button><br>
+    <button type="button" class="btn btn-success" id="import_button">Import Calendar</button><br>
+    <button type="button" class="btn btn-danger" id="validate_button">Validate Calendar</button><br>
+    <button type="button" class="btn btn-success" id="generate_button">Generate Calendar</button><br>
+    <button type="button" class="btn btn-danger" id="optimize_button">Optimize Calendar</button><br>
+  </div>
+
 </ul>
+
 
 <script src="shared/usersSidebar.js"></script>
 <script src="shared/usersHeader.js"></script>
