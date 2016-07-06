@@ -4,6 +4,20 @@ var session	=	require('express-session');
 var bodyParser = require('body-parser');
 var app = express();
 
+/* Small test with database integration
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+		host : 'localhost',
+		port : 3000,
+		user : 'root',
+		password : 'toor'
+});
+connection.connect(function(err) {
+		console.err('ERROR : ' + err);
+		exit(-1);
+});
+*/
+
 app.engine('html', require('ejs').renderFile);
 
 app.use(session({secret: 'secret_key', saveUninitialized: true, resave: true}));
