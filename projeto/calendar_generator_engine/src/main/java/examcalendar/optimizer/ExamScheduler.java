@@ -8,8 +8,13 @@ import org.optaplanner.core.api.solver.SolverFactory;
 /**
  * Created by Duarte on 10/02/2016.
  */
-public class ExamScheduler {
+public class ExamScheduler implements Runnable {
     public static void main(String [] args){
+        new ExamScheduler().run();
+    }
+
+    @Override
+    public void run() {
         SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
         Solver solver = solverFactory.buildSolver();
 

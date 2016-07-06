@@ -15,6 +15,7 @@ import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.omg.CORBA.Request;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,7 @@ import java.util.*;
 /**
  * Created by Gustavo on 03/07/2016.
  */
-public class ParseRequestHandler implements HttpHandler {
+public class ParseRequestHandler extends RequestHandler {
     public static final String TEMP_DIR = "tmp/";
     public ParseRequestHandler() {
     }
