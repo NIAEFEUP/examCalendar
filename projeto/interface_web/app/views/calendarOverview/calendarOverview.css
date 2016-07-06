@@ -108,3 +108,7 @@
 	width: 60%;
 	margin-top: 2%;
 }
+
+#d1:hover {
+	background-color: #ccfff3 !important;
+}

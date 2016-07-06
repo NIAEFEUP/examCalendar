@@ -3,7 +3,7 @@
 
 <div id="usersHeader"></div>
 
-<ul class="row">
+<div class="row">
 
   <div class="col-12 col-sm-3" id="usersSidebar"></div>
   <div class="col-12 col-sm-3"></div>
@@ -36,7 +36,7 @@
     			</tr>
     			<tr class="row-type1">
     				<td class="elem-time-interval redips-mark"><b>09h00 - 12h00</b></td>
-    				<td><div id="d1" class="redips-drag t1">IART</div></td>
+    				<td><div id="d1" class="redips-drag t1"  data-toggle="modal" data-target="#examInformation">IART</div></td>
     				<td></td>
     				<td><div id="d2" class="redips-drag t1">COMP</div></td>
     				<td><div id="d3" class="redips-drag t1">SDIS</div></td>
@@ -123,11 +123,25 @@
     <button type="button" class="btn btn-danger" id="optimize_button">Optimize Calendar</button><br>
   </div>
 
-</ul>
+</div>
+
+
+<div id="examInformation" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content" id="examModal">
+
+    </div>
+
+  </div>
+
+</div>
 
 
 <script src="shared/usersSidebar.js"></script>
 <script src="shared/usersHeader.js"></script>
+<script src="views/calendarOverview/examInformation.js"></script>
 <script type="text/javascript" src="views/calendarOverview/redips-drag-min.js"></script>
-<script type="text/javascript" src="views/calendarOverview/script.js"></script>
+<script type="text/javascript" src="views/calendarOverview/calendarOverview.js"></script>
 <script> REDIPS.drag.init(); </script>
