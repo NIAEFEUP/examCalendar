@@ -223,24 +223,16 @@ public class ParseRequestHandler implements HttpHandler {
     }
 
     private void insertExamsInDB(Connection conn, int clientID, Set<Topic> topics) throws SQLException {
-        // TODO
         for (Topic topic : topics) {
-            if (Math.random() < 0.7f) {
-                boolean pc = Math.random() < 0.3f;
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, TRUE, ?)");
-                ps.setInt(1, clientID);
-                ps.setInt(2, topic.getId());
-                ps.setBoolean(3, pc);
-                ps.execute();
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, TRUE, FALSE)");
+            ps.setInt(1, clientID);
+            ps.setInt(2, topic.getId());
+            ps.execute();
 
-                if (Math.random() < 0.9f) {
-                    ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, FALSE, ?)");
-                    ps.setInt(1, clientID);
-                    ps.setInt(2, topic.getId());
-                    ps.setBoolean(3, pc);
-                    ps.execute();
-                }
-            }
+            ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, FALSE, FALSE)");
+            ps.setInt(1, clientID);
+            ps.setInt(2, topic.getId());
+            ps.execute();
         }
     }
 

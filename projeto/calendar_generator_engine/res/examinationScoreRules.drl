@@ -43,7 +43,7 @@ rule "professorUnavailable"
         TopicRegent($topic : topic, $professor == getRegent())
         RoomPeriod(exam != null, $topic == exam.getTopic(), $period == getPeriod())
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        scoreHolder.addHardConstraintMatch(kcontext, -100);
 end
 
 // An exam must to have rooms with enough space for all of it's students
@@ -67,7 +67,7 @@ rule "sameYearTooCloseExams"
         RoomPeriod(exam != null, id > $id1, $exam != exam, $rightTopic : exam.getTopic(), $year == exam.topic.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < $institutionParametrization.minDaysBetweenSameYearExams)
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        scoreHolder.addHardConstraintMatch(kcontext, -100);
 end
 
 // PC Exams must be scheduled in a PC Room
@@ -75,7 +75,7 @@ rule "pcExamsNotInPcRooms"
     when
         RoomPeriod(exam != null, exam.getPC() != room.isPc())
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 // The difference of days between Normal Exams and Appeal Exams of the same topic must be bigger than InstitutionParametrization.minDaysBetweenSameTopicExams
@@ -88,7 +88,7 @@ rule "gapBetweenSameTopicExams"
         RoomPeriod(exam != null, $exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex(), exam != null, exam.isAppeal())
         Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from $rightDayIndex - $leftDayIndex
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
+        scoreHolder.addHardConstraintMatch(kcontext, -100);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
 end
 
@@ -99,17 +99,12 @@ rule "examsWithSameStudentsAtSamePeriods"
         RoomPeriod($period == period, id > $id1, exam != null, $rightTopic : exam.getTopic())
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -$studentSize);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
-rule "normalExamInAppealSeason"
-    when RoomPeriod(exam != null, exam.isNormal(), !period.isNormal())
-    then scoreHolder.addHardConstraintMatch(kcontext, -1);
-end
-
-rule "appealExamInNormalSeason"
-    when RoomPeriod(exam != null, exam.isAppeal(), !period.isAppeal())
-    then scoreHolder.addHardConstraintMatch(kcontext, -1);
+rule "examInWrongSeason"
+    when RoomPeriod(exam != null, exam.isNormal() != period.isNormal())
+    then scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 // ############################################################################
