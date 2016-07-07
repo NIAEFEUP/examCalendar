@@ -71,22 +71,22 @@ app.get('/logout',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.get(req, res);
+	notes.get(res, req.session.userID);
 });
 
 app.put('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.add(req, res, req.body.note);
+	notes.add(res, req.session.userID, req.body.note);
 });
 
 app.post('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.update(req, res, req.body.noteID, req.body.msg);
+	notes.update(res, req.session.userID, req.body.noteID, req.body.msg);
 });
 
 app.delete('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.remove(req, res, req.body.noteID);
+	notes.remove(res, req.session.userID, req.body.noteID);
 });
 
 //////////////////////////////////////////////////////////////////
@@ -95,9 +95,9 @@ app.delete('/notes',function(req,res){
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	var file0 = req.session.file0;
-	var file1 = req.session.file1;
-	var file2 = req.session.file2;
+	var file0 = req.body.file0;
+	var file1 = req.body.file1;
+	var file2 = req.body.file2;
 	importDB.import(res, id, file0, file1, file2);
 });
 
@@ -107,9 +107,32 @@ app.post('/database',function(req,res){
 app.get('/adminHome',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	var limit = req.session.limit;
-	var page = req.session.page;
+	var limit = req.body.limit;
+	var page = req.body.page;
 	importDB.getLogs(res, id, limit, page);
+});
+
+//////////////////////////////////////////////////////////////////
+//                         Constraints                          //
+//////////////////////////////////////////////////////////////////
+app.get('/constraints',function(req,res){
+	res = allowRedirectAnswer(res);
+	constraints.get(res, req.session.userID);
+});
+
+app.put('/constraints',function(req,res){
+	res = allowRedirectAnswer(res);
+	constraints.add(res, req.session.userID, req.body.constraint);
+});
+
+app.post('/constraints',function(req,res){
+	res = allowRedirectAnswer(res);
+	constraints.update(res, req.session.userID, req.body.constraintID, req.body.constraint);
+});
+
+app.delete('/constraints',function(req,res){
+	res = allowRedirectAnswer(res);
+	constraints.remove(res, req.session.userID, req.body.constraintID);
 });
 
 //////////////////////////////////////////////////////////////////

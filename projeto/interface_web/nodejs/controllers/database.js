@@ -30,5 +30,18 @@ module.exports = {
   //adminHome
   getLogs: function (userID, limit, page) {
     return [];
+  },
+  //constraints
+  getConstraints: function (userID, msg) {
+    return [];
+  },
+  addConstraint: function (userID, constraint) {
+    return false;
+  },
+  updateConstraint: function (userID, constraintID, constraint) {
+    return false;
+  },
+  removeConstraint: function (userID, constraintID) {
+    return false;
   }
 };

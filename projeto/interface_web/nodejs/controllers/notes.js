@@ -2,9 +2,8 @@ var database = require('./database');
 
 module.exports = {
   //GET
-  get: function (req, res) {
-    var id = req.session.userID;
-    var notes = database.getNotes(id);
+  get: function (res, userID) {
+    var notes = database.getNotes(userID);
     var response = {};
     notes.forEach(function(element, index, array) {
       response[index] = element;
@@ -12,26 +11,23 @@ module.exports = {
     res.end(response);
   },
   //PUT
-  add: function (req, res, msg) {
-    var id = req.session.userID;
-    database.addNote(id, msg) ? success(res) : error(res);
+  add: function (res, userID, msg) {
+    database.addNote(userID, msg) ? success(res) : error(res);
   },
   //POST
-  update: function (req, res, noteID, msg) {
-    var id = req.session.userID;
-    database.updateNote(id, noteID, msg) ? success(res) : error(res);
+  update: function (res, userID, noteID, msg) {
+    database.updateNote(userID, noteID, msg) ? success(res) : error(res);
   },
   //DELETE
-  remove: function (req, res, noteID) {
-    var id = req.session.userID;
-    database.removeNote(id, noteID) ? success(res) : error(res);
+  remove: function (res, userID, noteID) {
+    database.removeNote(userID, noteID) ? success(res) : error(res);
   }
 };
 
-var success = function(res) {
+function success(res) {
   res.end('{"msg":"Success"}');
 };
 
-var error = function(res) {
+function error(res) {
   res.end('{"msg":"Error"}');
 };
