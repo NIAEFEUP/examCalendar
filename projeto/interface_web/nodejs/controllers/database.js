@@ -26,5 +26,9 @@ module.exports = {
 
     //Error in the files 0 and 2s
     return {"error":"0,2"};
+  },
+  //adminHome
+  getLogs: function (userID, limit, page) {
+    return [];
   }
 };

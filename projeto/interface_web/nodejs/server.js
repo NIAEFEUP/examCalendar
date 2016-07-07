@@ -102,6 +102,17 @@ app.post('/database',function(req,res){
 });
 
 //////////////////////////////////////////////////////////////////
+//                         Admin Home                           //
+//////////////////////////////////////////////////////////////////
+app.get('/adminHome',function(req,res){
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	var limit = req.session.limit;
+	var page = req.session.page;
+	importDB.getLogs(res, id, limit, page);
+});
+
+//////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////
 var port = 8888;
