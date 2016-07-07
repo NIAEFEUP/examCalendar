@@ -143,7 +143,7 @@ app.get('/adminUsers',function(req,res){
  adminUsers.get(res, req.session.userID);
 });
 
-app.post('/adminUsers',function(req,res){
+app.put('/adminUsers',function(req,res){
  res = allowRedirectAnswer(res);
  adminUsers.add(res, req.session.userID, req.body.email);
 });
@@ -151,6 +151,24 @@ app.post('/adminUsers',function(req,res){
 app.delete('/adminUsers',function(req,res){
  res = allowRedirectAnswer(res);
  adminUsers.remove(res, req.session.userID, req.body.email);
+});
+
+//////////////////////////////////////////////////////////////////
+//                          Calendar                            //
+//////////////////////////////////////////////////////////////////
+app.get('/calendar',function(req,res){
+ res = allowRedirectAnswer(res);
+ calendar.get(res, req.session.userID);
+});
+
+app.put('/calendar',function(req,res){
+ res = allowRedirectAnswer(res);
+ calendar.import(res, req.session.userID, req.body.calendar);
+});
+
+app.post('/calendar',function(req,res){
+ res = allowRedirectAnswer(res);
+ calendar.generate(res, req.session.userID);
 });
 
 //////////////////////////////////////////////////////////////////

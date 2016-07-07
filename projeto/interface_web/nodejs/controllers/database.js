@@ -53,5 +53,15 @@ module.exports = {
   },
   removeUser: function (userID, email) {
     return false;
+  },
+  //calendar
+  getCalendar: function (userID) {
+    return [];
+  },
+  importCalendar: function (userID, calendar) {
+    return false;
+  },
+  generateCalendar: function (userID) {
+    return false;
   }
 };
