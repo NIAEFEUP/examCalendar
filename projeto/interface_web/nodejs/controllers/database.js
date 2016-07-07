@@ -24,8 +24,8 @@ module.exports = {
   import: function (userID, file0, file1, file2) {
     //TODO connect to the API that is being made by Lenhador/CC
 
-    //Error in the files 0 and 2s
-    return {"error":"0,2"};
+    //Error in the files 0 and 2
+    return '{"error":"0,2"}';
   },
   //adminHome
   getLogs: function (userID, limit, page) {

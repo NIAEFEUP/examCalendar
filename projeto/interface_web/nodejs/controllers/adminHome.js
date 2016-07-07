@@ -2,14 +2,11 @@
 // GET
 
 var database = require('./database');
+var shared = require('./shared');
 
 module.exports = {
   getLogs: function (res, userID, limit, page) {
     var logs = database.getLogs(userID, limit, page);
-    var response = {};
-    logs.forEach(function(element, index, array) {
-      response[index] = element;
-    });
-    res.end(response);
+    res.end(shared.arrayToJSON(logs));
   }
 };
