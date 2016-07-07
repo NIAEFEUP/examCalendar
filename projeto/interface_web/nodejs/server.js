@@ -76,17 +76,29 @@ app.get('/notes',function(req,res){
 
 app.put('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.add(req, res);
+	notes.add(req, res, req.body.note);
 });
 
 app.post('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.update(req, res);
+	notes.update(req, res, req.body.noteID, req.body.msg);
 });
 
 app.delete('/notes',function(req,res){
 	res = allowRedirectAnswer(res);
-	notes.remove(req, res);
+	notes.remove(req, res, req.body.noteID);
+});
+
+//////////////////////////////////////////////////////////////////
+//                          Database                            //
+//////////////////////////////////////////////////////////////////
+app.post('/database',function(req,res){
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	var file0 = req.session.file0;
+	var file1 = req.session.file1;
+	var file2 = req.session.file2;
+	importDB.import(res, id, file0, file1, file2);
 });
 
 //////////////////////////////////////////////////////////////////
