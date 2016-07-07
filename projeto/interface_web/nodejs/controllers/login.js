@@ -3,6 +3,7 @@
 //
 // POST
 
+var database = require('./database');
 var async = require('async');
 var https = require('https');
 
@@ -34,15 +35,14 @@ var validate = function (req, res) {
     req.end();
   }];
 
-  //when all the calls are done, this function is called
+  //when all the calls are finished, this function is called
   async.parallel(calls, function(err, result) {
     //return JSON response
     var user = result[0];
     if (user.authenticated) {
-      console.log(user);
       registrated(req, res);
     } else {
-      res.end("{\"authenticated\":false, \"msg\":user.erro_msg}\"");
+      res.end('{"authenticated":false, "msg":user.erro_msg}"');
     }
   });
 };
@@ -50,12 +50,14 @@ var validate = function (req, res) {
 var registrated = function (req, res) {
   var email = req.body.email;
 
-  //TODO add session email if successful
-	/*if (response.authenticated) {
-		sess=req.session;
-		sess.email=req.body.email;
-	}*/
+  //TODO replace messages after addition of the database
+  var id = database.isUser(email);
 
-  //TODO missing database connection
-  res.end("{\"authenticated\":true, \"msg\":\"TODO missing database connection\"}");
+  if (id >= 0) {
+  	req.session.userID = id;
+    res.end('{"authenticated":true, "msg":"TODO missing database connection"}');
+  } else {
+    res.end('{"authenticated":false, "msg":"TODO missing database connection"}');
+  }
+
 };
