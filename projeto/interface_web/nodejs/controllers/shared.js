@@ -10,6 +10,6 @@ module.exports = {
     arrayArg.forEach(function(element, index, array) {
       response[index] = element;
     });
-    return response;
+    return JSON.stringfy(response);
   }
 };
