@@ -136,6 +136,24 @@ app.delete('/constraints',function(req,res){
 });
 
 //////////////////////////////////////////////////////////////////
+//                        Admin Users                           //
+//////////////////////////////////////////////////////////////////
+app.get('/adminUsers',function(req,res){
+ res = allowRedirectAnswer(res);
+ adminUsers.get(res, req.session.userID);
+});
+
+app.post('/adminUsers',function(req,res){
+ res = allowRedirectAnswer(res);
+ adminUsers.add(res, req.session.userID, req.body.email);
+});
+
+app.delete('/adminUsers',function(req,res){
+ res = allowRedirectAnswer(res);
+ adminUsers.remove(res, req.session.userID, req.body.email);
+});
+
+//////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////
 var port = 8888;

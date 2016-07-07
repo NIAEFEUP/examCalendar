@@ -43,5 +43,15 @@ module.exports = {
   },
   removeConstraint: function (userID, constraintID) {
     return false;
+  },
+  //adminUsers
+  getUsers: function (userID) {
+    return [];
+  },
+  addUser: function (userID, email) {
+    return false;
+  },
+  removeUser: function (userID, email) {
+    return false;
   }
 };
