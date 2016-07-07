@@ -41,13 +41,25 @@ console.log(typeof login.bar); // => undefined
 
 var sess;
 
-//TODO the code bellow is not suitable for this project, but is useful as an example. Customize it!
 app.post('/login',function(req,res){
-	sess=req.session;
-	sess.email=req.body.email;
-	res.end('done');
+	res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	login.authenticate(req, res);
 });
 
+app.get('/logout',function(req,res){
+	req.session.destroy(function(err){
+		if(err){
+			console.log(err);
+		}
+		else
+		{
+			res.end('{"authenticated":false}');
+		}
+	});
+});
+
+//TODO the code bellow is not suitable for this project, but is useful as an example. Customize it!
 app.get('/admin',function(req,res){
 	sess=req.session;
 	if(sess.email)
@@ -63,23 +75,9 @@ app.get('/admin',function(req,res){
 
 });
 
-app.get('/logout',function(req,res){
-
-	req.session.destroy(function(err){
-		if(err){
-			console.log(err);
-		}
-		else
-		{
-			res.redirect('/');
-		}
-	});
-
-});
-
 //TODO the code bellow this comment is ready for the project
 
-var port = 3000;
+var port = 8888;
 
 app.listen(port,function(){
 	console.log("Server running on port " + port);
