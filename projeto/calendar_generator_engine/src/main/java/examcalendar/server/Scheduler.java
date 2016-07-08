@@ -30,8 +30,6 @@ public class Scheduler extends Thread {
         System.out.println(solvedExamination);
 
         // TODO export solution to the database and update request with the ending time
-        synchronized (server) {
-            server.notify();
-        }
+        server.notifySchedulerEnd(this);
     }
 }

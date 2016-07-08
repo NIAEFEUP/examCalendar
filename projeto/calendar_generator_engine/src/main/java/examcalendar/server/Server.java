@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -19,7 +20,7 @@ import java.util.concurrent.Semaphore;
  */
 public class Server {
     public static final int MAX_PARALLEL_SCHEDULING = 3;
-    private LinkedBlockingQueue<Object> events;
+    private BlockingQueue<Object> events;
     private Connection conn;
     private boolean running;
     private List<Scheduler> runningSchedulers;
@@ -46,25 +47,33 @@ public class Server {
     }
 
     private void dispatcher() {
+        try {
+            while (canStartNewScheduler()) {
+                    attendNextRequest();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         while (running) {
             try {
-                attendNextRequest();
-
                 // Wait for a new event
                 do {
-                    synchronized (events) {
-                        events.wait();
-                    }
-                    Object event = events.poll();
+                    Object event = events.take(); // Block waiting for a new event
                     if (event instanceof Scheduler) {
                         runningSchedulers.remove(event);
                     }
-                } while (runningSchedulers.size() >= MAX_PARALLEL_SCHEDULING && running); // Keep waiting for an event if too many schedulers are already running
+                } while (canStartNewScheduler()); // Keep waiting for an event if too many schedulers are already running
+
+                attendNextRequest();
             } catch (SQLException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
             }
         }
+    }
+
+    private boolean canStartNewScheduler() {
+        return runningSchedulers.size() >= MAX_PARALLEL_SCHEDULING && running;
     }
 
     /**
@@ -87,8 +96,10 @@ public class Server {
 
     public void stop() {
         running = false;
-        synchronized (events) {
-            events.notify();
-        }
+        events.add(Boolean.FALSE);
+    }
+
+    public void notifySchedulerEnd(Scheduler scheduler) {
+        events.add(scheduler);
     }
 }
