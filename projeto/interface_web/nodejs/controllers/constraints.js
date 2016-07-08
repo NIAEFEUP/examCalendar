@@ -11,7 +11,7 @@ var shared = require('./shared');
 module.exports = {
   get: function (res, userID) {
     var constraints = database.getConstraints(userID, msg);
-    res.end(shared.arrayToJSON(constraints));
+    res.json(shared.arrayToJSON(constraints));
   },
   add: function (res, userID, constraint) {
     //TODO constraint must be looked into

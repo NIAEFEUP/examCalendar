@@ -5,7 +5,7 @@ module.exports = {
   //GET
   get: function (res, userID) {
     var notes = database.getNotes(userID);
-    res.end(shared.arrayToJSON(notes));
+    res.json(shared.arrayToJSON(notes));
   },
   //PUT
   add: function (res, userID, msg) {

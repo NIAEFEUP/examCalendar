@@ -42,7 +42,7 @@ var validate = function (req, res) {
     if (user.authenticated) {
       registrated(req, res);
     } else {
-      res.end('{"authenticated":false, "msg":user.erro_msg}"');
+      res.json({"authenticated":false, "msg":user.erro_msg});
     }
   });
 };
@@ -55,9 +55,9 @@ var registrated = function (req, res) {
 
   if (id >= 0) {
   	req.session.userID = id;
-    res.end('{"authenticated":true, "msg":"TODO missing database connection"}');
+    res.json({"authenticated":true, "msg":"TODO missing database connection"});
   } else {
-    res.end('{"authenticated":false, "msg":"TODO missing database connection"}');
+    res.json({"authenticated":false, "msg":"TODO missing database connection"});
   }
 
 };

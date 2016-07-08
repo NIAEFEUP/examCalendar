@@ -7,6 +7,6 @@ var shared = require('./shared');
 module.exports = {
   getLogs: function (res, userID, limit, page) {
     var logs = database.getLogs(userID, limit, page);
-    res.end(shared.arrayToJSON(logs));
+    res.json(shared.arrayToJSON(logs));
   }
 };

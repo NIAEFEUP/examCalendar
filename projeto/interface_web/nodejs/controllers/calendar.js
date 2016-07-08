@@ -10,7 +10,7 @@ var shared = require('./shared');
 
 module.exports = {
   get: function (res, userID) {
-    res.end(JSON.stringfy({"calendar":database.getCalendar(userID)}));
+    res.json({"calendar":database.getCalendar(userID)});
   },
   import: function (res, userID, calendar) {
     //TODO calendar must be looked into

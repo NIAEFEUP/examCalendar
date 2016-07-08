@@ -9,7 +9,7 @@ var shared = require('./shared');
 module.exports = {
   get: function (res, userID) {
     var users = database.getUsers(userID);
-    res.end(shared.arrayToJSON(users));
+    res.json(users);
   },
   add: function (res, userID, email) {
     database.addUser(userID, email) ? shared.success(res) : shared.error(res);
