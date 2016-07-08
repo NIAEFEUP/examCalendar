@@ -1,8 +1,6 @@
-package examcalendar.server;
+package examcalendar.server.handlers;
 
-import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import examcalendar.optimizer.domain.Professor;
 import examcalendar.optimizer.domain.Room;
 import examcalendar.optimizer.domain.Student;
@@ -15,7 +13,6 @@ import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
-import org.omg.CORBA.Request;
 
 import java.io.File;
 import java.io.IOException;

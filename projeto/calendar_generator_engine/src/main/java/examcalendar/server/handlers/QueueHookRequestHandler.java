@@ -1,4 +1,4 @@
-package examcalendar.server;
+package examcalendar.server.handlers;
 
 /**
  * Created by Gustavo on 06/07/2016.
