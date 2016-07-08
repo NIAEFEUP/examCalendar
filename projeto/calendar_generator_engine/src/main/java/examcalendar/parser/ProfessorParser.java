@@ -57,10 +57,10 @@ public class ProfessorParser extends ExcelParser{
                     professors.put(currProfessorAcronym,currProf);
                 }
 
-                if(currTopic.getRegent() != null){
-                    feedback.addWarning("Um professor já está adicionado a esta UC", row.getRowNum()+"", cell.getColumnIndex()+"");
+                if(currTopic.getRegentList().contains(currProf)){
+                    feedback.addWarning("Este professor já está adicionado a esta UC como regente", row.getRowNum()+"", cell.getColumnIndex()+"");
                 }else{
-                    currTopic.setRegent(currProf);
+                    currTopic.addRegent(currProf);
                 }
             }
         }
@@ -93,8 +93,9 @@ public class ProfessorParser extends ExcelParser{
 
             for (Topic topic : topics) {
                 str.append(topic.getCode() + " " + topic.getName() + "\n");
-                if(topic.getRegent() != null)
-                    str.append(topic.getRegent().getAcronym() + "\n");
+                for (Professor regent : topic.getRegentList()) {
+                    str.append(regent.getAcronym() + " ");
+                }
                 str.append("\n");
             }
 

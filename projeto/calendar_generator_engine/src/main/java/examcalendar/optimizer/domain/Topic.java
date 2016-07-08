@@ -1,6 +1,8 @@
 package examcalendar.optimizer.domain;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,7 +18,7 @@ public class Topic {
 	private String acronym;
 	private String code;
 	private Set<Student> studentList = new HashSet<Student>();
-	private Professor regent;
+	private Set<Professor> regentList = new HashSet<Professor>();
 	private int difficulty = 2;
 
 	public Topic(){}
@@ -88,13 +90,17 @@ public class Topic {
 
 	public void addStudent(Student student) { studentList.add(student); }
 
-	public Professor getRegent() {
-		return regent;
+	public int numStudents() { return studentList.size(); }
+
+	public Set<Professor> getRegentList() {
+		return regentList;
 	}
 
-	public void setRegent(Professor regent) {
-		this.regent = regent;
+	public void setRegentList(Set<Professor> regentList) {
+		this.regentList = regentList;
 	}
+
+	public void addRegent(Professor regent) { regentList.add(regent); }
 
 	@Override
 	public boolean equals(Object o) {

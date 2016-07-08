@@ -51,21 +51,20 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Examination examination = new Examination();
         Connection conn = null;
         try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost/", "postgres", "123456"); // TODO (hardcoded)
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
             RequestConfig requestConfig = readRequestConfig(requestId, conn);
             if (requestConfig == null) return null;
 
             List<Professor> professors = readProfessors(requestConfig.creator, conn);
 
-            List<Topic> topics = readTopics(requestConfig.creator, conn, professors);
+            List<Student> students = readStudents(requestConfig.creator, conn);
+
+            List<Topic> topics = readTopics(requestConfig.creator, conn, students, professors);
             if (topics == null) return null;
 
             List<Exam> exams = readExams(requestConfig.creator, conn, topics);
             if (exams == null) return null;
-
-            List<Student> students = readStudents(requestConfig.creator, conn);
 
             List<Room> rooms = readRooms(requestConfig.creator, conn);
 
@@ -84,9 +83,6 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             examination.setProfessorUnavailableList(professorUnavailables);
             examination.setRoomPeriodList(roomPeriods);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -144,24 +140,13 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return professors;
     }
 
-    private List<Topic> readTopics(int creator, Connection conn, List<Professor> professors) throws SQLException {
+    private List<Topic> readTopics(int creator, Connection conn, List<Student> students, List<Professor> professors) throws SQLException {
         List<Topic> topics = new ArrayList<Topic>();
 
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM topics WHERE creator = ?");
         ps.setInt(1, creator);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            int regentId = rs.getInt("regent");
-            Professor regent = null;
-            for (Professor professor : professors) {
-                if (professor.getId() == regentId) {
-                    regent = professor;
-                    break;
-                }
-            }
-
-            if (regent == null) return null; // Regent does not exist in the database
-
             Topic topic = new Topic();
             topic.setId(rs.getInt("id"));
             topic.setName(rs.getString("name"));
@@ -169,9 +154,23 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             topic.setCode(rs.getString("code"));
             topic.setYear(rs.getInt("year"));
             topic.setDifficulty(rs.getInt("difficulty"));
-            topic.setRegent(regent);
 
             topics.add(topic);
+
+            ps = conn.prepareStatement("SELECT student FROM studenttopic WHERE studenttopic.topic = ?");
+            ps.setInt(1, topic.getId());
+            ResultSet rs2 = ps.executeQuery();
+            while (rs2.next()) {
+                Student student = null;
+                for (Student s : students) {
+                    if (s.getId() == rs2.getInt("student")) {
+                        student = s;
+                        break;
+                    }
+                }
+                if (student == null) return null; // Student not found
+                topic.addStudent(student);
+            }
         }
 
         return topics;
@@ -218,6 +217,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             Student student = new Student();
             student.setName(rs.getString("name"));
             student.setCode(rs.getString("cod"));
+            student.setId(rs.getInt("id"));
             students.add(student);
         }
 

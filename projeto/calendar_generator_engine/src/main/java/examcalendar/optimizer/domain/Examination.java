@@ -88,9 +88,33 @@ public class Examination implements Solution<HardSoftScore> {
 		facts.addAll(periodList);
 		facts.addAll(roomList);
 		facts.addAll(professorUnavailableList);
+		List<TopicConflict> topicConflicts = calculateTopicConflictList();
+		facts.addAll(topicConflicts);
 		facts.add(institutionParametrization);
 
+		System.out.println("Nº topics: " + topicList.size() + " Nº exams: " + examList.size() + " Nº periods: " + periodList.size() + " Nº rooms: " + roomList.size() + " Nº professor unavailabilities: " + professorUnavailableList.size() + " Nº topic conflicts: " + topicConflicts.size());
+
 		return facts;
+	}
+
+	private List<TopicConflict> calculateTopicConflictList() {
+		List<TopicConflict> topicConflictList = new ArrayList<TopicConflict>();
+		for (Topic leftTopic : topicList) {
+			for (Topic rightTopic : topicList) {
+				if (leftTopic.getId() < rightTopic.getId()) {
+					int studentSize = 0;
+					for (Student student : leftTopic.getStudentList()) {
+						if (rightTopic.getStudentList().contains(student)) {
+							studentSize++;
+						}
+					}
+					if (studentSize > 0) {
+						topicConflictList.add(new TopicConflict(leftTopic, rightTopic, studentSize));
+					}
+				}
+			}
+		}
+		return topicConflictList;
 	}
 
 	public List<Period> getPeriodList() {
