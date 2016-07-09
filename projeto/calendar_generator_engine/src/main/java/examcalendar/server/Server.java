@@ -25,21 +25,35 @@ public class Server {
         TERMINATE
     }
     public static final int MAX_PARALLEL_SCHEDULING = 3;
+    public static final int PORT = 8080; // TODO change to 80
+
+    String hostname;
+    String database;
+    String username;
+    String password;
+
     BlockingQueue<Event> events;
     Connection conn;
     volatile boolean running;
     List<Scheduler> runningSchedulers;
     private Thread dispatcherThread;
     public static void main(String[] args) throws IOException, SQLException {
-        Server server = new Server();
+        Server server = new Server("localhost", "test", "root", "");
         server.start();
     }
 
+    public Server(String hostname, String database, String username, String password) {
+        this.hostname = hostname;
+        this.database = database;
+        this.username = username;
+        this.password = password;
+    }
+
     public void start() throws IOException, SQLException {
-        conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+        conn = DriverManager.getConnection("jdbc:mysql://" + hostname + "/" + database + "?serverTimezone=UTC", username, password);
         events = new LinkedBlockingQueue<Event>();
         runningSchedulers = new ArrayList<Scheduler>();
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/parse", new ParseRequestHandler());
         server.createContext("/queuehook", new QueueHookRequestHandler(this));
         server.setExecutor(null);
