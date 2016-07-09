@@ -19,60 +19,37 @@ import java.util.concurrent.Semaphore;
  * Created by Gustavo on 03/07/2016.
  */
 public class Server {
+    public enum Event {
+        SCHEDULER_END,
+        ENQUEUEING,
+        TERMINATE
+    }
     public static final int MAX_PARALLEL_SCHEDULING = 3;
-    private BlockingQueue<Object> events;
-    private Connection conn;
-    private boolean running;
-    private List<Scheduler> runningSchedulers;
+    BlockingQueue<Event> events;
+    Connection conn;
+    volatile boolean running;
+    List<Scheduler> runningSchedulers;
+    private Thread dispatcherThread;
     public static void main(String[] args) throws IOException, SQLException {
         Server server = new Server();
         server.start();
     }
 
-    public Server() {
-
-    }
-
     public void start() throws IOException, SQLException {
         conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
-        events = new LinkedBlockingQueue<Object>();
+        events = new LinkedBlockingQueue<Event>();
         runningSchedulers = new ArrayList<Scheduler>();
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/parse", new ParseRequestHandler());
-        server.createContext("/queuehook", new QueueHookRequestHandler());
+        server.createContext("/queuehook", new QueueHookRequestHandler(this));
         server.setExecutor(null);
+        dispatcherThread = new Thread(new EventDispatcher(this));
         running = true;
+        dispatcherThread.start();
         server.start();
-        dispatcher();
     }
 
-    private void dispatcher() {
-        try {
-            while (canStartNewScheduler()) {
-                    attendNextRequest();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        while (running) {
-            try {
-                // Wait for a new event
-                do {
-                    Object event = events.take(); // Block waiting for a new event
-                    if (event instanceof Scheduler) {
-                        runningSchedulers.remove(event);
-                    }
-                } while (canStartNewScheduler()); // Keep waiting for an event if too many schedulers are already running
-
-                attendNextRequest();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
-    private boolean canStartNewScheduler() {
+    boolean canStartNewScheduler() {
         return runningSchedulers.size() >= MAX_PARALLEL_SCHEDULING && running;
     }
 
@@ -81,7 +58,7 @@ public class Server {
      * @return true if a request has been attended, false otherwise
      * @throws SQLException
      */
-    private boolean attendNextRequest() throws SQLException {
+    boolean attendNextRequest() throws SQLException {
         // Fetch requests from the database (in order)
         PreparedStatement ps = conn.prepareStatement("SELECT id FROM requests" +
                 " WHERE enqueueingTime IS NOT NULL AND startTime IS NULL AND endTime IS NULL ORDER BY enqueueingTime DESC LIMIT 1");
@@ -96,10 +73,14 @@ public class Server {
 
     public void stop() {
         running = false;
-        events.add(Boolean.FALSE);
+        events.add(Event.TERMINATE);
     }
 
-    public void notifySchedulerEnd(Scheduler scheduler) {
-        events.add(scheduler);
+    public void notifyEvent(Event event) {
+        events.add(event);
+    }
+
+    public boolean isRunning() {
+        return this.running;
     }
 }

@@ -12,6 +12,5 @@ public class RequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        //new ParseRequestHandler(conn, t, 1);
     }
 }
