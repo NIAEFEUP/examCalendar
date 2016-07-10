@@ -23,7 +23,7 @@ import java.util.*;
 /**
  * Created by Gustavo on 03/07/2016.
  */
-public class ParseRequestHandler extends RequestHandler {
+public class ParseRequestHandler extends AbstractRequestHandler {
     public static final String TEMP_DIR = "tmp/";
     public ParseRequestHandler() {
     }
