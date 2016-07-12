@@ -22,8 +22,8 @@ public class QueueHookRequestHandler extends AbstractRequestHandler {
         try {
             String method = exchange.getRequestMethod();
             if (method.equals("POST")) {
-                this.sendSuccessResponse(exchange, JSONObject.NULL, 200);
                 server.notifyEvent(Server.Event.ENQUEUEING);
+                this.sendSuccessResponse(exchange, JSONObject.NULL, 200);
             } else {
                 // Method not allowed
                 JSONObject data = new JSONObject();
