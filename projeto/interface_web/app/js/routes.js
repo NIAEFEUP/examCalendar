@@ -1,4 +1,3 @@
-var app = angular.module('ExamCalendar', ['ngRoute']);
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
   .when('/login', {
@@ -21,5 +20,4 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   });
 
   $locationProvider.html5Mode(false);
-
 }]);
