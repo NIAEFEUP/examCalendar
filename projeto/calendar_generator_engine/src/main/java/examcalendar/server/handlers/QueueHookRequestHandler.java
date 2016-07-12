@@ -29,7 +29,7 @@ public class QueueHookRequestHandler extends AbstractRequestHandler {
                 JSONObject data = new JSONObject();
                 data.put("method", "Method \"" + method + "\" not allowed.");
                 exchange.getResponseHeaders().add("Allow", "POST");
-                throw new RequestHandlerFailException(405, data.toString().getBytes());
+                throw new RequestHandlerFailException(405, data);
             }
         } catch (JSONException e) {
             e.printStackTrace();

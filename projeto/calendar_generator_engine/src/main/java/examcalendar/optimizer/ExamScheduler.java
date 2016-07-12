@@ -2,6 +2,7 @@ package examcalendar.optimizer;
 
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
+import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 

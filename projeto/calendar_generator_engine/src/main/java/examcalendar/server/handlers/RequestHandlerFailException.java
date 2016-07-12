@@ -7,17 +7,17 @@ import org.json.JSONObject;
  * Created by Gustavo on 12/07/2016.
  */
 public class RequestHandlerFailException extends RequestHandlerException {
-    private byte[] data;
-    RequestHandlerFailException(int code, byte[] data) {
+    private JSONObject data;
+    RequestHandlerFailException(int code, JSONObject data) {
         super(code);
         this.data = data;
     }
 
-    public byte[] getData() {
+    public JSONObject getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(JSONObject data) {
         this.data = data;
     }
 

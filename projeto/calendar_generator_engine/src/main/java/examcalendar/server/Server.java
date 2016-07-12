@@ -1,6 +1,7 @@
 package examcalendar.server;
 
 import com.sun.net.httpserver.HttpServer;
+import examcalendar.server.handlers.EvaluateRequestHandler;
 import examcalendar.server.handlers.ParseRequestHandler;
 import examcalendar.server.handlers.QueueHookRequestHandler;
 
@@ -56,6 +57,7 @@ public class Server {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/parse", new ParseRequestHandler());
         server.createContext("/queuehook", new QueueHookRequestHandler(this));
+        server.createContext("/evaluate", new EvaluateRequestHandler());
         server.setExecutor(null);
         dispatcherThread = new Thread(new EventDispatcher(this));
         running = true;

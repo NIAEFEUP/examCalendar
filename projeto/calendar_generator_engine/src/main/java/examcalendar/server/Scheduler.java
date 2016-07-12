@@ -2,6 +2,7 @@ package examcalendar.server;
 
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
+import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 
@@ -28,6 +29,7 @@ public class Scheduler extends Thread {
         solvedExamination.removeNullPeriodsExams();
         solvedExamination.sort();
         System.out.println(solvedExamination);
+        System.out.println(EvaluateRequestHandler.evaluateSolution(solvedExamination));
 
         // TODO export solution to the database and update request with the ending time
         server.notifyEvent(Server.Event.SCHEDULER_END);
