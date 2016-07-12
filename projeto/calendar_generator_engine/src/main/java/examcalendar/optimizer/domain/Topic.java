@@ -18,7 +18,7 @@ public class Topic {
 	private String acronym;
 	private String code;
 	private Set<Student> studentList = new HashSet<Student>();
-	private List<Professor> regentList = new ArrayList<Professor>();
+	private Set<Professor> regentList = new HashSet<Professor>();
 	private int difficulty = 2;
 
 	public Topic(){}
@@ -92,11 +92,11 @@ public class Topic {
 
 	public int numStudents() { return studentList.size(); }
 
-	public List<Professor> getRegentList() {
+	public Set<Professor> getRegentList() {
 		return regentList;
 	}
 
-	public void setRegentList(List<Professor> regentList) {
+	public void setRegentList(Set<Professor> regentList) {
 		this.regentList = regentList;
 	}
 
