@@ -9,6 +9,12 @@ import org.json.JSONObject;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLDecoder;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Gustavo on 06/07/2016.
@@ -30,36 +36,6 @@ public abstract class AbstractRequestHandler implements HttpHandler {
         sendResponse(exchange, code, response.toString());
     }
 
-    protected void sendFailResponse(HttpExchange exchange, Object data, int code) throws IOException {
-        JSONObject response = new JSONObject();
-        try {
-            response.put("status", "fail");
-            response.put("data", data);
-        } catch (JSONException e) {
-            throw new AssertionError();
-        }
-        exchange.getResponseHeaders().add("Content-Type:", "application/json");
-        sendResponse(exchange, code, response.toString());
-    }
-
-    protected void sendErrorResponse(HttpExchange exchange, String message, int code) throws IOException {
-        sendErrorResponse(exchange, message, null, code);
-    }
-
-    protected void sendErrorResponse(HttpExchange exchange, String message, byte[] data, int code) throws IOException {
-        JSONObject response = new JSONObject();
-        try {
-            response.put("status", "error");
-            response.put("message", message);
-            if (data != null)
-                response.put("data", data);
-        } catch (JSONException e) {
-            throw new AssertionError();
-        }
-        exchange.getResponseHeaders().add("Content-Type:", "application/json");
-        sendResponse(exchange, code, response.toString());
-    }
-
     protected void sendResponse(HttpExchange exchange, int code, byte[] data) throws IOException {
         exchange.sendResponseHeaders(code, data.length);
         OutputStream os = new BufferedOutputStream(exchange.getResponseBody());
@@ -70,5 +46,16 @@ public abstract class AbstractRequestHandler implements HttpHandler {
 
     private void sendResponse(HttpExchange exchange, int code, String message) throws IOException {
         sendResponse(exchange, code, message.getBytes());
+    }
+
+    protected Map<String, String> parseQueryParams(URI uri) throws UnsupportedEncodingException {
+        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+        String query = uri.getQuery();
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf("=");
+            query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+        }
+        return query_pairs;
     }
 }
