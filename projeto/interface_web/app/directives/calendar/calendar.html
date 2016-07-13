@@ -1,0 +1,46 @@
+<!-- TODO There's a calendar JSON example in the root directory. Requires parsing. -->
+
+<table class="calendar-table" ng-repeat="week in weeks">
+    <tr class="row-head">
+      <td class="elem-empty redips-mark"></td>
+      <td class="redips-mark">Monday</td>
+      <td class="redips-mark">Tuesday</td>
+      <td class="redips-mark">Wednesday</td>
+      <td class="redips-mark">Thursday</td>
+      <td class="redips-mark">Friday</td>
+      <td class="redips-mark">Saturday</td>
+    </tr>
+
+    <tr class="row-dates">
+      <td class="elem-empty redips-mark"></td>
+      <td class="redips-mark" ng-repeat="day in week.dates">
+        <b>{{day}}</b>
+      </td>
+    </tr>
+
+    <tr class="row-type1">
+      <td class="elem-time-interval redips-mark"><b>09h00 - 12h00</b></td>
+      <td ng-repeat="mornings in week.periods.mornings">
+        <div ng-repeat="lecture in mornings" ng-click="modal(lecture.id)" class="redips-drag t1">
+          {{lecture.name}}
+        </div>
+      </td>
+    </tr>
+
+    <tr class="row-type2">
+      <td class="elem-time-interval redips-mark"><b>13h30 - 16h30</b></td>
+      <td ng-repeat="afternoons in week.periods.afternoons">
+        <div ng-repeat="lecture in afternoons" ng-click="modal(lecture.id)" class="redips-drag t1">
+          {{lecture.name}}
+        </div>
+      </td>
+    </tr>
+    <tr class="row-type1">
+      <td class="elem-time-interval redips-mark"><b>17h00 - 20h00</b></td>
+      <td ng-repeat="evenings in week.periods.evenings">
+        <div ng-repeat="lecture in evenings" ng-click="modal(lecture.id)" class="redips-drag t1">
+          {{lecture.name}}
+        </div>
+      </td>
+    </tr>
+</table>

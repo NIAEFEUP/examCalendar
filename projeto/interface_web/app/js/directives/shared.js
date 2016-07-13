@@ -11,13 +11,3 @@ app.directive('usersHeader', function() {
     templateUrl: 'directives/usersHeader.html'
   };
 });
-
-app.directive('calendar', function() {
-  return {
-    restrict : 'E',
-    templateUrl: 'directives/calendar.html',
-    link: function (scope, element, attrs) {
-      REDIPS.drag.init();
-    }
-  };
-});

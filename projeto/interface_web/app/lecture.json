@@ -1,0 +1,61 @@
+{
+  "shortname": "IART",
+  "name": "Inteligência Artificial",
+  "date": "July 1",
+  "hour": "09:00 - 12:00",
+  "students": 100,
+  "professors": ["Professor1", "Professor2", "Professor3"],
+  "classrooms": {
+    "no_pc": [{
+      "id": 1,
+      "name": "B001",
+      "checked": true
+    },
+    {
+      "id": 2,
+      "name": "B002",
+      "checked": false
+    },
+    {
+      "id": 3,
+      "name": "B003",
+      "checked": true
+    },
+    {
+      "id": 4,
+      "name": "B004",
+      "checked": false
+    },
+    {
+      "id": 5,
+      "name": "B005",
+      "checked": true
+    }],
+
+    "pc": [{
+      "id": 6,
+      "name": "B315",
+      "checked": false
+    },
+    {
+      "id": 7,
+      "name": "B316",
+      "checked": true
+    },
+    {
+      "id": 8,
+      "name": "B317",
+      "checked": false
+    },
+    {
+      "id": 9,
+      "name": "B318",
+      "checked": true
+    },
+    {
+      "id": 10,
+      "name": "B319",
+      "checked": false
+    }]
+  }
+}
