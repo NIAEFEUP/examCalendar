@@ -9,6 +9,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   .when('/constraints', {
     templateUrl: 'views/constraints/'
   })
+  .when('/importDatabase', {
+    templateUrl: 'views/importDatabase/'
+  })
   .when('/adminHome', {
     templateUrl: 'views/adminHome/'
   })
