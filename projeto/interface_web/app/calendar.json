@@ -1,0 +1,68 @@
+{
+  "weeks": [
+    [
+      {
+        "date": "July 1",
+        "period1": [{"id": 0, "name": "IART (R)"}, {"id": 1, "name": "SDIS (N)"}],
+        "period2": [{"id": 2, "name": "COMP (N)"}],
+        "period3": []
+      },
+      {
+        "date": "July 2",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 3",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 4",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 5",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      }
+    ],
+    [
+      {
+        "date": "July 8",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 9",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 10",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 11",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      },
+      {
+        "date": "July 12",
+        "period1": [],
+        "period2": [],
+        "period3": []
+      }
+    ]
+    ]
+}
