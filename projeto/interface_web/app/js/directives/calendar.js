@@ -1,25 +1,18 @@
-app.directive('usersSidebar', function() {
-  return {
-    restrict : 'E',
-    templateUrl: 'directives/usersSidebar.html'
-  };
-});
-
-app.directive('usersHeader', function() {
-  return {
-    restrict : 'E',
-    templateUrl: 'directives/usersHeader.html'
-  };
-});
-
 app.directive('calendar', function($timeout) {
   return {
     restrict : 'E',
-    templateUrl: 'directives/calendar.html',
+    templateUrl: 'directives/calendar/calendar.html',
     link: function (scope, element, attrs) {
       $timeout(function() {
         REDIPS.drag.init();
       });
     }
+  };
+});
+
+app.directive('modal', function($timeout) {
+  return {
+    restrict : 'E',
+    templateUrl: 'directives/calendar/modal.html'
   };
 });

@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="directives/calendar/modal.css">
+
+<div id="examInformation" class="modal fade" role="dialog">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content" id="examModal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">{{lecture.shortname}}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <p><b>Exam Name:</b> {{lecture.name}}</p>
+            <p><b>Date:</b> {{lecture.date}}</p>
+            <p><b>Hour:</b> {{lecture.hour}}</p>
+            <p><b>Students:</b> {{lecture.students}}</p>
+            <p><b>Professors:</b> {{lecture.professors.join(', ')}} </p>
+            <p><b>Classrooms:</b></p>
+          </div>
+          <div class="col-12 col-sm-6">
+            <p id="withoutPC">Without PC's</p>
+            <div class="input-group" ng-repeat="room in lecture.classrooms.no_pc">
+              <span class="input-group-addon">
+                <input type="checkbox" ng-checked="{{room.checked}}">
+              </span>
+              <input class="form-control" type="text" value="{{room.name}}" readonly>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6">
+            <p id="withoutPC">With PC's</p>
+            <div class="input-group" ng-repeat="room in lecture.classrooms.pc">
+              <span class="input-group-addon">
+                <input type="checkbox" ng-checked="{{room.checked}}">
+              </span>
+              <input class="form-control" type="text" value="{{room.name}}" readonly>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>
