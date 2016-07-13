@@ -6,8 +6,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   .when('/calendar', {
     templateUrl: 'views/calendarOverview/'
   })
-  .when('/constrains', {
-    templateUrl: 'views/constrains/'
+  .when('/constraints', {
+    templateUrl: 'views/constraints/'
   })
   .when('/adminHome', {
     templateUrl: 'views/adminHome/'
