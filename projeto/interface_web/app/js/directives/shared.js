@@ -1,13 +1,13 @@
 app.directive('usersSidebar', function() {
   return {
     restrict : 'E',
-    templateUrl: 'directives/usersSidebar.html'
+    templateUrl: 'directives/shared/usersSidebar.html'
   };
 });
 
 app.directive('usersHeader', function() {
   return {
     restrict : 'E',
-    templateUrl: 'directives/usersHeader.html'
+    templateUrl: 'directives/shared/usersHeader.html'
   };
 });
