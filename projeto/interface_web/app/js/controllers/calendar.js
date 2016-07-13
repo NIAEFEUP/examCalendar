@@ -7,6 +7,7 @@ app.controller('CalendarController', ['$scope', 'calendar', 'modal', function($s
     //TODO pass id as argument
      modal.get('lecture').success(function(data) {
       $scope.lecture = data;
+      $('#examInformation').modal('show');
     });
   };
 }]);
