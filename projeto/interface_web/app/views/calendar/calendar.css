@@ -1,7 +1,7 @@
 #examCalendar {
 	margin: auto;
 	margin-top: 10%;
-	width: 100%;
+	width: 90%;
 }
 
 #examCalendar h1 {
@@ -111,4 +111,8 @@
 
 #d1:hover {
 	background-color: #ccfff3 !important;
+}
+
+.row {
+	margin-right: 0 !important;
 }

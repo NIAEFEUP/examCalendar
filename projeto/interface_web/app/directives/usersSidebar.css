@@ -1,10 +1,12 @@
 #sidebar-wrapper{
   float: left;
-	margin: 0;
-	width: 75%;;
   height: 100vh;
   background-color: #3973ac;
   -webkit-transition: all 0.5s ease;
+  position: fixed;
+	width: 18%;
+  margin-top: 50px;
+  z-index: 1;
 }
 
 .sidebar-nav {
