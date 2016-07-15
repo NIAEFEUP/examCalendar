@@ -24,10 +24,6 @@
 	background-color: #132639;
 }
 
-.row-dates {
-	background-color: #00cc99;
-}
-
 .row-type1 {
 	background-color: #eee;
 }
@@ -148,9 +144,9 @@
 }
 
 .normalSeason {
-	color: orange;
+	background-color: orange;
 }
 
 .appealSeason {
-	color: white;
+	background-color: grey;
 }

@@ -9,10 +9,10 @@
       <td class="redips-mark">Saturday</td>
     </tr>
 
-    <tr class="row-dates">
+    <tr>
       <td class="elem-empty redips-mark"></td>
-      <td class="redips-mark" ng-repeat="day in week.dates">
-        <div class="{{($parent.$index * 7 + $index) < normalDays ? 'normalSeason' : 'appealSeason'}}"><b>{{day}}</b></div>
+      <td class="redips-mark {{($parent.$index * 7 + $index) < normalDays ? 'normalSeason' : 'appealSeason'}}" ng-repeat="day in week.dates">
+        <b>{{day}}</b>
       </td>
     </tr>
 
