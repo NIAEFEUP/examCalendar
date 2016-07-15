@@ -7,16 +7,12 @@ function change_autorefreshdiv(){
 					document.getElementById("export_button").style.display = "inline";
 					document.getElementById("import_button").style.display = "inline";
 					document.getElementById("validate_button").style.display = "inline";
-					document.getElementById("generate_button").style.display = "inline";
-					document.getElementById("optimize_button").style.display = "inline";
     } else {
         NAME.className = "fa fa-cog fa-3x fa-fw";  // Otherwise, use `second_name`
 
 						document.getElementById("export_button").style.display = "none";
 						document.getElementById("import_button").style.display = "none";
 						document.getElementById("validate_button").style.display = "none";
-						document.getElementById("generate_button").style.display = "none";
-						document.getElementById("optimize_button").style.display = "none";
     }
 }
 

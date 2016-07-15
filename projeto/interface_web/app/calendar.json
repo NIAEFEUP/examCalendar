@@ -6,7 +6,7 @@
       ],
       "periods": {
         "mornings": [
-          [{"id": 0, "name": "IART (R)"}, {"id": 1, "name": "SDIS (N)"}],
+          [{"id": 0, "name": "IART (R)", "year": 1}, {"id": 1, "name": "SDIS (N)", "year": 2}],
           [],
           [],
           [],
@@ -14,7 +14,7 @@
           []
         ],
         "afternoons": [
-          [{"id": 2, "name": "COMP (N)"}],
+          [{"id": 2, "name": "COMP (N)", "year": 3}],
           [],
           [],
           [],
@@ -37,7 +37,7 @@
       ],
       "periods": {
         "mornings": [
-          [{"id": 0, "name": "IART (R)"}, {"id": 1, "name": "SDIS (N)"}],
+          [{"id": 0, "name": "IART (N)", "year": 1}, {"id": 1, "name": "SDIS (R)", "year": 2}],
           [],
           [],
           [],
@@ -45,7 +45,7 @@
           []
         ],
         "afternoons": [
-          [{"id": 2, "name": "COMP (N)"}],
+          [{"id": 2, "name": "COMP (R)", "year": 3}],
           [],
           [],
           [],
@@ -64,8 +64,8 @@
     }
   ],
   "unassigneds": [
-    {"id": 3, "name": "LBAW (R)"},
-    {"id": 4, "name": "LBAW (N)"}
+    {"id": 3, "name": "LBAW (R)", "year": 4},
+    {"id": 4, "name": "LBAW (N)", "year": 4}
   ],
   "classrooms": {
     "no_pc": [{

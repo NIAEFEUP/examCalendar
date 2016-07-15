@@ -21,6 +21,7 @@
             <p><b>Professors:</b> {{lecture.professors.join(', ')}} </p>
             <p><b>Classrooms:</b></p>
           </div>
+          <!-- TODO @Marcelo está o mesmo id para os dois "p"-->
           <div class="col-12 col-sm-6">
             <p id="withoutPC">Without PC's</p>
             <div class="input-group" ng-repeat="room in classrooms.no_pc">
@@ -40,6 +41,7 @@
               <input class="form-control" type="text" value="{{room.name}}" readonly>
             </div>
           </div>
+
         </div>
       </div>
     </div>

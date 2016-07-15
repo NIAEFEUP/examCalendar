@@ -19,7 +19,7 @@
     <tr class="row-type1">
       <td class="elem-time-interval redips-mark"><b>09h00 - 12h00</b></td>
       <td ng-repeat="mornings in week.periods.mornings">
-        <div ng-repeat="lecture in mornings" ng-click="modal(lecture.id)" class="redips-drag t1">
+        <div ng-repeat="lecture in mornings" ng-click="modal(lecture.id)" class="redips-drag year{{lecture.year}}">
           {{lecture.name}}
         </div>
       </td>
@@ -28,7 +28,7 @@
     <tr class="row-type2">
       <td class="elem-time-interval redips-mark"><b>13h30 - 16h30</b></td>
       <td ng-repeat="afternoons in week.periods.afternoons">
-        <div ng-repeat="lecture in afternoons" ng-click="modal(lecture.id)" class="redips-drag t1">
+        <div ng-repeat="lecture in afternoons" ng-click="modal(lecture.id)" class="redips-drag year{{lecture.year}}">
           {{lecture.name}}
         </div>
       </td>
@@ -37,7 +37,7 @@
     <tr class="row-type1">
       <td class="elem-time-interval redips-mark"><b>17h00 - 20h00</b></td>
       <td ng-repeat="evenings in week.periods.evenings">
-        <div ng-repeat="lecture in evenings" ng-click="modal(lecture.id)" class="redips-drag t1">
+        <div ng-repeat="lecture in evenings" ng-click="modal(lecture.id)" class="redips-drag year{{lecture.year}}">
           {{lecture.name}}
         </div>
       </td>
