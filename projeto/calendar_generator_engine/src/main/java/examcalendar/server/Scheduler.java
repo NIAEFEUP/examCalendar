@@ -1,6 +1,7 @@
 package examcalendar.server;
 
 import examcalendar.optimizer.domain.Examination;
+import examcalendar.optimizer.persistence.ExaminationDBExporter;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
 import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
@@ -32,6 +33,7 @@ public class Scheduler extends Thread {
         System.out.println(EvaluateRequestHandler.evaluateSolution(solvedExamination));
 
         // TODO export solution to the database and update request with the ending time
+        new ExaminationDBExporter(true).writeSolution(solvedExamination, requestID);
         server.notifyEvent(Server.Event.SCHEDULER_END);
     }
 }

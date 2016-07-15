@@ -41,31 +41,6 @@ public class Examination implements Solution<HardSoftScore> {
 		return this.examList;
 	}
 
-	@ValueRangeProvider(id = "normalExamRange")
-	public List<Exam> getNormalExamList() {
-		List<Exam> l = new ArrayList<Exam>(this.examList);
-		for (Iterator<Exam> iter = l.listIterator(); iter.hasNext(); ) {
-			Exam a = iter.next();
-			if (!a.isNormal()) {
-				iter.remove();
-			}
-		}
-        System.exit(0);
-		return l;
-	}
-
-	@ValueRangeProvider(id = "appealExamRange")
-	public List<Exam> getAppealExamList() {
-		List<Exam> l = new ArrayList<Exam>(this.examList);
-		for (Iterator<Exam> iter = l.listIterator(); iter.hasNext(); ) {
-			Exam a = iter.next();
-			if (!a.isAppeal()) {
-				iter.remove();
-			}
-		}
-		return l;
-	}
-
 	public void setExamList(List<Exam> periodList) {
 		this.examList = periodList;
 	}
