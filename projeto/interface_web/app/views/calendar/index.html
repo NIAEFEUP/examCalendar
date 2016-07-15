@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="views/calendar/calendar.css">
-<link rel="stylesheet" href="shared/adminListing.css">
+<link rel="stylesheet" href="directives/shared/adminListing.css">
 
 <users-header></users-header>
 
-<div class="row">
+<div id="redips-drag" class="row">
 
   <users-sidebar class="col-12 col-sm-3"></users-sidebar>
 
@@ -13,9 +13,10 @@
       <h1>Exam Calendar</h1>
       <hr>
 
-      <div id="redips-drag">
+      <div id="calendar_div">
         <calendar></calendar>
       </div>
+
     </div>
   </div>
 
@@ -27,6 +28,8 @@
     <button type="button" class="btn btn-success" id="generate_button">Generate Calendar</button><br>
     <button type="button" class="btn btn-danger" id="optimize_button">Optimize Calendar</button><br>
   </div>
+
+  <unassigned></unassigned>
 
 </div>
 

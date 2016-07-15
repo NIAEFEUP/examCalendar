@@ -45,7 +45,7 @@
 	background-color: #00cc99;
 }
 
-#redips-drag {
+#calendar_div {
 	margin: auto;
 	width: 50%;
 }
@@ -65,11 +65,15 @@
 	-moz-border-radius: 4px;
 }
 
-.t1 {
+.t1, .unassigned-body, .unassigned-header {
 	border: 2px solid #132639;
 }
 
-#redips-drag td {
+.unassigned-body {
+	height: 25px;
+}
+
+#calendar_div td {
 	height: 32px;
 	border: 2px solid #132639;
 	text-align: center;
@@ -78,7 +82,7 @@
 	width: 130px !important;
 }
 
-#redips-drag {
+#calendar_div {
 	margin: auto;
 	width: 120%;
 	margin-left: -70px;
@@ -101,6 +105,7 @@
 #right_buttons {
 	text-align: center;
 	margin-top: 7.5%;
+	clear: right;
 }
 
 #right_buttons button{
