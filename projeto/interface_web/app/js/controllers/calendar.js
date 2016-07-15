@@ -4,7 +4,6 @@ app.controller('CalendarController', ['$scope', 'calendar', 'modal', function($s
     $scope.unassigneds = data.unassigneds;
     $scope.classrooms = data.classrooms;
     $scope.normalDays = 2 * Math.trunc(data.normalSeasonDays / 2);
-    console.log($scope.normalDays);
   });
 
   $scope.modal = function(id) {
