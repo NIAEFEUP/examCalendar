@@ -146,3 +146,11 @@
 .year5 {
 	border-color: black;
 }
+
+.normalSeason {
+	color: orange;
+}
+
+.appealSeason {
+	color: white;
+}
