@@ -77,18 +77,18 @@ public class Server {
     boolean attendNextRequest() throws SQLException {
         System.out.println("Searching for a new request...");
         // Fetch requests from the database (in order)
-        PreparedStatement ps = conn.prepareStatement("SELECT id FROM requests" +
+        PreparedStatement ps = conn.prepareStatement("SELECT id FROM calendars" +
                 " WHERE enqueueingTime IS NOT NULL AND startTime IS NULL AND endTime IS NULL ORDER BY enqueueingTime DESC LIMIT 1");
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            int requestID = rs.getInt("id");
-            Scheduler scheduler = new Scheduler(this, requestID);
+            int calendarID = rs.getInt("id");
+            Scheduler scheduler = new Scheduler(this, calendarID);
             runningSchedulers.add(scheduler);
+            System.out.println("Building calendar #" + calendarID + ".");
             scheduler.start();
-            System.out.println("Attending request #" + requestID + ".");
             return true;
         }
-        System.out.println("No requests found in the waiting queue.");
+        System.out.println("No calendars found in the waiting queue.");
         return false;
     }
 

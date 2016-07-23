@@ -47,34 +47,34 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return readSolution(id);
     }
 
-    public Examination readSolution(int requestId) {
+    public Examination readSolution(int calendar) {
         Examination examination = new Examination();
         Connection conn = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
-            RequestConfig requestConfig = readRequestConfig(requestId, conn);
+            RequestConfig requestConfig = readRequestConfig(calendar, conn);
             if (requestConfig == null) return null;
 
-            List<Professor> professors = readProfessors(requestConfig.creator, conn);
+            List<Professor> professors = readProfessors(requestConfig.calendar, conn);
 
-            List<Student> students = readStudents(requestConfig.creator, conn);
+            List<Student> students = readStudents(requestConfig.calendar, conn);
 
-            List<Topic> topics = readTopics(requestConfig.creator, conn, students, professors);
+            List<Topic> topics = readTopics(requestConfig.calendar, conn, students, professors);
             if (topics == null) return null;
 
-            List<Exam> exams = readExams(requestConfig.creator, conn, topics);
+            List<Exam> exams = readExams(requestConfig.calendar, conn, topics);
             if (exams == null) return null;
 
-            List<Room> rooms = readRooms(requestConfig.creator, conn);
+            List<Room> rooms = readRooms(requestConfig.calendar, conn);
 
             List<Period> periods = generatePeriods(requestConfig);
 
-            List<ProfessorUnavailable> professorUnavailables = readProfessorUnavailables(requestConfig.creator, conn, requestConfig.startingDate, periods, professors);
+            List<ProfessorUnavailable> professorUnavailables = readProfessorUnavailables(requestConfig.calendar, conn, requestConfig.startingDate, periods, professors);
             if (professorUnavailables == null) return null;
 
             List<RoomPeriod> roomPeriods = generateRoomPeriods(rooms, periods);
-            removeUnavailableRoomPeriods(requestConfig.creator, conn, roomPeriods);
+            removeUnavailableRoomPeriods(requestConfig.calendar, conn, roomPeriods);
 
             examination.setTopicList(topics);
             examination.setExamList(exams);
@@ -99,17 +99,17 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return examination;
     }
 
-    private RequestConfig readRequestConfig(int requestId, Connection conn) throws SQLException {
+    private RequestConfig readRequestConfig(int calendar, Connection conn) throws SQLException {
         RequestConfig rc = new RequestConfig();
         InstitutionParametrization ip = new InstitutionParametrization();
         rc.institutionParametrization = ip;
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM requests WHERE id = ?");
-        ps.setInt(1, requestId);
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM calendars WHERE id = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         if (!rs.next()) return null;
 
-        rc.creator = rs.getInt("creator");
+        rc.calendar = calendar;
         rc.timeout = rs.getInt("timeout");
         rc.normalSeasonDuration = rs.getInt("normalSeasonDuration");
         rc.appealSeasonDuration = rs.getInt("appealSeasonDuration");
@@ -122,11 +122,11 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return rc;
     }
 
-    private List<Professor> readProfessors(int creator, Connection conn) throws SQLException {
+    private List<Professor> readProfessors(int calendar, Connection conn) throws SQLException {
         List<Professor> professors = new ArrayList<Professor>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM professors WHERE creator = ?");
-        ps.setInt(1, creator);
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM professors WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Professor professor = new Professor();
@@ -140,11 +140,11 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return professors;
     }
 
-    private List<Topic> readTopics(int creator, Connection conn, List<Student> students, List<Professor> professors) throws SQLException {
+    private List<Topic> readTopics(int calendar, Connection conn, List<Student> students, List<Professor> professors) throws SQLException {
         List<Topic> topics = new ArrayList<Topic>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM topics WHERE creator = ?");
-        ps.setInt(1, creator);
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM topics WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Topic topic = new Topic();
@@ -176,11 +176,11 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return topics;
     }
 
-    private List<Exam> readExams(int creator, Connection conn, List<Topic> topics) throws SQLException {
+    private List<Exam> readExams(int calendar, Connection conn, List<Topic> topics) throws SQLException {
         List<Exam> exams = new ArrayList<Exam>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT *, (SELECT count(*) FROM studenttopic WHERE studenttopic.topic = exams.topic) AS numStudents FROM exams WHERE creator = ?");
-        ps.setInt(1, creator);
+        PreparedStatement ps = conn.prepareStatement("SELECT *, (SELECT count(*) FROM studenttopic WHERE studenttopic.topic = exams.topic) AS numStudents FROM exams WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Exam exam = new Exam();
@@ -208,11 +208,11 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return exams;
     }
 
-    private List<Student> readStudents(int creator, Connection conn) throws SQLException {
+    private List<Student> readStudents(int calendar, Connection conn) throws SQLException {
         List<Student> students = new ArrayList<Student>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM students WHERE creator = ?");
-        ps.setInt(1, creator);
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM students WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Student student = new Student();
@@ -225,11 +225,11 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return students;
     }
 
-    private List<Room> readRooms(int creator, Connection conn) throws SQLException {
+    private List<Room> readRooms(int calendar, Connection conn) throws SQLException {
         List<Room> rooms = new ArrayList<Room>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM rooms WHERE creator = ?");
-        ps.setInt(1, creator);
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM rooms WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Room room = new Room(rs.getString("cod"), rs.getInt("capacity"), rs.getBoolean("pc"));
@@ -278,9 +278,9 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return roomPeriods;
     }
 
-    private void removeUnavailableRoomPeriods(int creator, Connection conn, List<RoomPeriod> roomPeriods) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM roomPeriodUnavailable WHERE creator = ?");
-        ps.setInt(1, creator);
+    private void removeUnavailableRoomPeriods(int calendar, Connection conn, List<RoomPeriod> roomPeriods) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM roomPeriodUnavailable WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             int roomId = rs.getInt("room");
@@ -296,11 +296,11 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         }
     }
 
-    private List<ProfessorUnavailable> readProfessorUnavailables(int creator, Connection conn, java.util.Date startingDay, List<Period> periods, List<Professor> professors) throws SQLException {
+    private List<ProfessorUnavailable> readProfessorUnavailables(int calendar, Connection conn, java.util.Date startingDay, List<Period> periods, List<Professor> professors) throws SQLException {
         ArrayList<ProfessorUnavailable> professorUnavailables = new ArrayList<ProfessorUnavailable>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM professorunavailable WHERE creator = ?");
-        ps.setInt(1, creator);
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM professorunavailable WHERE calendar = ?");
+        ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             ProfessorUnavailable professorUnavailable = new ProfessorUnavailable();

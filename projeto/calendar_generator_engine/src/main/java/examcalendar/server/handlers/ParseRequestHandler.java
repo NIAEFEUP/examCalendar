@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.sql.Date;
 import java.util.*;
 
 /**
@@ -32,21 +33,21 @@ public class ParseRequestHandler extends AbstractRequestHandler {
     public ParseRequestHandler() {
     }
 
-    private UCMapParser ucMapFileHandler(Connection conn, HttpExchange httpExchange, int clientID, File file) throws SQLException {
+    private UCMapParser ucMapFileHandler(Connection conn, HttpExchange httpExchange, File file) throws SQLException {
         UCMapParser ucMapParser = new UCMapParser(file.getPath());
         ucMapParser.generate();
         file.delete();
         return ucMapParser;
     }
 
-    private ProfessorParser professorsFileHandler(Connection conn, HttpExchange httpExchange, int clientID, File file, Set<Topic> topics) {
+    private ProfessorParser professorsFileHandler(Connection conn, HttpExchange httpExchange, File file, Set<Topic> topics) {
         ProfessorParser professorParser = new ProfessorParser(file.getPath(), topics);
         professorParser.generate();
         file.delete();
         return professorParser;
     }
 
-    private RoomsParser roomsFileHandler(Connection conn, HttpExchange httpExchange, int clientID, File file) throws SQLException {
+    private RoomsParser roomsFileHandler(Connection conn, HttpExchange httpExchange, File file) throws SQLException {
         RoomsParser roomsParser = new RoomsParser(file.getPath());
         roomsParser.generate();
         file.delete();
@@ -135,6 +136,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 if (files == null) return;
 
                 int clientID = 1; // TODO
+                Date date = new Date(new java.util.Date().getTime()); // TODO
 
                 UCMapParser ucMapParser = null;
                 ProfessorParser professorParser = null;
@@ -144,7 +146,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 if (files.get(0) == null) {
                     data.put("ucmap", "UC Map file is missing.");
                 } else {
-                    ucMapParser = ucMapFileHandler(conn, httpExchange, clientID, files.get(0));
+                    ucMapParser = ucMapFileHandler(conn, httpExchange, files.get(0));
                     data.put("ucmap", new JSONObject(ucMapParser.getFeedback()));
                 }
 
@@ -154,7 +156,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                     if (ucMapParser == null) {
                         data.put("professors", "Cannot load the professors file without the UC Map file.");
                     } else {
-                        professorParser = professorsFileHandler(conn, httpExchange, clientID, files.get(1), ucMapParser.getTopics());
+                        professorParser = professorsFileHandler(conn, httpExchange, files.get(1), ucMapParser.getTopics());
                         data.put("professors", new JSONObject(professorParser.getFeedback()));
                     }
                 }
@@ -162,7 +164,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 if (files.get(2) == null) {
                     data.put("rooms", "Rooms file is missing.");
                 } else {
-                    roomsParser = roomsFileHandler(conn, httpExchange, clientID, files.get(2));
+                    roomsParser = roomsFileHandler(conn, httpExchange, files.get(2));
                     data.put("rooms", new JSONObject(roomsParser.getFeedback()));
                 }
 
@@ -172,7 +174,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                     Set<Topic> topics = ucMapParser.getTopics();
                     Hashtable<String, Professor> professors = professorParser.getProfessors();
                     Hashtable<String, Room> rooms = roomsParser.getRooms();
-                    insertDataInDB(conn, clientID, students, topics, professors, rooms);
+                    insertDataInDB(conn, clientID, date, students, topics, professors, rooms);
                     this.sendSuccessResponse(httpExchange, data, 200);
                 } else {
                     throw new RequestHandlerFailException(400, data);
@@ -188,17 +190,17 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    private boolean insertDataInDB(Connection conn, int clientID, Hashtable<String, Student> students, Set<Topic> topics, Hashtable<String, Professor> professors, Hashtable<String, Room> rooms) {
+    private boolean insertDataInDB(Connection conn, int clientID, Date startingDate, Hashtable<String, Student> students, Set<Topic> topics, Hashtable<String, Professor> professors, Hashtable<String, Room> rooms) {
         try {
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE); // TODO think if we really need this to be serializable
-            emptyDB(conn, clientID);
-            insertProfessorsInDB(conn, clientID, professors);
-            insertTopicsInDB(conn, clientID, topics);
-            insertExamsInDB(conn, clientID, topics);
-            insertStudentsInDB(conn, clientID, students);
-            insertStudentTopicAssociationsInDB(conn, clientID, topics);
-            insertRoomsInDB(conn, clientID, rooms);
+            int calendarID = resetCalendar(conn, clientID, startingDate);
+            insertProfessorsInDB(conn, calendarID, professors);
+            insertTopicsInDB(conn, calendarID, topics);
+            insertExamsInDB(conn, calendarID, topics);
+            insertStudentsInDB(conn, calendarID, students);
+            insertStudentTopicAssociationsInDB(conn, calendarID, topics);
+            insertRoomsInDB(conn, calendarID, rooms);
             conn.commit();
             return true;
         } catch (SQLException e) {
@@ -218,34 +220,38 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         return false;
     }
 
-    private void emptyDB(Connection conn, int clientID) throws SQLException {
-        String[] tables = { "exams", "topics", "students", "rooms" };
-        for (String table : tables) {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM " + table + " WHERE creator = ?");
-            ps.setInt(1, clientID);
-            ps.execute();
-        }
+    private int resetCalendar(Connection conn, int clientID, Date startingDate) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM calendars WHERE creator = ?");
+        ps.setInt(1, clientID);
+        ps.execute();
+        ps = conn.prepareStatement("INSERT INTO calendars (creator, startingDate) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+        ps.setInt(1, clientID);
+        ps.setDate(2, startingDate);
+        ps.execute();
+        ResultSet rs = ps.getGeneratedKeys();
+        rs.next();
+        return rs.getInt(1);
     }
 
-    private void insertProfessorsInDB(Connection conn, int clientID, Hashtable<String, Professor> professors) throws SQLException {
+    private void insertProfessorsInDB(Connection conn, int calendar, Hashtable<String, Professor> professors) throws SQLException {
         Iterator<Map.Entry<String, Professor>> it = professors.entrySet().iterator();
         while (it.hasNext()) {
             Professor professor = it.next().getValue();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO professors (creator, name, acronym, cod) VALUES (?, ?, ?, ?)");
-            ps.setInt(1, clientID);
-            ps.setString(2, professor.getAcronym()); // TODO
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO professors (calendar, name, acronym, cod) VALUES (?, ?, ?, ?)");
+            ps.setInt(1, calendar);
+            ps.setString(2, professor.getName());
             ps.setString(3, professor.getAcronym());
-            ps.setString(4, professor.getAcronym()); // TODO
+            ps.setString(4, professor.getCode());
             ps.execute();
         }
     }
 
-    private void insertTopicsInDB(Connection conn, int clientID, Set<Topic> topics) throws SQLException {
+    private void insertTopicsInDB(Connection conn, int calendar, Set<Topic> topics) throws SQLException {
         for (Topic topic : topics) {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO topics (creator, name, acronym, code, year) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, clientID);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO topics (calendar, name, acronym, code, year) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, calendar);
             ps.setString(2, topic.getName());
-            ps.setString(3, topic.getCode()); // TODO
+            ps.setString(3, topic.getAcronym());
             ps.setString(4, topic.getCode());
             ps.setInt(5, topic.getYear());
             ps.execute();
@@ -256,26 +262,26 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    private void insertExamsInDB(Connection conn, int clientID, Set<Topic> topics) throws SQLException {
+    private void insertExamsInDB(Connection conn, int calendar, Set<Topic> topics) throws SQLException {
         for (Topic topic : topics) {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, TRUE, FALSE)");
-            ps.setInt(1, clientID);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (calendar, topic, normal, pc) VALUES (?, ?, TRUE, FALSE)");
+            ps.setInt(1, calendar);
             ps.setInt(2, topic.getId());
             ps.execute();
 
-            ps = conn.prepareStatement("INSERT INTO exams (creator, topic, normal, pc) VALUES (?, ?, FALSE, FALSE)");
-            ps.setInt(1, clientID);
+            ps = conn.prepareStatement("INSERT INTO exams (calendar, topic, normal, pc) VALUES (?, ?, FALSE, FALSE)");
+            ps.setInt(1, calendar);
             ps.setInt(2, topic.getId());
             ps.execute();
         }
     }
 
-    private void insertStudentsInDB(Connection conn, int clientID, Hashtable<String, Student> students) throws SQLException {
+    private void insertStudentsInDB(Connection conn, int calendar, Hashtable<String, Student> students) throws SQLException {
         Iterator<Map.Entry<String, Student>> it = students.entrySet().iterator();
         while (it.hasNext()) {
             Student student = it.next().getValue();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO students (creator, name, cod) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, clientID);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO students (calendar, name, cod) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, calendar);
             ps.setString(2, student.getName());
             ps.setString(3, student.getCode());
             ps.execute();
@@ -286,7 +292,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    private void insertStudentTopicAssociationsInDB(Connection conn, int clientID, Set<Topic> topics) throws SQLException {
+    private void insertStudentTopicAssociationsInDB(Connection conn, int calendar, Set<Topic> topics) throws SQLException {
         for (Topic topic : topics) {
             Set<Student> topicStudents = topic.getStudentList();
             for (Student student : topicStudents) {
@@ -299,12 +305,12 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    private void insertRoomsInDB(Connection conn, int clientID, Hashtable<String, Room> rooms) throws SQLException {
+    private void insertRoomsInDB(Connection conn, int calendar, Hashtable<String, Room> rooms) throws SQLException {
         Iterator<Map.Entry<String, Room>> it = rooms.entrySet().iterator();
         while (it.hasNext()) {
             Room room = it.next().getValue();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO rooms (creator, cod, capacity, pc) VALUES (?, ?, ?, ?)");
-            ps.setInt(1, clientID);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO rooms (calendar, cod, capacity, pc) VALUES (?, ?, ?, ?)");
+            ps.setInt(1, calendar);
             ps.setString(2, room.getCodRoom());
             ps.setInt(3, room.getCapacity());
             ps.setBoolean(4, room.isPc());
