@@ -8,13 +8,10 @@ import java.util.List;
  */
 public class Feedback {
     boolean generated = false;
-    String file;
     List<String> warnings = new ArrayList<String>();
     List<String> errors =  new ArrayList<String>();
 
-    public Feedback(String file){
-        this.file = file;
-    }
+    public Feedback() { }
 
     public boolean isGenerated() {
         return generated;
@@ -34,14 +31,6 @@ public class Feedback {
         errors.add(s);
     }
 
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
-    }
-
     public List<String> getWarnings() {
         return warnings;
     }
@@ -54,7 +43,6 @@ public class Feedback {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("FILE: "+file+"\n");
         stringBuilder.append("RESULT: " + generated +"\n");
 
         for(String message : getErrors()){

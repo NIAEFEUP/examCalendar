@@ -194,6 +194,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             }
             if (topic == null) return null; // Topic does not exist in the database
 
+            exam.setId(rs.getInt("id"));
             exam.setTopic(topic);
             if (rs.getBoolean("normal"))
                 exam.setNormal();
@@ -232,6 +233,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             Room room = new Room(rs.getString("cod"), rs.getInt("capacity"), rs.getBoolean("pc"));
+            room.setId(rs.getInt("id"));
             rooms.add(room);
         }
 

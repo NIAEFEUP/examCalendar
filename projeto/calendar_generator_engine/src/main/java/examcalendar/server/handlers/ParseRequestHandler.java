@@ -1,8 +1,6 @@
-package examcalendar.server;
+package examcalendar.server.handlers;
 
-import com.sun.net.httpserver.Authenticator;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import examcalendar.optimizer.domain.Professor;
 import examcalendar.optimizer.domain.Room;
 import examcalendar.optimizer.domain.Student;
@@ -15,6 +13,10 @@ import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.SystemUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.reflections.serializers.JsonSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +27,7 @@ import java.util.*;
 /**
  * Created by Gustavo on 03/07/2016.
  */
-public class ParseRequestHandler implements HttpHandler {
+public class ParseRequestHandler extends AbstractRequestHandler {
     public static final String TEMP_DIR = "tmp/";
     public ParseRequestHandler() {
     }
@@ -87,22 +89,22 @@ public class ParseRequestHandler implements HttpHandler {
                     return httpExchange.getRequestBody();
                 }
             });
-            if (result.size() < 3) return null;
-            List<FileItem> validFileItems = new ArrayList<FileItem>();
+            List<FileItem> fileItems = new ArrayList<FileItem>();
 
             FileItem ucMapFileItem = getFileFromUploadedFiles("ucmap", result);
-            if (ucMapFileItem == null) return null;
-            validFileItems.add(ucMapFileItem);
+            fileItems.add(ucMapFileItem);
 
             FileItem professorsFileItem = getFileFromUploadedFiles("professors", result);
-            if (professorsFileItem == null) return null;
-            validFileItems.add(professorsFileItem);
+            fileItems.add(professorsFileItem);
 
             FileItem roomsFileItem = getFileFromUploadedFiles("rooms", result);
-            if (roomsFileItem == null) return null;
-            validFileItems.add(roomsFileItem);
+            fileItems.add(roomsFileItem);
 
-            for (FileItem fileItem : validFileItems) {
+            for (FileItem fileItem : fileItems) {
+                if (fileItem == null) {
+                    files.add(null);
+                    continue;
+                }
                 File file = new File(TEMP_DIR + UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(fileItem.getName()));
                 file.getParentFile().mkdirs();
                 fileItem.write(file);
@@ -124,33 +126,65 @@ public class ParseRequestHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+            Connection conn = null;
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
-            List<File> files = getUploadedFiles(httpExchange);
-            if (files == null) return;
+                List<File> files = getUploadedFiles(httpExchange);
+                if (files == null) return;
 
-            int clientID = 1; // TODO
-            UCMapParser ucMapParser = ucMapFileHandler(conn, httpExchange, clientID, files.get(0));
-            ProfessorParser professorParser = professorsFileHandler(conn, httpExchange, clientID, files.get(1), ucMapParser.getTopics());
-            RoomsParser roomsParser = roomsFileHandler(conn, httpExchange, clientID, files.get(2));
+                int clientID = 1; // TODO
 
-            if (ucMapParser.getFeedback().isGenerated() && professorParser.getFeedback().isGenerated() && roomsParser.getFeedback().isGenerated()) {
-                // Update database and return possible parser warnings
-                Hashtable<String, Student> students = ucMapParser.getStudents();
-                Set<Topic> topics = ucMapParser.getTopics();
-                Hashtable<String, Professor> professors = professorParser.getProfessors();
-                Hashtable<String, Room> rooms = roomsParser.getRooms();
-                insertDataInDB(conn, clientID, students, topics, professors, rooms);
-            } else {
-                // Return errors and possible warnings
+                UCMapParser ucMapParser = null;
+                ProfessorParser professorParser = null;
+                RoomsParser roomsParser = null;
+
+                JSONObject data = new JSONObject();
+                if (files.get(0) == null) {
+                    data.put("ucmap", "UC Map file is missing.");
+                } else {
+                    ucMapParser = ucMapFileHandler(conn, httpExchange, clientID, files.get(0));
+                    data.put("ucmap", new JSONObject(ucMapParser.getFeedback()));
+                }
+
+                if (files.get(1) == null) {
+                    data.put("professors", "Professors file is missing.");
+                } else {
+                    if (ucMapParser == null) {
+                        data.put("professors", "Cannot load the professors file without the UC Map file.");
+                    } else {
+                        professorParser = professorsFileHandler(conn, httpExchange, clientID, files.get(1), ucMapParser.getTopics());
+                        data.put("professors", new JSONObject(professorParser.getFeedback()));
+                    }
+                }
+
+                if (files.get(2) == null) {
+                    data.put("rooms", "Rooms file is missing.");
+                } else {
+                    roomsParser = roomsFileHandler(conn, httpExchange, clientID, files.get(2));
+                    data.put("rooms", new JSONObject(roomsParser.getFeedback()));
+                }
+
+                if (ucMapParser != null && professorParser != null && roomsParser != null && ucMapParser.getFeedback().isGenerated() && professorParser.getFeedback().isGenerated() && roomsParser.getFeedback().isGenerated()) {
+                    // Update database and return possible parser warnings
+                    Hashtable<String, Student> students = ucMapParser.getStudents();
+                    Set<Topic> topics = ucMapParser.getTopics();
+                    Hashtable<String, Professor> professors = professorParser.getProfessors();
+                    Hashtable<String, Room> rooms = roomsParser.getRooms();
+                    insertDataInDB(conn, clientID, students, topics, professors, rooms);
+                    this.sendSuccessResponse(httpExchange, data, 200);
+                } else {
+                    throw new RequestHandlerFailException(400, data);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RequestHandlerErrorException(503, "Could not connect to the database.");
+            } catch (JSONException e) {
+                throw new AssertionError();
             }
-            System.out.println("UC Map parser feedback: " + ucMapParser.getFeedback());
-            System.out.println("Professors parser feedback: " + professorParser.getFeedback());
-            System.out.println("Rooms parser feedback: " + roomsParser.getFeedback());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (RequestHandlerException e) {
+            e.send(httpExchange);
         }
     }
 
