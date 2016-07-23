@@ -185,7 +185,7 @@ public class ParseRequestHandler implements HttpHandler {
     }
 
     private void emptyDB(Connection conn, int clientID) throws SQLException {
-        String[] tables = { "topics", "students", "rooms" };
+        String[] tables = { "exams", "topics", "students", "rooms" };
         for (String table : tables) {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + table + " WHERE creator = ?");
             ps.setInt(1, clientID);
