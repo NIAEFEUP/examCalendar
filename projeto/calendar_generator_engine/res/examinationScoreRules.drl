@@ -40,7 +40,7 @@ end
 rule "professorUnavailable"
     when
         ProfessorUnavailable($professor : professor, $period : period)
-        TopicRegent($topic : topic, $professor == getRegent())
+        TopicProfessor($topic : topic, $professor == professor)
         RoomPeriod(exam != null, $topic == exam.getTopic(), $period == getPeriod())
     then
         scoreHolder.addHardConstraintMatch(kcontext, -100);

@@ -63,6 +63,8 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             List<Topic> topics = readTopics(requestConfig.calendar, conn, students, professors);
             if (topics == null) return null;
 
+            List<TopicProfessor> topicProfessors = readTopicProfessors(requestConfig.calendar, conn, topics, professors);
+
             List<Exam> exams = readExams(requestConfig.calendar, conn, topics);
             if (exams == null) return null;
 
@@ -77,6 +79,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             removeUnavailableRoomPeriods(requestConfig.calendar, conn, roomPeriods);
 
             examination.setTopicList(topics);
+            examination.setTopicProfessors(topicProfessors);
             examination.setExamList(exams);
             examination.setRoomList(rooms);
             examination.setPeriodList(periods);
@@ -174,6 +177,28 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         }
 
         return topics;
+    }
+
+    private List<TopicProfessor> readTopicProfessors(int calendar, Connection conn, List<Topic> topics, List<Professor> professors) throws SQLException {
+        List<TopicProfessor> topicProfessors = new ArrayList<TopicProfessor>();
+        for (Topic topic : topics) {
+            PreparedStatement ps = conn.prepareStatement("SELECT professor FROM topicprofessor WHERE topicprofessor.topic = ?");
+            ps.setInt(1, topic.getId());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Professor professor = null;
+                for (Professor p : professors) {
+                    if (p.getId() == rs.getInt("professor")) {
+                        professor = p;
+                        break;
+                    }
+                }
+                if (professor == null) return null; // Professor not found
+                topic.addProfessor(professor);
+                topicProfessors.add(new TopicProfessor(topic, professor));
+            }
+        }
+        return topicProfessors;
     }
 
     private List<Exam> readExams(int calendar, Connection conn, List<Topic> topics) throws SQLException {

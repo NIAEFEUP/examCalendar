@@ -3,10 +3,15 @@ package examcalendar.optimizer.domain;
 /**
  * Created by Gustavo on 05/07/2016.
  */
-public class TopicRegent {
+public class TopicProfessor {
     private int id;
     private Topic topic;
-    private Professor regent;
+    private Professor professor;
+
+    public TopicProfessor(Topic topic, Professor professor) {
+        this.topic = topic;
+        this.professor = professor;
+    }
 
     public int getId() {
         return id;
@@ -24,11 +29,11 @@ public class TopicRegent {
         this.topic = topic;
     }
 
-    public Professor getRegent() {
-        return regent;
+    public Professor getProfessor() {
+        return professor;
     }
 
-    public void setRegent(Professor regent) {
-        this.regent = regent;
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
     }
 }
