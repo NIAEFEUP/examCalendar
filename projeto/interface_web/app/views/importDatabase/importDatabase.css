@@ -3,8 +3,15 @@
   margin-top: 7%;
 }
 
-#studentButton, #teacherButton, #classroomButton {
+#ucmapButton, #professorsButton, #roomsButton {
   display: none;
+}
+
+.input-group input.form-control+label.input-group-btn {
+  display: table-cell;
+  padding: 0;
+  margin: 0;
+  border: none;
 }
 
 #upload {
@@ -15,12 +22,4 @@
 
 .row {
   margin-right: 0 !important;
-}
-
-.progress {
-  margin-top: 10%;
-}
-
-.progress-bar.progress-bar-striped.active {
-  width: 33%;
 }

@@ -1,27 +1,41 @@
-$(function() {
+$(document).ready( function() {
 
-  // We can attach the `fileselect` event to all file inputs on the page
-  $(document).on('change', ':file', function() {
-    var input = $(this),
-        numFiles = input.get(0).files ? input.get(0).files.length : 1,
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    input.trigger('fileselect', [numFiles, label]);
-  });
+	$('#importDatabase').steps({
+		headerTag: "h3",
+		bodyTag: "section",
+		transitionEffect: "slideLeft",
+		autoFocus: true,
+		onStepChanging: function (event, currentIndex, newIndex)
+		{
+			if (currentIndex == 0) { // Import database
+				// TODO submit files
+				$('#pleaseWaitDialog').modal();
+			}
+			return false;
+		},
+		onFinishing: function (event, currentIndex)
+		{
+			return true;
+		},
+		onFinished: function (event, currentIndex)
+		{
+			alert("Submitted!");
+		}
+	});
 
-  // We can watch for our custom `fileselect` event like this
-  $(document).ready( function() {
-      $(':file').on('fileselect', function(event, numFiles, label) {
+	var ucmapSubmitted = false;
+	var roomsSubmitted = false;
+	var professorsSubmitted = false;
 
-          var input = $(this).parents('.input-group').find(':text'),
-              log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-          if( input.length ) {
-              input.val(log);
-          } else {
-              if( log ) alert(log);
-          }
-
-      });
-  });
-
+	// We can attach the `fileselect` event to all file inputs on the page
+	$(document).on('change', ':file', function() {
+	var input = $(this);
+	console.log($(this).parent().parent().prev().html());
+	var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+	$(this).parent().parent().prev().val(label); // Fill label with the name of the uploaded file.
+	});
 });
+
+function updateImportProgress(progress) {
+	$('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress).text(progress+'%');
+}

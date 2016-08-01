@@ -8,43 +8,70 @@
 
 	<div class="col-12 col-sm-8">
     <div id="importDatabase">
-      <br>
-      <h1>Database</h1>
-      <hr>
-		</div>
+		<h3>Import Database</h3>
+		<section>
+			<form id="file-import-form">
+				<h4>UC Map</h4>
+				<div class="input-group">
+				<input type="text" class="form-control" readonly>
+				<label class="input-group-btn">
+					<span class="btn btn-primary">Browse<input type="file" name="ucmap" id="ucmapButton" required></span>
+				</label>
+				</div>
 
-    <h4>Select Students</h4>
-      <div class="input-group">
-        <input type="text" class="form-control" readonly>
-        <label class="input-group-btn">
-          <span class="btn btn-primary">Browse<input type="file" id="studentButton" multiple></span>
-        </label>
-      </div>
+				<h4>Select Teachers</h4>
+				<div class="input-group">
+				<input type="text" class="form-control" readonly>
+				<label class="input-group-btn">
+					<span class="btn btn-primary">Browse<input type="file" name="professors" id="professorsButton" required></span>
+				</label>
+				</div>
 
-    <h4>Select Teachers</h4>
-    <div class="input-group">
-      <input type="text" class="form-control" readonly>
-      <label class="input-group-btn">
-        <span class="btn btn-primary">Browse<input type="file" id="teacherButton" multiple></span>
-      </label>
-    </div>
-
-    <h4>Select Classrooms</h4>
-    <div class="input-group">
-      <input type="text" class="form-control" readonly>
-      <label class="input-group-btn">
-        <span class="btn btn-primary">Browse<input type="file" id="classroomButton" multiple></span>
-      </label>
-    </div>
-
-    <div class="progress">
-      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
-        33%
-      </div>
-    </div>
+				<h4>Select Classrooms</h4>
+				<div class="input-group">
+				<input type="text" class="form-control" readonly>
+				<label class="input-group-btn">
+					<span class="btn btn-primary">Browse<input type="file" name="rooms" id="roomsButton" required></span>
+				</label>
+				</div>
+			</form>
+		</section>
+		
+		<h3>Choose exams</h3>
+		<section>
+			TODO
+		</section>
+	
+	</div>
 
   </div>
 
 </div>
 
+<!-- Modal Start here-->
+<div class="modal fade bs-example-modal-sm" id="pleaseWaitDialog" tabindex="-1"
+    role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    </span>Please wait, the data is being imported...
+                 </h4>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+                    style="width: 100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal ends Here -->
+
+<script src="views/importDatabase/jquery.steps.min.js"></script>
 <script src="views/importDatabase/importDatabase.js"></script>
+
+<link href="views/importDatabase/jquery.steps.css" rel="stylesheet">
