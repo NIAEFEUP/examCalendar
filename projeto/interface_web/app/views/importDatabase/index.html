@@ -13,27 +13,30 @@
 			<form id="file-import-form">
 				<h4>UC Map</h4>
 				<div class="input-group">
-				<input type="text" class="form-control" readonly>
-				<label class="input-group-btn">
-					<span class="btn btn-primary">Browse<input type="file" name="ucmap" id="ucmapButton" required></span>
-				</label>
+					<input type="text" class="form-control" readonly>
+					<label class="input-group-btn">
+						<span class="btn btn-primary">Browse<input type="file" name="ucmap" id="ucmapButton" accept=".xls,.xlsx"></span>
+					</label>
 				</div>
+				<small class="form-text text-muted">Spreadsheet containing a list of curricular units and its corresponding students. The file extension must be ".xls" or ".xlsx". It must follow the same format as <a href="resources/mapa_exames_mieic.xls">this example file</a>.</small>
 
-				<h4>Select Teachers</h4>
+				<h4>Rooms</h4>
 				<div class="input-group">
-				<input type="text" class="form-control" readonly>
-				<label class="input-group-btn">
-					<span class="btn btn-primary">Browse<input type="file" name="professors" id="professorsButton" required></span>
-				</label>
+					<input type="text" class="form-control" readonly>
+					<label class="input-group-btn">
+						<span class="btn btn-primary">Browse<input type="file" name="rooms" id="roomsButton" accept=".xls,.xlsx"></span>
+					</label>
 				</div>
-
-				<h4>Select Classrooms</h4>
+				<small class="form-text text-muted">Spreadsheet containing a list of exam rooms, their maximum occupation and whether or not they have PCs. The file extension must be ".xls" or ".xlsx". It must follow the same format as <a href="resources/rooms.xlsx">this example file</a>.</small>
+				
+				<h4>Professors</h4>
 				<div class="input-group">
-				<input type="text" class="form-control" readonly>
-				<label class="input-group-btn">
-					<span class="btn btn-primary">Browse<input type="file" name="rooms" id="roomsButton" required></span>
-				</label>
+					<input type="text" class="form-control" readonly>
+					<label class="input-group-btn">
+						<span class="btn btn-primary">Browse<input type="file" name="professors" id="professorsButton" accept=".xls,.xlsx"></span>
+					</label>
 				</div>
+				<small class="form-text text-muted">Spreadsheet containing a list of topic codes and the teachers that must be present in the corresponding exams.The file extension must be ".xls" or ".xlsx". It must follow the same format as <a href="resources/professors.xlsx">this example file</a>.</small>
 			</form>
 		</section>
 		
