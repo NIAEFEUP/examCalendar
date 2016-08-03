@@ -22,7 +22,7 @@ public abstract class ExcelParser {
 
     public ExcelParser(String file) {
         this.file = new File(file);
-        this.feedback = new Feedback(file);
+        this.feedback = new Feedback();
     }
 
     public boolean generate(){

@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class Exam implements Comparable<Exam> {
 
-	private static int currId = 0;
 	private int id;
 	private int numStudents;
 	//private String name;
@@ -21,9 +20,7 @@ public class Exam implements Comparable<Exam> {
 	 */
 	private List<RoomPeriod> roomPeriods;
 
-	public Exam(){
-		this.attributeId();
-	}
+	public Exam(){}
 
 	public Exam(int numStudents, boolean normal, boolean pc, Topic topic){
 		this();
@@ -40,10 +37,7 @@ public class Exam implements Comparable<Exam> {
 		this.numStudents = topic.getStudentList().size();
 	}
 
-	private void attributeId(){
-		this.currId++;
-		this.id = this.currId;
-	}
+	public void setId(int id) { this.id = id; }
 
 	public int getNumStudents() { return this.numStudents; }
 	public void setNumStudents(int numStudents) { this.numStudents = numStudents; };

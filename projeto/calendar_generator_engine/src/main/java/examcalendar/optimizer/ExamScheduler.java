@@ -2,14 +2,20 @@ package examcalendar.optimizer;
 
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
+import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
 
 /**
  * Created by Duarte on 10/02/2016.
  */
-public class ExamScheduler {
+public class ExamScheduler implements Runnable {
     public static void main(String [] args){
+        new ExamScheduler().run();
+    }
+
+    @Override
+    public void run() {
         SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
         Solver solver = solverFactory.buildSolver();
 
