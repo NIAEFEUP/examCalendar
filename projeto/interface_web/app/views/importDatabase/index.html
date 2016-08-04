@@ -10,21 +10,23 @@
 		<div id="importDatabase">
 		<h3>Define timespan</h3>
 		<section>
-			<h3>Normal season:</h3>
-			<div class="input-group">
-				<input type="text" class="form-control" name="normal-season-date-range" value="" required/>
-				<span class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
-				</span>
-			</div>
-			<br/>
-			<h3>Appeal season:</h3>
-			<div class="input-group">
-				<input type="text" class="form-control" name="appeal-season-date-range" value="" required disabled/>
-				<span class="input-group-addon">
-					<span class="glyphicon glyphicon-calendar"></span>
-				</span>
-			</div>
+			<form id="timespan-form">
+				<h3>Normal season:</h3>
+				<div class="input-group">
+					<input type="text" class="form-control" name="normal-season-date-range" value="" required/>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+				<br/>
+				<h3>Appeal season:</h3>
+				<div class="input-group">
+					<input type="text" class="form-control" name="appeal-season-date-range" value="" required disabled/>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+			</form>
 		</section>
 		<h3>Import Database</h3>
 		<section>
@@ -112,6 +114,7 @@
 </div>
 <!-- Modal ends Here -->
 
+<script src="//cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
 <script src="views/importDatabase/jquery.steps.min.js"></script>
 <script src="views/importDatabase/importDatabase.js"></script>
 

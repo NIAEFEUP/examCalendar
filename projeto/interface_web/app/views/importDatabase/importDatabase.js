@@ -1,12 +1,18 @@
 $(document).ready( function() {
-
 	$('#importDatabase').steps({
 		headerTag: "h3",
 		bodyTag: "section",
 		transitionEffect: "slideLeft",
 		autoFocus: true,
+		onContentLoaded: function(event, currentIndex)
+		{
+			$('#timespan-form').validate();
+		},
 		onStepChanging: function (event, currentIndex, newIndex)
 		{
+			if (currentIndex == 0 && newIndex == currentIndex + 1) { // Select timespan
+				return $('#timespan-form').valid();
+			}
 			if (currentIndex == 1 && newIndex == currentIndex + 1) { // Import database
 				// TODO submit files
 				$('#pleaseWaitDialog').modal();
