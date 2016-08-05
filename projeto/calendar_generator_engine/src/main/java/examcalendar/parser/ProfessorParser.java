@@ -60,7 +60,7 @@ public class ProfessorParser extends ExcelParser{
                 if(currTopic.getRegentList().contains(currProf)){
                     feedback.addWarning("Este professor já está adicionado a esta UC como regente", row.getRowNum()+"", cell.getColumnIndex()+"");
                 }else{
-                    currTopic.addRegent(currProf);
+                    currTopic.addProfessor(currProf);
                 }
             }
         }

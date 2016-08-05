@@ -18,6 +18,7 @@ public class Examination implements Solution<HardSoftScore> {
 	private HardSoftScore score;
 	private List<RoomPeriod> roomPeriodList = new ArrayList<RoomPeriod>();
 	private List<Topic> topicList = new ArrayList<Topic>();
+	private List<TopicProfessor> topicProfessors = new ArrayList<TopicProfessor>();
 	public List<Exam> examList = new ArrayList<Exam>();
 	private List<Period> periodList = new ArrayList<Period>();
 	private List<Room> roomList = new ArrayList<Room>();
@@ -111,6 +112,10 @@ public class Examination implements Solution<HardSoftScore> {
 	public List<Topic> getTopicList() { return topicList; }
 
 	public void setTopicList(List<Topic> topicList) { this.topicList = topicList; }
+
+	public List<TopicProfessor> getTopicProfessors() { return topicProfessors; }
+
+	public void setTopicProfessors(List<TopicProfessor> topicProfessors) { this.topicProfessors = topicProfessors; }
 
 	public void sort() {
 		Collections.sort(roomPeriodList);

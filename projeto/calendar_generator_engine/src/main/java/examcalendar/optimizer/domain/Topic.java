@@ -18,7 +18,7 @@ public class Topic {
 	private String acronym;
 	private String code;
 	private Set<Student> studentList = new HashSet<Student>();
-	private Set<Professor> regentList = new HashSet<Professor>();
+	private Set<Professor> professorList = new HashSet<Professor>();
 	private int difficulty = 2;
 
 	public Topic(){}
@@ -93,14 +93,14 @@ public class Topic {
 	public int numStudents() { return studentList.size(); }
 
 	public Set<Professor> getRegentList() {
-		return regentList;
+		return professorList;
 	}
 
-	public void setRegentList(Set<Professor> regentList) {
-		this.regentList = regentList;
+	public void setProfessorList(Set<Professor> professorList) {
+		this.professorList = professorList;
 	}
 
-	public void addRegent(Professor regent) { regentList.add(regent); }
+	public void addProfessor(Professor professor) { professorList.add(professor); }
 
 	@Override
 	public boolean equals(Object o) {

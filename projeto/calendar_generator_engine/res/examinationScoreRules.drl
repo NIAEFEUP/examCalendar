@@ -40,7 +40,7 @@ end
 rule "professorUnavailable"
     when
         ProfessorUnavailable($professor : professor, $period : period)
-        TopicRegent($topic : topic, $professor == getRegent())
+        TopicProfessor($topic : topic, $professor == professor)
         RoomPeriod(exam != null, $topic == exam.getTopic(), $period == getPeriod())
     then
         scoreHolder.addHardConstraintMatch(kcontext, -100);
@@ -92,12 +92,23 @@ rule "gapBetweenSameTopicExams"
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
 end
 
-// A student cant' have two exams at the same time
+// A student can't have two exams at the same time
 rule "examsWithSameStudentsAtSamePeriods"
     when
         RoomPeriod($period : period, $id1 : getId(), exam != null, $leftTopic : exam.getTopic())
         RoomPeriod($period == period, id > $id1, exam != null, $rightTopic : exam.getTopic())
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
+end
+
+// A professor can't be in two exams at the same time
+rule "examsWithSameProfessorAtSamePeriods"
+    when
+        RoomPeriod($period : period, $id1 : getId(), exam != null, $leftTopic : exam.getTopic())
+        RoomPeriod($period == period, id > $id1, exam != null, $rightTopic : exam.getTopic())
+        TopicProfessor($professor : professor, topic == $leftTopic)
+        TopicProfessor($professor == professor, topic == $rightTopic)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
