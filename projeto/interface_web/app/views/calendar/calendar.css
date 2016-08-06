@@ -150,3 +150,8 @@
 .appealSeason {
 	background-color: grey;
 }
+
+#legend {
+	margin: auto;
+	width: 50%;
+}
