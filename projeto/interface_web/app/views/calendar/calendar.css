@@ -8,13 +8,13 @@
 	text-align: center;
 }
 
-#import_button , #generate_button {
+#generate_button {
 	background-color: #3973ac;
 	border-color: #132639;
 	font-size: 100% !important;
 }
 
-#export_button, #validate_button, #optimize_button {
+#validate_button {
 	border-color: #132639;
 	font-size: 100% !important;
 }
