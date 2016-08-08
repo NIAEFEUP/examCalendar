@@ -122,32 +122,62 @@
 	border: 4px;
 	border-radius: 7px;
 }
+.legend_year1, .legend_year2, .legend_year3, .legend_year4, .legend_year5 {
+	border: 3px solid black;
+	color: white;
+}
 
 .year1 {
 	border-color: blue;
+}
+.legend_year1 {
+	background-color: blue;
 }
 
 .year2 {
 	border-color: red;
 }
+.legend_year2 {
+	background-color: red;
+}
 
 .year3 {
 	border-color: green;
+}
+.legend_year3 {
+	background-color: green;
 }
 
 .year4 {
 	border-color: brown;
 }
+.legend_year4 {
+	background-color: brown;
+}
 
 .year5 {
 	border-color: black;
+}
+.legend_year5 {
+	background-color: black;
+}
+
+.legend_normal, .legend_appeal {
+	border: 3px solid black;
+	color: white;
 }
 
 .normalSeason {
 	background-color: orange;
 }
+.legend_normal {
+	background-color: orange;
+}
 
 .appealSeason {
+	background-color: grey;
+}
+.legend_appeal {
 	background-color: grey;
 }
 
