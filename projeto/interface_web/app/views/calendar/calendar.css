@@ -105,7 +105,7 @@
 }
 
 #right_buttons button{
-	display:none;
+	/*display:none;*/
 	width: 60%;
 	margin-top: 2%;
 }
