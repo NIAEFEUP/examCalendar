@@ -13,6 +13,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
   .when('/importDatabase', {
     templateUrl: 'views/importDatabase/'
   })
+  .when('/faq', {
+    templateUrl: 'views/faq/'
+  })
   .when('/adminHome', {
     templateUrl: 'views/adminHome/'
   })
