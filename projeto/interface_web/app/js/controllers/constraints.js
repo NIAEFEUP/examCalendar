@@ -10,6 +10,7 @@ app.controller('ConstraintsController', ['$scope', '$compile', 'constraints', fu
 
   var constraintId = 0;
   $scope.addConstraint = function(type) {
+    //TODO create constraint on the server
     var options = '';
     switch(type) {
       case 'Room':
@@ -48,10 +49,13 @@ function html(array) {
 };
 
 function datesHTML() {
+  //TODO 2 calendars should be display here (begin and end)
+  // check period variable
   console.log(2);
   return '';
 };
 
 function removeConstraint(id) {
-    $('#constraint'+id).remove();
+  //TODO remove constraint from the server
+  $('#constraint'+id).remove();
 };
