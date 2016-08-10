@@ -1,0 +1,9 @@
+{
+  "rooms": [{"id":1,"name":"B314"},{"id":2,"name":"B315"}],
+  "professors": [{"id":1,"name":"AAA"},{"id":2,"name":"BBB"}],
+  "years": [1,2,3,4,5],
+  "period": {
+    "start": "DD-MM-YYYY",
+    "end": "DD-MM-YYYY"
+  }
+}
