@@ -41,3 +41,8 @@
   display: block;
   height: 90%;
 }
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+ }
