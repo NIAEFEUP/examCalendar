@@ -4,6 +4,7 @@
   "years": [1,2,3,4,5],
   "period": {
     "start": "DD-MM-YYYY",
-    "end": "DD-MM-YYYY"
+    "end": "DD-MM-YYYY",
+    "days": [1,2,3,4,5]
   }
 }

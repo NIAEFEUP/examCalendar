@@ -25,18 +25,15 @@ app.controller('ConstraintsController', ['$scope', '$compile', 'constraints', fu
     }
 
     options += datesHTML();
-	var startPicker = generateConstraintPeriodRangePicker('start');
-	var endPicker = generateConstraintPeriodRangePicker('end');
 
-    var btnhtml = '<constraint id="constraint' + constraintId + '" class="form-inline">'+
+    var btnhtml = '<div id="constraint' + constraintId + '" class="form-inline">'+
     '<h3>'+type+' Constraint '+
       '<button class="btn btn-primary" type="button" onclick="removeConstraint('+constraintId+')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>'+
       options+
-	  'Start:'+startPicker+
-	  'End:'+endPicker+
-      '</h3></constraint>';
+      '</h3></div>';
     $('#constraints').append(btnhtml);
-	runDateTimePicker($('#constraint' + constraintId + ' [name="start-period"]'), $('#constraint' + constraintId + ' [name="end-period"]'));
+	  runDateTimePicker($('#constraint' + constraintId + ' [name="start-period"]'),
+                      $('#constraint' + constraintId + ' [name="end-period"]'));
     constraintId++;
   };
 }]);
@@ -54,10 +51,12 @@ function html(array) {
 };
 
 function datesHTML() {
-  //TODO 2 calendars should be display here (begin and end)
-  // check period variable
-  console.log(2);
-  return '';
+  var html = '';
+
+  html += ('Start:' + generateConstraintPeriodRangePicker('start'));
+  html += ('End:' + generateConstraintPeriodRangePicker('end'));
+
+  return html;
 };
 
 function removeConstraint(id) {
@@ -75,14 +74,16 @@ function generateConstraintPeriodRangePicker(type) {
 }
 
 function runDateTimePicker(startElement, endElement) {
+
 	startElement.datetimepicker({
 		datepicker:true,
 		format:'d/m/Y H:i',
 		defaultTime:'9:00',
 		allowTimes:[
 		'9:00', '13:00', '17:00'
-		]
+    ]
 	});
+
 	endElement.datetimepicker({
 		datepicker:true,
 		format:'d/m/Y H:i',
