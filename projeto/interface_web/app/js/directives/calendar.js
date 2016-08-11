@@ -10,7 +10,14 @@ app.directive('calendar', function($timeout) {
   };
 });
 
-app.directive('modal', function($timeout) {
+app.directive('unassigned', function() {
+  return {
+    restrict : 'E',
+    templateUrl: 'directives/calendar/unassigned.html'
+  };
+});
+
+app.directive('modal', function() {
   return {
     restrict : 'E',
     templateUrl: 'directives/calendar/modal.html'
