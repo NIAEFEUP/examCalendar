@@ -1,6 +1,17 @@
 //TODO database integration
 
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+		host : 'localhost',
+		port : 3306,
+		user : 'root',
+		password : '',
+		database : 'examcalendar'
+});
+connection.connect();
+
 module.exports = {
+  connection,
   //login
   getUser: function (email) {
     //return user's id

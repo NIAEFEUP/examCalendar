@@ -4,20 +4,6 @@ var session	=	require('express-session');
 var bodyParser = require('body-parser');
 var app = express();
 
-/* Small test with database integration
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-		host : 'localhost',
-		port : 3000,
-		user : 'root',
-		password : 'toor'
-});
-connection.connect(function(err) {
-		console.err('ERROR : ' + err);
-		exit(-1);
-});
-*/
-
 app.engine('html', require('ejs').renderFile);
 
 app.use(session({secret: 'secret_key', saveUninitialized: true, resave: true}));
@@ -64,29 +50,6 @@ app.get('/logout',function(req,res){
 			res.end('{"authenticated":false}');
 		}
 	});
-});
-
-//////////////////////////////////////////////////////////////////
-//                            Notes                             //
-//////////////////////////////////////////////////////////////////
-app.get('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.get(res, req.session.userID);
-});
-
-app.put('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.add(res, req.session.userID, req.body.note);
-});
-
-app.post('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.update(res, req.session.userID, req.body.noteID, req.body.msg);
-});
-
-app.delete('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.remove(res, req.session.userID, req.body.noteID);
 });
 
 //////////////////////////////////////////////////////////////////
@@ -174,7 +137,7 @@ app.post('/calendar',function(req,res){
 //////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////
-var port = 8888;
+var port = 8080;
 app.listen(port,function(){
 	console.log("Server running on port " + port);
 });
