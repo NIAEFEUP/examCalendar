@@ -124,11 +124,6 @@ app.get('/calendar',function(req,res){
  calendar.get(res, req.session.userID);
 });
 
-app.put('/calendar',function(req,res){
- res = allowRedirectAnswer(res);
- calendar.import(res, req.session.userID, req.body.calendar);
-});
-
 app.post('/calendar',function(req,res){
  res = allowRedirectAnswer(res);
  calendar.generate(res, req.session.userID);
