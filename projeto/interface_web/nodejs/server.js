@@ -17,7 +17,6 @@ var adminUsers = require('./controllers/adminUsers');
 var calendar = require('./controllers/calendar');
 var constraints = require('./controllers/constraints');
 var importDB = require('./controllers/importDB');
-var notes = require('./controllers/notes');
 
 // This is required due to security issues. The response has specific details
 // such as the response got to be from the same domain.
