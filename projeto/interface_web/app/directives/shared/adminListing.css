@@ -1,0 +1,13 @@
+#listSection {
+  margin-left: 5%;
+  width: 60%;
+}
+
+.emailContent {
+  font-size: 20px;
+  opacity: 1;
+}
+
+.userEmail button{
+  float: right;
+}

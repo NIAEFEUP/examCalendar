@@ -1,0 +1,16 @@
+#withoutPC{
+  margin-left: 35%;
+}
+
+#withPC{
+  margin-left: 40%;
+}
+
+.form-control {
+  background-color: #fff !important;
+  width: 50% !important;
+}
+
+.input-group {
+  margin-left: 30%;
+}
