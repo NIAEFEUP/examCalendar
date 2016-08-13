@@ -18,7 +18,15 @@ module.exports = {
       });
     },
     function(callback) {
-      database.connection.query('SELECT exams.id, year, name, UNIX_TIMESTAMP(day) AS day, time FROM exams, topics where topic = topics.id and exams.calendar = 1 order by day asc', function(err, rows, fields) {
+      //assigned
+      database.connection.query('SELECT exams.id, year, name, UNIX_TIMESTAMP(day) AS day, time FROM exams, topics where day is not null and topic = topics.id and exams.calendar = 1 order by day asc', function(err, rows, fields) {
+        if (!err)
+          callback(null, rows);
+      });
+    },
+    function(callback) {
+      //unassigned
+      database.connection.query('SELECT exams.id, year, name FROM exams, topics where day is null and topic = topics.id and exams.calendar = 1', function(err, rows, fields) {
         if (!err)
           callback(null, rows);
       });
@@ -55,7 +63,7 @@ module.exports = {
         json.weeks.push({'dates' : dates, 'periods' : periods});
       }
 
-      //process exams
+      //process exams assigned
       for (var i = 0; i < result[1].length; i++) {
         var examDate = new Date(result[1][i].day * 1000);
         var week = DateDiff.inWeeks(startDate, examDate);
@@ -67,12 +75,21 @@ module.exports = {
         });
       }
 
-      //process rooms
+      //process exams unassigned
       for (var i = 0; i < result[2].length; i++) {
-        json.rooms['no_pc'].push({'id' : result[2][i].id, 'name' : result[2][i].cod});
+        json.unassigneds.push({
+          'id' : result[2][i].id,
+          'name' : result[2][i].name,
+          'year' : result[2][i].year
+        });
       }
+
+      //process rooms
       for (var i = 0; i < result[3].length; i++) {
-        json.rooms['pc'].push({'id' : result[3][i].id, 'name' : result[3][i].cod});
+        json.rooms['no_pc'].push({'id' : result[3][i].id, 'name' : result[3][i].cod});
+      }
+      for (var i = 0; i < result[4].length; i++) {
+        json.rooms['pc'].push({'id' : result[4][i].id, 'name' : result[4][i].cod});
       }
 
       /*console.log(startDate.getDay()+7);
