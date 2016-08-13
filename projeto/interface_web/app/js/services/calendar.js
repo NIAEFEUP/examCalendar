@@ -1,5 +1,5 @@
 app.factory('calendar', ['$http', function($http) {
-  //TODO replace link
+  return $http.get('http://localhost:8080/calendar')
   .success(function(data) {
     return data;
   })
