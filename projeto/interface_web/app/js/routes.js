@@ -8,6 +8,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     templateUrl: 'views/calendar/'
   })
   .when('/constraints', {
+    controller: 'ConstraintsController',
     templateUrl: 'views/constraints/'
   })
   .when('/importDatabase', {

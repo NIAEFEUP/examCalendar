@@ -1,11 +1,11 @@
 <link rel="stylesheet" href="views/calendar/calendar.css">
-<link rel="stylesheet" href="shared/adminListing.css">
+<link rel="stylesheet" href="directives/shared/adminListing.css">
 
 <users-header></users-header>
 
-<div class="row">
+<div id="redips-drag" class="row">
 
-  <users-sidebar class="col-12 col-sm-3"></users-sidebar>
+  <div class="col-12 col-sm-3"></div>
 
   <div class="col-12 col-sm-6">
     <div id="examCalendar">
@@ -13,21 +13,40 @@
       <h1>Exam Calendar</h1>
       <hr>
 
-      <div id="redips-drag">
+      <div id="calendar_div">
         <calendar></calendar>
       </div>
+
     </div>
   </div>
 
   <div class="col-12 col-sm-3" id="right_buttons">
-    <i class="fa fa-cog fa-3x fa-fw" id="options_icon" onclick="change_autorefreshdiv();"></i><br><br>
-    <button type="button" class="btn btn-danger" id="export_button">Export Calendar</button><br>
-    <button type="button" class="btn btn-success" id="import_button">Import Calendar</button><br>
-    <button type="button" class="btn btn-danger" id="validate_button">Validate Calendar</button><br>
-    <button type="button" class="btn btn-success" id="generate_button">Generate Calendar</button><br>
-    <button type="button" class="btn btn-danger" id="optimize_button">Optimize Calendar</button><br>
+    <button type="button" class="btn btn-success" id="validate_button">Validate Calendar</button><br>
+    <a href="#/constraints" class="btn btn-danger" id="generate_button">Generate Calendar</a><br>
   </div>
 
+  <unassigned></unassigned>
+
+</div>
+
+<div id="legend">
+  <h4>Legend</h4>
+  <table>
+    <tr>
+      <td class="legend_year1">First Year</td>
+      <td class="legend_year2">Second Year</td>
+      <td class="legend_year3">Third Year</td>
+      <td class="legend_year4">Fourth Year</td>
+      <td class="legend_year5">Fifth Year</td>
+    </tr>
+    <tr>
+      <td class="legend_normal">Normal Season</td>
+      <td class="legend_appeal">Appeal Season</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 </div>
 
 <modal></modal>
