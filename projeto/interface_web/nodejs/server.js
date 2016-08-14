@@ -4,20 +4,6 @@ var session	=	require('express-session');
 var bodyParser = require('body-parser');
 var app = express();
 
-/* Small test with database integration
-var mysql = require('mysql');
-var connection = mysql.createConnection({
-		host : 'localhost',
-		port : 3000,
-		user : 'root',
-		password : 'toor'
-});
-connection.connect(function(err) {
-		console.err('ERROR : ' + err);
-		exit(-1);
-});
-*/
-
 app.engine('html', require('ejs').renderFile);
 
 app.use(session({secret: 'secret_key', saveUninitialized: true, resave: true}));
@@ -31,7 +17,6 @@ var adminUsers = require('./controllers/adminUsers');
 var calendar = require('./controllers/calendar');
 var constraints = require('./controllers/constraints');
 var importDB = require('./controllers/importDB');
-var notes = require('./controllers/notes');
 
 // This is required due to security issues. The response has specific details
 // such as the response got to be from the same domain.
@@ -64,29 +49,6 @@ app.get('/logout',function(req,res){
 			res.end('{"authenticated":false}');
 		}
 	});
-});
-
-//////////////////////////////////////////////////////////////////
-//                            Notes                             //
-//////////////////////////////////////////////////////////////////
-app.get('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.get(res, req.session.userID);
-});
-
-app.put('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.add(res, req.session.userID, req.body.note);
-});
-
-app.post('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.update(res, req.session.userID, req.body.noteID, req.body.msg);
-});
-
-app.delete('/notes',function(req,res){
-	res = allowRedirectAnswer(res);
-	notes.remove(res, req.session.userID, req.body.noteID);
 });
 
 //////////////////////////////////////////////////////////////////
@@ -161,11 +123,6 @@ app.get('/calendar',function(req,res){
  calendar.get(res, req.session.userID);
 });
 
-app.put('/calendar',function(req,res){
- res = allowRedirectAnswer(res);
- calendar.import(res, req.session.userID, req.body.calendar);
-});
-
 app.post('/calendar',function(req,res){
  res = allowRedirectAnswer(res);
  calendar.generate(res, req.session.userID);
@@ -174,7 +131,7 @@ app.post('/calendar',function(req,res){
 //////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////
-var port = 8888;
+var port = 8080;
 app.listen(port,function(){
 	console.log("Server running on port " + port);
 });

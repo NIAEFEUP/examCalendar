@@ -26,7 +26,7 @@ public class Server {
         TERMINATE
     }
     public static final int MAX_PARALLEL_SCHEDULING = 3;
-    public static final int PORT = 8080; // TODO change to 80
+    public static final int PORT = 8081; // TODO change to 80
 
     String hostname;
     String database;
@@ -39,7 +39,7 @@ public class Server {
     List<Scheduler> runningSchedulers;
     private Thread dispatcherThread;
     public static void main(String[] args) throws IOException, SQLException {
-        Server server = new Server("localhost", "test", "root", "");
+        Server server = new Server("localhost", "examcalendar", "root", "");
         server.start();
     }
 
