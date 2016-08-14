@@ -20,14 +20,7 @@ module.exports = {
     },
     function(callback) {
       //assigned
-      database.connection.query('SELECT exams.id, year, name, UNIX_TIMESTAMP(day) AS day, time FROM exams, topics where day is not null and topic = topics.id and exams.calendar = ? order by day asc', [calendarId], function(err, rows, fields) {
-        if (!err)
-          callback(null, rows);
-      });
-    },
-    function(callback) {
-      //unassigned
-      database.connection.query('SELECT exams.id, year, name FROM exams, topics where day is null and topic = topics.id and exams.calendar = ?', [calendarId], function(err, rows, fields) {
+      database.connection.query('SELECT exams.id, year, name, (CASE day WHEN NULL THEN NULL ELSE UNIX_TIMESTAMP(day) END) AS day, time FROM exams, topics where topic = topics.id and exams.calendar = ? order by day asc', [calendarId], function(err, rows, fields) {
         if (!err)
           callback(null, rows);
       });
@@ -59,28 +52,27 @@ module.exports = {
 
       //process exams assigned
       for (var i = 0; i < result[1].length; i++) {
-        var examDate = new Date(result[1][i].day * 1000);
-        var week = DateDiff.inWeeks(startDate, examDate);
-        var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
-        json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
-          'id' : result[1][i].id,
-          'name' : result[1][i].name,
-          'year' : result[1][i].year
-        });
-      }
-
-      //process exams unassigned
-      for (var i = 0; i < result[2].length; i++) {
-        json.unassigneds.push({
-          'id' : result[2][i].id,
-          'name' : result[2][i].name,
-          'year' : result[2][i].year
-        });
+		if (result[1][i].day == null) {
+			json.unassigneds.push({
+			  'id' : result[1][i].id,
+			  'name' : result[1][i].name,
+			  'year' : result[1][i].year
+			});
+		} else {
+			var examDate = new Date(result[1][i].day * 1000);
+			var week = DateDiff.inWeeks(startDate, examDate);
+			var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
+			json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
+			  'id' : result[1][i].id,
+			  'name' : result[1][i].name,
+			  'year' : result[1][i].year
+			});
+		}
       }
 
       //process rooms
-      for (var i = 0; i < result[3].length; i++) {
-        json.rooms[result[3][i].pc ? 'pc' : 'no_pc'].push({'id' : result[3][i].id, 'name' : result[3][i].cod});
+      for (var i = 0; i < result[2].length; i++) {
+        json.rooms[result[2][i].pc ? 'pc' : 'no_pc'].push({'id' : result[2][i].id, 'name' : result[2][i].cod});
       }
 
       /*console.log(startDate.getDay()+7);
