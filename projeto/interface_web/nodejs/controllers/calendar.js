@@ -10,35 +10,30 @@ var async = require('async');
 
 module.exports = {
   get: function (res, userID) {
+	var calendarId = 4;
     //add the calls to be made asynchronously
     var calls = [function(callback) {
-      database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = 1', function(err, rows, fields) {
+      database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = ?', [calendarId], function(err, rows, fields) {
         if (!err)
           callback(null, rows[0]);
       });
     },
     function(callback) {
       //assigned
-      database.connection.query('SELECT exams.id, year, name, UNIX_TIMESTAMP(day) AS day, time FROM exams, topics where day is not null and topic = topics.id and exams.calendar = 1 order by day asc', function(err, rows, fields) {
+      database.connection.query('SELECT exams.id, year, name, UNIX_TIMESTAMP(day) AS day, time FROM exams, topics where day is not null and topic = topics.id and exams.calendar = ? order by day asc', [calendarId], function(err, rows, fields) {
         if (!err)
           callback(null, rows);
       });
     },
     function(callback) {
       //unassigned
-      database.connection.query('SELECT exams.id, year, name FROM exams, topics where day is null and topic = topics.id and exams.calendar = 1', function(err, rows, fields) {
+      database.connection.query('SELECT exams.id, year, name FROM exams, topics where day is null and topic = topics.id and exams.calendar = ?', [calendarId], function(err, rows, fields) {
         if (!err)
           callback(null, rows);
       });
     },
     function(callback) {
-      database.connection.query('SELECT id, cod FROM rooms where pc = false', function(err, rows, fields) {
-        if (!err)
-          callback(null, rows);
-      });
-    },
-    function(callback) {
-      database.connection.query('SELECT id, cod FROM rooms where pc = true', function(err, rows, fields) {
+      database.connection.query('SELECT id, cod, pc FROM rooms where calendar = ?', [calendarId], function(err, rows, fields) {
         if (!err)
           callback(null, rows);
       });
@@ -57,7 +52,6 @@ module.exports = {
 
       //process dates
       for (var i = 0; i < (result[0].normalSeasonDuration + result[0].appealSeasonDuration) / 7; i++) {
-        var dates = ["July 1", "July 2", "July 3", "July 4", "July 5",  "July 6"];
         var dates = generateWeekDays(startDate, i);
         var periods = generateWeekPeriods();
         json.weeks.push({'dates' : dates, 'periods' : periods});
@@ -67,7 +61,7 @@ module.exports = {
       for (var i = 0; i < result[1].length; i++) {
         var examDate = new Date(result[1][i].day * 1000);
         var week = DateDiff.inWeeks(startDate, examDate);
-        var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time-1];
+        var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
         json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
           'id' : result[1][i].id,
           'name' : result[1][i].name,
@@ -86,10 +80,7 @@ module.exports = {
 
       //process rooms
       for (var i = 0; i < result[3].length; i++) {
-        json.rooms['no_pc'].push({'id' : result[3][i].id, 'name' : result[3][i].cod});
-      }
-      for (var i = 0; i < result[4].length; i++) {
-        json.rooms['pc'].push({'id' : result[4][i].id, 'name' : result[4][i].cod});
+        json.rooms[result[3][i].pc ? 'pc' : 'no_pc'].push({'id' : result[3][i].id, 'name' : result[3][i].cod});
       }
 
       /*console.log(startDate.getDay()+7);
@@ -104,8 +95,9 @@ module.exports = {
 };
 
 function generateWeekDays(startDate, week) {
-  var dates = []; var date = new Date();
+  var dates = [];
   for (var i = 0; i < ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].length; i++) {
+	var date = new Date(startDate);
     date.setDate(startDate.getDate()+week*7+i);
     dates.push(date.toDateString());
   }
