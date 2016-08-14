@@ -51,7 +51,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Examination examination = new Examination();
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
             RequestConfig requestConfig = readRequestConfig(calendar, conn);
             if (requestConfig == null) return null;
@@ -283,8 +283,12 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             periods.add(period2);
             periods.add(period3);
 
-            c.add(Calendar.DATE, 1); // Advance to next day
-            dayIndex++;
+            int dow;
+            do {
+                dow = c.get(Calendar.DAY_OF_WEEK);
+                c.add(Calendar.DATE, 1); // Advance to next day
+                dayIndex++;
+            } while (dow > Calendar.FRIDAY);
         }
 
         return periods;

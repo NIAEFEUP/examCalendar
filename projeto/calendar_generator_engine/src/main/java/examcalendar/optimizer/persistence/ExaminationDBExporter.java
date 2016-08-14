@@ -9,10 +9,7 @@ import examcalendar.optimizer.domain.RoomPeriod;
 import org.optaplanner.core.api.domain.solution.Solution;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created by Gustavo on 15/07/2016.
@@ -39,7 +36,7 @@ public class ExaminationDBExporter extends AbstractSolutionExporter {
     public void writeSolution(Solution solution, int requestID) {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
             writeExamRooms(requestID, conn, (Examination)solution);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -50,6 +47,9 @@ public class ExaminationDBExporter extends AbstractSolutionExporter {
         for (Exam exam : examination.getExamList()) {
             Period period = null;
             for (RoomPeriod rp : examination.getRoomPeriodList()) {
+                if (!rp.getExam().equals(exam)) {
+                    continue;
+                }
                 if (period == null) {
                     period = rp.getPeriod();
                 } else if (rp.getPeriod() != period) {
@@ -60,13 +60,16 @@ public class ExaminationDBExporter extends AbstractSolutionExporter {
                 ps.setInt(2, rp.getRoom().getId());
                 ps.execute();
             }
-            if (period != null) {
-                PreparedStatement ps = conn.prepareStatement("UPDATE exams SET day = ?, time = ? WHERE id = ?");
+            PreparedStatement ps = conn.prepareStatement("UPDATE exams SET day = ?, time = ? WHERE id = ?");
+            if (period == null) {
+                ps.setNull(1, Types.DATE);
+                ps.setNull(2, Types.INTEGER);
+            } else {
                 ps.setDate(1, new java.sql.Date(period.getDate().getTime()));
                 ps.setInt(2, period.getTime().ordinal());
-                ps.setInt(3, exam.getId());
-                ps.execute();
             }
+            ps.setInt(3, exam.getId());
+            ps.execute();
         }
     }
 }

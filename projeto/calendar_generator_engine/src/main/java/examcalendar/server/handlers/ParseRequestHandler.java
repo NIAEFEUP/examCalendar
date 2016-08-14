@@ -130,7 +130,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         try {
             Connection conn = null;
             try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
                 List<File> files = getUploadedFiles(httpExchange);
                 if (files == null) return;
