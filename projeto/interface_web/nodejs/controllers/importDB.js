@@ -2,9 +2,23 @@
 // POST: add
 
 var database = require('./database');
+var http = require('http');
 
 module.exports = {
-  import: function (res, userID, file0, file1, file2 ) {
-    res.end(database.import(userID, file0, file1, file2));
+  import: function (res, userID, req ) {
+		var options = {
+			hostname: 'localhost',
+			port: 8081,
+			path: '/parser',
+			method: 'POST',
+			headers: req.headers
+		};
+		
+		var req2 = http.request(options, function(res2){
+			res2.pipe(res, {
+			  end: true
+			});
+		});
+		req.pipe(req2);
   }
 };

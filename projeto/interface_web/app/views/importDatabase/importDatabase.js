@@ -1,4 +1,5 @@
 $(document).ready( function() {
+	var fileSubmitResponded = false;
 	$('#importDatabase').steps({
 		headerTag: "h3",
 		bodyTag: "section",
@@ -12,10 +13,33 @@ $(document).ready( function() {
 		{
 			if (currentIndex == 0 && newIndex == currentIndex + 1) { // Select timespan
 				return $('#timespan-form').valid();
-			}
-			if (currentIndex == 1 && newIndex == currentIndex + 1) { // Import database
-				// TODO submit files
+			} else if (currentIndex == 1 && newIndex == currentIndex + 1) { // Import database
+			
+				if (fileSubmitResponded) {
+					fileSubmitResponded = false;
+					return true; // This way it won't enter in an infinite form submission loop
+				}
+				
+				var data = new FormData($('#file-import-form')[0]);
 				$('#pleaseWaitDialog').modal();
+				$.ajax({
+					url:$('#file-import-form').attr('action'),
+					type:'post',
+					cache: false,
+					contentType: false,
+					processData: false,
+					data: data,
+					success:function(data){
+						fileSubmitResponded = true;
+						console.log(data);
+						$('#pleaseWaitDialog').modal('hide');
+						$('#importDatabase').steps('next');
+					},
+					error:function(data) {
+						console.error(data);
+						$('#pleaseWaitDialog').modal('hide');
+					}
+				});
 				return false;
 			}
 			return true;

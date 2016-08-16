@@ -57,10 +57,7 @@ app.get('/logout',function(req,res){
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	var file0 = req.body.file0;
-	var file1 = req.body.file1;
-	var file2 = req.body.file2;
-	importDB.import(res, id, file0, file1, file2);
+	importDB.import(res, id, req);
 });
 
 //////////////////////////////////////////////////////////////////

@@ -113,7 +113,6 @@ public class ParseRequestHandler extends AbstractRequestHandler {
             }
             return files;
         } catch (Exception e) {
-            e.printStackTrace();
             for (File file : files) {
                 file.delete();
             }
@@ -133,7 +132,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
                 List<File> files = getUploadedFiles(httpExchange);
-                if (files == null) return;
+                if (files == null) throw new RequestHandlerFailException(403, null);
 
                 int clientID = 1; // TODO
                 Date date = new Date(new java.util.Date().getTime()); // TODO
@@ -296,7 +295,6 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         for (Topic topic : topics) {
             Set<Student> topicStudents = topic.getStudentList();
             for (Student student : topicStudents) {
-                System.out.println(student.getId() + " " + topic.getId());
                 PreparedStatement ps = conn.prepareStatement("INSERT INTO studentTopic (student, topic) VALUES (?, ?)");
                 ps.setInt(1, student.getId());
                 ps.setInt(2, topic.getId());
