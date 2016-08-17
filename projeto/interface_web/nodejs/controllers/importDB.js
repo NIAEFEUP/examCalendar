@@ -18,6 +18,7 @@ module.exports = {
 			res2.pipe(res, {
 			  end: true
 			});
+			res.statusCode = res2.statusCode;
 		});
 		req.pipe(req2);
   }
