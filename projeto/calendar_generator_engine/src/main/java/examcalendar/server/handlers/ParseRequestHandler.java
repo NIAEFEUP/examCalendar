@@ -70,6 +70,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
     private List<File> getUploadedFiles(final HttpExchange httpExchange) {
         DiskFileItemFactory d = new DiskFileItemFactory();
         List<File> files = new ArrayList<File>();
+
         try {
             ServletFileUpload up = new ServletFileUpload(d);
             List result = up.parseRequest(new RequestContext() {
@@ -113,6 +114,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
             }
             return files;
         } catch (Exception e) {
+            e.printStackTrace();
             for (File file : files) {
                 file.delete();
             }
@@ -132,7 +134,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
                 List<File> files = getUploadedFiles(httpExchange);
-                if (files == null) throw new RequestHandlerFailException(403, null);
+                if (files == null) throw new RequestHandlerFailException(400, null);
 
                 int clientID = 1; // TODO
                 Date date = new Date(new java.util.Date().getTime()); // TODO

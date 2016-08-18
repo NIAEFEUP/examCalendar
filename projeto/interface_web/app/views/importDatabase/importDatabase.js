@@ -36,7 +36,7 @@ $(document).ready( function() {
 						$('#importDatabase').steps('next');
 					},
 					error:function(data) {
-						console.error(data);
+						console.error(data.responseText);
 						$('#pleaseWaitDialog').modal('hide');
 					}
 				});
