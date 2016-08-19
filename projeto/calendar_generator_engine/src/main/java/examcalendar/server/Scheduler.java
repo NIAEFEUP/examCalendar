@@ -6,6 +6,7 @@ import examcalendar.optimizer.persistence.ExaminationDBImporter;
 import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
+import org.optaplanner.core.config.solver.termination.TerminationConfig;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,14 +30,20 @@ public class Scheduler extends Thread {
             ps.setInt(1, calendarID);
             ps.execute();
 
-            SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
-            Solver solver = solverFactory.buildSolver();
+            ExaminationDBImporter examinationDBImporter = new ExaminationDBImporter(true);
+            Examination unsolvedExamination = examinationDBImporter.readSolution(calendarID);
 
-            Examination unsolvedExamination = new ExaminationDBImporter(true).readSolution(calendarID);
+            SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
+            TerminationConfig terminationConfig = new TerminationConfig();
+            terminationConfig.setSecondsSpentLimit((long)examinationDBImporter.getRequestConfig().timeout); // TODO
+            solverFactory.getSolverConfig().setTerminationConfig(terminationConfig);
+
+            Solver solver = solverFactory.buildSolver();
             solver.solve(unsolvedExamination);
             Examination solvedExamination = (Examination) solver.getBestSolution();
             solvedExamination.removeNullPeriodsExams();
             solvedExamination.sort();
+
             System.out.println(solvedExamination);
             System.out.println(EvaluateRequestHandler.evaluateSolution(solvedExamination));
 
