@@ -1,12 +1,25 @@
 $(document).ready( function() {
+	 
+
 	var fileSubmitResponded = false;
 	$('#importDatabase').steps({
 		headerTag: "h3",
 		bodyTag: "section",
 		transitionEffect: "slideLeft",
 		autoFocus: true,
-		onContentLoaded: function(event, currentIndex)
+		onInit: function(event, currentIndex)
 		{
+			$.validator.addMethod("daterange", function( value, element ) {
+				if (value.length != 23)
+					return false;
+				
+				var dates = $.map(value.split("-"), $.trim);
+				
+				if (dates.length != 2 || !isValidDate(dates[0]) || !isValidDate(dates[1]))
+					return false;
+					
+				return true;
+			}, 'Date range must be in the format "DD/MM/YYYY - DD/MM/YYYY"');
 			$('#timespan-form').validate();
 		},
 		onStepChanging: function (event, currentIndex, newIndex)
@@ -70,6 +83,7 @@ $(document).ready( function() {
 	var normalRangePicker = $('input[name="normal-season-date-range"]');
 	var appealRangePicker = $('input[name="appeal-season-date-range"]')
 	var rangePickers = $('input[name="normal-season-date-range"], input[name="appeal-season-date-range"]');
+	var appealStartDate;
 	normalRangePicker.daterangepicker({
 		autoUpdateInput: false,
 		locale: {
@@ -77,13 +91,14 @@ $(document).ready( function() {
 		}
 		}, function(start, end, label) {
 		
-			var date = new Date( Date.parse( end ) ); 
-			date.setDate( date.getDate() + 1 );
-			var newDate = date.toDateString(); 
+			appealStartDate = new Date( Date.parse( end ) ); 
+			appealStartDate.setDate( appealStartDate.getDate() + 1 );
+			var newDate = appealStartDate.toDateString(); 
 			newDate = new Date( Date.parse( newDate ) );
-			
+			appealRangePicker.val(jsDateToString(appealStartDate) + " - ");
 			appealRangePicker.daterangepicker({
 				autoUpdateInput: false,
+				singleDatePicker: true,
 				minDate: newDate,
 				locale: {
 					format: 'DD-MM-YYYY'
@@ -91,8 +106,11 @@ $(document).ready( function() {
 			});
 			appealRangePicker.prop("disabled", false);
 	});
-	rangePickers.on('apply.daterangepicker', function(ev, picker) {
+	normalRangePicker.on('apply.daterangepicker', function(ev, picker) {
 		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+	});
+	appealRangePicker.on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(jsDateToString(appealStartDate) + ' - ' + picker.startDate.format('DD/MM/YYYY'));
 	});
 	rangePickers.on('cancel.daterangepicker', function(ev, picker) {
 		$(this).val('');
@@ -101,4 +119,23 @@ $(document).ready( function() {
 
 function updateImportProgress(progress) {
 	$('.progress-bar').css('width', progress+'%').attr('aria-valuenow', progress).text(progress+'%');
+}
+
+function jsDateToString(date) {
+	return ('0' + date.getDate()).slice(-2) + '/'
+             + ('0' + (date.getMonth() + 1)).slice(-2) + '/'
+             + date.getFullYear();
+}
+
+function isValidDate(date)
+{
+    var matches = /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/.exec(date);
+    if (matches == null) return false;
+    var d = matches[1];
+    var m = matches[2]-1;
+    var y = matches[3];
+    var composedDate = new Date(y, m, d);
+    return composedDate.getDate() == d &&
+           composedDate.getMonth() == m &&
+           composedDate.getFullYear() == y;
 }
