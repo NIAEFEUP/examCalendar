@@ -54,9 +54,17 @@ app.get('/logout',function(req,res){
 //////////////////////////////////////////////////////////////////
 //                          Database                            //
 //////////////////////////////////////////////////////////////////
+app.post('/setTimespan', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 11;
+	console.log(req.body);
+	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
+});
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
+	console.log(id);
 	importDB.import(res, id, req);
 });
 

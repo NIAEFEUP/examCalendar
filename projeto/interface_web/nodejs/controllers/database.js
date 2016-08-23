@@ -67,5 +67,14 @@ module.exports = {
   },
   generateCalendar: function (userID) {
     return false;
+  },
+  //importDB
+  setTimespan: function (calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
+		connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
+		[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
+		function(err, rows, fields) {
+			if (err) throw err;
+		});
+	return true;
   }
 };

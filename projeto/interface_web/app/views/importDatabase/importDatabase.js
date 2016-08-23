@@ -1,5 +1,6 @@
 $(document).ready( function() {
-	 
+	var normalRangePicker, appealRangePicker, rangePickers;
+	var normalStartDate, appealStartDate, normalDuration, appealDuration;
 
 	var fileSubmitResponded = false;
 	$('#importDatabase').steps({
@@ -9,6 +10,51 @@ $(document).ready( function() {
 		autoFocus: true,
 		onInit: function(event, currentIndex)
 		{
+			normalRangePicker = $('input[name="normal-season-date-range"]');
+			appealRangePicker = $('input[name="appeal-season-date-range"]')
+			rangePickers = $('input[name="normal-season-date-range"], input[name="appeal-season-date-range"]');
+			normalRangePicker.daterangepicker({
+				autoUpdateInput: false,
+				locale: {
+					format: 'DD-MM-YYYY'
+				}
+				}, function(start, end, label) {
+					normalStartDate = new Date( Date.parse( start ));
+					appealStartDate = new Date( Date.parse( end ) ); 
+					normalDuration = Math.floor((appealStartDate - normalStartDate) / 86400000) + 1;
+					console.log(normalStartDate, appealStartDate, normalDuration);
+					appealStartDate.setDate( appealStartDate.getDate() + 1 );
+					var newDate = appealStartDate.toDateString(); 
+					newDate = new Date( Date.parse( newDate ) );
+					appealRangePicker.val(jsDateToString(appealStartDate) + " - ");
+					appealRangePicker.daterangepicker({
+						autoUpdateInput: false,
+						singleDatePicker: true,
+						minDate: newDate,
+						locale: {
+							format: 'DD-MM-YYYY'
+						}
+					}, function(start, end, label) {
+						appealDuration = Math.floor((new Date(end) - appealStartDate) / 86400000) + 1;
+					});
+					appealRangePicker.on('apply.daterangepicker', function(ev, picker) {
+						$(this).val(jsDateToString(appealStartDate) + ' - ' + picker.startDate.format('DD/MM/YYYY'));
+					});
+					appealRangePicker.on('cancel.daterangepicker', function(ev, picker) {
+						$(this).val('');
+					});
+					appealRangePicker.prop("disabled", false);
+			});
+			normalRangePicker.on('apply.daterangepicker', function(ev, picker) {
+				$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+			});
+			appealRangePicker.on('apply.daterangepicker', function(ev, picker) {
+				console.log("AAA");
+				$(this).val(jsDateToString(appealStartDate) + ' - ' + picker.startDate.format('DD/MM/YYYY'));
+			});
+			normalRangePicker.on('cancel.daterangepicker', function(ev, picker) {
+				$(this).val('');
+			});
 			$.validator.addMethod("daterange", function( value, element ) {
 				if (value.length != 23)
 					return false;
@@ -25,7 +71,26 @@ $(document).ready( function() {
 		onStepChanging: function (event, currentIndex, newIndex)
 		{
 			if (currentIndex == 0 && newIndex == currentIndex + 1) { // Select timespan
-				return $('#timespan-form').valid();
+				if (!$('#timespan-form').valid())
+					return false;
+					var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+					var localISOTime = (new Date(normalStartDate - tzoffset)).toISOString().slice(0,-1);
+				$.ajax({
+					url:$('#timespan-form').attr('action'),
+					type:'post',
+					data: {
+						normalStartDate: localISOTime,
+						normalDuration: normalDuration,
+						appealDuration: appealDuration
+					},
+					success:function(data){
+						console.log(data);
+					},
+					error:function(data) {
+						console.error(data.responseText);
+					}
+				});
+				return true;
 			} else if (currentIndex == 1 && newIndex == currentIndex + 1) { // Import database
 			
 				if (fileSubmitResponded) {
@@ -79,42 +144,6 @@ $(document).ready( function() {
 	$(this).parent().parent().prev().val(label); // Fill label with the name of the uploaded file.
 	});
 	
-	// Date range picker
-	var normalRangePicker = $('input[name="normal-season-date-range"]');
-	var appealRangePicker = $('input[name="appeal-season-date-range"]')
-	var rangePickers = $('input[name="normal-season-date-range"], input[name="appeal-season-date-range"]');
-	var appealStartDate;
-	normalRangePicker.daterangepicker({
-		autoUpdateInput: false,
-		locale: {
-			format: 'DD-MM-YYYY'
-		}
-		}, function(start, end, label) {
-		
-			appealStartDate = new Date( Date.parse( end ) ); 
-			appealStartDate.setDate( appealStartDate.getDate() + 1 );
-			var newDate = appealStartDate.toDateString(); 
-			newDate = new Date( Date.parse( newDate ) );
-			appealRangePicker.val(jsDateToString(appealStartDate) + " - ");
-			appealRangePicker.daterangepicker({
-				autoUpdateInput: false,
-				singleDatePicker: true,
-				minDate: newDate,
-				locale: {
-					format: 'DD-MM-YYYY'
-				}
-			});
-			appealRangePicker.prop("disabled", false);
-	});
-	normalRangePicker.on('apply.daterangepicker', function(ev, picker) {
-		$(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-	});
-	appealRangePicker.on('apply.daterangepicker', function(ev, picker) {
-		$(this).val(jsDateToString(appealStartDate) + ' - ' + picker.startDate.format('DD/MM/YYYY'));
-	});
-	rangePickers.on('cancel.daterangepicker', function(ev, picker) {
-		$(this).val('');
-	});
 });
 
 function updateImportProgress(progress) {

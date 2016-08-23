@@ -5,6 +5,10 @@ var database = require('./database');
 var http = require('http');
 
 module.exports = {
+	setTimespan: function (res, calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
+		database.setTimespan(calendarID, startingDate, normalSeasonDuration, appealSeasonDuration);
+		res.end();
+	},
   import: function (res, userID, req ) {
 		var content_type = req.headers['content-type'];
 		var boundary = content_type.split('; ')[1].split('=')[1];
@@ -42,8 +46,5 @@ module.exports = {
 			req2.write(body);
 			req2.end();
 		});
-		//req2.write(userIDString);
-		//req.pipe(req2);
-		//req2.write(req.body);
   }
 };
