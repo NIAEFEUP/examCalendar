@@ -31,13 +31,6 @@ module.exports = {
   removeNote: function (userID, noteID) {
     return false;
   },
-  //database
-  import: function (userID, file0, file1, file2) {
-    //TODO connect to the API that is being made by Lenhador/CC
-
-    //Error in the files 0 and 2
-    return '{"error":"0,2"}';
-  },
   //adminHome
   getLogs: function (userID, limit, page) {
     return [];
@@ -74,5 +67,14 @@ module.exports = {
   },
   generateCalendar: function (userID) {
     return false;
+  },
+  //importDB
+  setTimespan: function (calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
+		connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
+		[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
+		function(err, rows, fields) {
+			if (err) throw err;
+		});
+	return true;
   }
 };

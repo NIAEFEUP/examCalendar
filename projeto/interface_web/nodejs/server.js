@@ -54,13 +54,18 @@ app.get('/logout',function(req,res){
 //////////////////////////////////////////////////////////////////
 //                          Database                            //
 //////////////////////////////////////////////////////////////////
+app.post('/setTimespan', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 11;
+	console.log(req.body);
+	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
+});
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	var file0 = req.body.file0;
-	var file1 = req.body.file1;
-	var file2 = req.body.file2;
-	importDB.import(res, id, file0, file1, file2);
+	console.log(id);
+	importDB.import(res, id, req);
 });
 
 //////////////////////////////////////////////////////////////////

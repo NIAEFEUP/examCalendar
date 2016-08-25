@@ -10,10 +10,10 @@
 		<div id="importDatabase">
 		<h3>Define timespan</h3>
 		<section>
-			<form id="timespan-form">
+			<form id="timespan-form" action="//localhost:8080/setTimespan" method="post">
 				<h3>Normal season:</h3>
 				<div class="input-group">
-					<input type="text" class="form-control" name="normal-season-date-range" value="" required/>
+					<input type="daterange" class="form-control" name="normal-season-date-range" data-rule-daterange="true" value="" required/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -21,16 +21,17 @@
 				<br/>
 				<h3>Appeal season:</h3>
 				<div class="input-group">
-					<input type="text" class="form-control" name="appeal-season-date-range" value="" required disabled/>
+					<input type="daterange" class="form-control" name="appeal-season-date-range" data-rule-daterange="true" value="" required disabled/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
+				<small class="form-text text-muted">The appeal season must start in the day after the normal season ends.</small>
 			</form>
 		</section>
 		<h3>Import Database</h3>
 		<section>
-			<form id="file-import-form">
+			<form id="file-import-form" action="//localhost:8080/database" method="post" enctype="multipart/form-data">
 				<h4>UC Map</h4>
 				<div class="input-group">
 					<input type="text" class="form-control" readonly>
@@ -114,7 +115,6 @@
 </div>
 <!-- Modal ends Here -->
 
-<script src="//cdn.jsdelivr.net/jquery.validation/1.15.0/jquery.validate.min.js"></script>
 <script src="views/importDatabase/jquery.steps.min.js"></script>
 <script src="views/importDatabase/importDatabase.js"></script>
 

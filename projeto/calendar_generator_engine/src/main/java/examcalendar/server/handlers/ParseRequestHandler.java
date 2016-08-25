@@ -13,10 +13,8 @@ import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.SystemUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.reflections.serializers.JsonSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +52,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         return roomsParser;
     }
 
-    private FileItem getFileFromUploadedFiles(String fieldName, List<FileItem> uploadedFiles) {
+    private FileItem getFileItemFromMultipartForm(String fieldName, List<FileItem> uploadedFiles) {
         for (FileItem uploadedFile : uploadedFiles) {
             if (uploadedFile.getFieldName().equals(fieldName))
                 return uploadedFile;
@@ -65,11 +63,12 @@ public class ParseRequestHandler extends AbstractRequestHandler {
     /**
      *
      * @param httpExchange
-     * @return A List of 3 Files in the following order: ucmap, professors, rooms.
+     * @param files An empty list to be filled with the uploaded files.
+     * @return The ID of the user that submitted the parse request, or -1 in case of failure.
      */
-    private List<File> getUploadedFiles(final HttpExchange httpExchange) {
+    private int getUploadedFiles(final HttpExchange httpExchange, List<File> files) {
         DiskFileItemFactory d = new DiskFileItemFactory();
-        List<File> files = new ArrayList<File>();
+
         try {
             ServletFileUpload up = new ServletFileUpload(d);
             List result = up.parseRequest(new RequestContext() {
@@ -92,13 +91,13 @@ public class ParseRequestHandler extends AbstractRequestHandler {
             });
             List<FileItem> fileItems = new ArrayList<FileItem>();
 
-            FileItem ucMapFileItem = getFileFromUploadedFiles("ucmap", result);
+            FileItem ucMapFileItem = getFileItemFromMultipartForm("ucmap", result);
             fileItems.add(ucMapFileItem);
 
-            FileItem professorsFileItem = getFileFromUploadedFiles("professors", result);
+            FileItem professorsFileItem = getFileItemFromMultipartForm("professors", result);
             fileItems.add(professorsFileItem);
 
-            FileItem roomsFileItem = getFileFromUploadedFiles("rooms", result);
+            FileItem roomsFileItem = getFileItemFromMultipartForm("rooms", result);
             fileItems.add(roomsFileItem);
 
             for (FileItem fileItem : fileItems) {
@@ -111,13 +110,19 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 fileItem.write(file);
                 files.add(file);
             }
-            return files;
+            FileItem userIDFileItem = getFileItemFromMultipartForm("userid", result);
+            if (userIDFileItem == null) return -1;
+            try {
+                return Integer.parseInt(userIDFileItem.getString());
+            } catch (NumberFormatException e) {
+                return -1;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             for (File file : files) {
                 file.delete();
             }
-            return null;
+            return -1;
         }
     }
 
@@ -132,10 +137,10 @@ public class ParseRequestHandler extends AbstractRequestHandler {
             try {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
-                List<File> files = getUploadedFiles(httpExchange);
-                if (files == null) return;
+                List<File> files = new ArrayList<File>();
+                int clientID = getUploadedFiles(httpExchange, files);
+                if (clientID == -1) throw new RequestHandlerFailException(400, null);
 
-                int clientID = 1; // TODO
                 Date date = new Date(new java.util.Date().getTime()); // TODO
 
                 UCMapParser ucMapParser = null;
@@ -296,7 +301,6 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         for (Topic topic : topics) {
             Set<Student> topicStudents = topic.getStudentList();
             for (Student student : topicStudents) {
-                System.out.println(student.getId() + " " + topic.getId());
                 PreparedStatement ps = conn.prepareStatement("INSERT INTO studentTopic (student, topic) VALUES (?, ?)");
                 ps.setInt(1, student.getId());
                 ps.setInt(2, topic.getId());

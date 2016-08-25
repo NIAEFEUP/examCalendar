@@ -51,7 +51,7 @@ public class Server {
     }
 
     public void start() throws IOException, SQLException {
-        conn = DriverManager.getConnection("jdbc:mysql://" + hostname + "/" + database + "?serverTimezone=UTC", username, password);
+        conn = createDatabaseConnection();
         events = new LinkedBlockingQueue<Event>();
         runningSchedulers = new ArrayList<Scheduler>();
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
@@ -103,5 +103,29 @@ public class Server {
 
     public boolean isRunning() {
         return this.running;
+    }
+
+    public String getDatabaseHostname() {
+        return this.hostname;
+    }
+
+    public String getDatabaseName() {
+        return this.database;
+    }
+
+    public String getDatabaseUsername() {
+        return this.username;
+    }
+
+    public String getDatabasePassword() {
+        return this.password;
+    }
+
+    public String getDatabaseURL() {
+        return "jdbc:mysql://" + hostname + "/" + database + "?serverTimezone=UTC";
+    }
+
+    public Connection createDatabaseConnection() throws SQLException {
+        return DriverManager.getConnection(getDatabaseURL(), username, password);
     }
 }

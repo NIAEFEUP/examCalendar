@@ -16,6 +16,7 @@ import java.util.Scanner;
  * Created by Gustavo on 02/07/2016.
  */
 public class ExaminationDBImporter extends AbstractSolutionImporter {
+    private RequestConfig requestConfig;
     public ExaminationDBImporter(SolutionDao solutionDao) {
         super(solutionDao);
     }
@@ -53,7 +54,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
-            RequestConfig requestConfig = readRequestConfig(calendar, conn);
+            requestConfig = readRequestConfig(calendar, conn);
             if (requestConfig == null) return null;
 
             List<Professor> professors = readProfessors(requestConfig.calendar, conn);
@@ -85,6 +86,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             examination.setPeriodList(periods);
             examination.setProfessorUnavailableList(professorUnavailables);
             examination.setRoomPeriodList(roomPeriods);
+            examination.setInstitutionParametrization(requestConfig.institutionParametrization);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -271,10 +273,14 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Date currentDay = new Date(requestConfig.startingDate.getTime());
         Calendar c = Calendar.getInstance();
         c.setTime(currentDay);
-        for (int dayIndex = 0; dayIndex < requestConfig.normalSeasonDuration + requestConfig.appealSeasonDuration; dayIndex++) {
+        System.out.println(c.get(Calendar.DAY_OF_MONTH));
+        int dayIndex = 0;
+        while (dayIndex < requestConfig.normalSeasonDuration + requestConfig.appealSeasonDuration) {
+            System.out.println(c.get(Calendar.DAY_OF_WEEK) + " " + dayIndex);
             Period period1 = new Period(dayIndex, PeriodTime.NINE_AM, dayIndex < requestConfig.normalSeasonDuration);
             Period period2 = new Period(dayIndex, PeriodTime.ONE_PM, dayIndex < requestConfig.normalSeasonDuration);
             Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM, dayIndex < requestConfig.normalSeasonDuration);
+
             period1.setDate(c.getTime());
             period2.setDate(c.getTime());
             period3.setDate(c.getTime());
@@ -285,10 +291,10 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
 
             int dow;
             do {
-                dow = c.get(Calendar.DAY_OF_WEEK);
                 c.add(Calendar.DATE, 1); // Advance to next day
                 dayIndex++;
-            } while (dow > Calendar.FRIDAY);
+                dow = c.get(Calendar.DAY_OF_WEEK);
+            } while (dow == Calendar.SUNDAY || dow == Calendar.SATURDAY);
         }
 
         return periods;
@@ -359,5 +365,9 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         }
 
         return professorUnavailables;
+    }
+
+    public RequestConfig getRequestConfig() {
+        return requestConfig;
     }
 }
