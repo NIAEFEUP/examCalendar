@@ -27,5 +27,8 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     redirectTo: '/login'
   });
 
-  $locationProvider.html5Mode(false);
+  $locationProvider.html5Mode({
+                 enabled: true,
+                 requireBase: false
+          });
 }]);
