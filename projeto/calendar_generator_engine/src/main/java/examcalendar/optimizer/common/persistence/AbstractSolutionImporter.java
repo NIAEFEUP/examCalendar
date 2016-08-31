@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 JBoss Inc
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,19 +22,22 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 
 import com.google.common.math.BigIntegerMath;
-import org.optaplanner.core.api.domain.solution.Solution;
 import examcalendar.optimizer.common.app.LoggingMain;
 import examcalendar.optimizer.common.business.ProblemFileComparator;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
-public abstract class AbstractSolutionImporter extends LoggingMain {
+/**
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ */
+public abstract class AbstractSolutionImporter<Solution_> extends LoggingMain {
 
     protected static final String DEFAULT_OUTPUT_FILE_SUFFIX = "xml";
 
-    protected final SolutionDao solutionDao;
+    protected final SolutionDao<Solution_> solutionDao;
     protected final File inputDir;
     protected final File outputDir;
 
-    public AbstractSolutionImporter(SolutionDao solutionDao) {
+    public AbstractSolutionImporter(SolutionDao<Solution_> solutionDao) {
         this.solutionDao = solutionDao;
         inputDir = new File(solutionDao.getDataDir(), "import");
         if (!inputDir.exists()) {
@@ -98,7 +101,7 @@ public abstract class AbstractSolutionImporter extends LoggingMain {
     }
 
     protected void convert(File inputFile, File outputFile) {
-        Solution solution = readSolution(inputFile);
+        Solution_ solution = readSolution(inputFile);
         solutionDao.writeSolution(solution, outputFile);
     }
 
@@ -118,11 +121,11 @@ public abstract class AbstractSolutionImporter extends LoggingMain {
         return true;
     }
 
-    public abstract Solution readSolution(File inputFile);
+    public abstract Solution_ readSolution(File inputFile);
 
     public static abstract class InputBuilder extends LoggingMain {
 
-        public BigInteger factorial(int base) {
+        public static BigInteger factorial(int base) {
             BigInteger value = BigInteger.ONE;
             for (int i = 1; i <= base; i++) {
                 value = value.multiply(BigInteger.valueOf(base));

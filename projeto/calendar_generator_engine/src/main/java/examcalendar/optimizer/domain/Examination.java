@@ -1,8 +1,11 @@
 package examcalendar.optimizer.domain;
 
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
+import org.optaplanner.core.api.domain.solution.PlanningScore;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.core.api.domain.solution.drools.ProblemFactCollectionProperty;
+import org.optaplanner.core.api.domain.solution.drools.ProblemFactProperty;
 import org.optaplanner.core.api.domain.valuerange.ValueRangeProvider;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 
@@ -14,7 +17,7 @@ import java.util.*;
  * @created 18-fev-2016 16:42:18
  */
 @PlanningSolution()
-public class Examination implements Solution<HardSoftScore> {
+public class Examination {
 	private HardSoftScore score;
 	private List<RoomPeriod> roomPeriodList = new ArrayList<RoomPeriod>();
 	private List<Topic> topicList = new ArrayList<Topic>();
@@ -39,6 +42,7 @@ public class Examination implements Solution<HardSoftScore> {
     public void setRoomPeriodList(List<RoomPeriod> roomPeriodList) { this.roomPeriodList = roomPeriodList; };
 
 	@ValueRangeProvider(id = "examRange")
+	@ProblemFactCollectionProperty
 	public List<Exam> getExamList() {
 		return this.examList;
 	}
@@ -47,17 +51,15 @@ public class Examination implements Solution<HardSoftScore> {
 		this.examList = periodList;
 	}
 
-	@Override
+	@PlanningScore
 	public HardSoftScore getScore() {
 		return this.score;
 	}
-
-	@Override
 	public void setScore(HardSoftScore score) {
 		this.score = score;
 	}
 
-	@Override
+	@ProblemFactCollectionProperty
 	public Collection<?> getProblemFacts() {
 		List<Object> facts = new ArrayList<Object>();
 		facts.addAll(topicList);
@@ -74,6 +76,7 @@ public class Examination implements Solution<HardSoftScore> {
 		return facts;
 	}
 
+	@ProblemFactCollectionProperty
 	private List<TopicConflict> calculateTopicConflictList() {
 		List<TopicConflict> topicConflictList = new ArrayList<TopicConflict>();
 		for (Topic leftTopic : topicList) {
@@ -94,6 +97,7 @@ public class Examination implements Solution<HardSoftScore> {
 		return topicConflictList;
 	}
 
+	@ProblemFactCollectionProperty
 	public List<Period> getPeriodList() {
 		return periodList;
 	}
@@ -102,22 +106,27 @@ public class Examination implements Solution<HardSoftScore> {
 		this.periodList = periodList;
 	}
 
+	@ProblemFactCollectionProperty
 	public List<Room> getRoomList() { return roomList; }
 
 	public void setRoomList(List<Room> roomList) { this.roomList = roomList; }
 
+	@ProblemFactCollectionProperty
 	public List<ProfessorUnavailable> getProfessorUnavailableList() { return professorUnavailableList; }
 
 	public void setProfessorUnavailableList(List<ProfessorUnavailable> professorUnavailableList) { this.professorUnavailableList = professorUnavailableList; }
 
+	@ProblemFactCollectionProperty
 	public List<Topic> getTopicList() { return topicList; }
 
 	public void setTopicList(List<Topic> topicList) { this.topicList = topicList; }
 
+	@ProblemFactCollectionProperty
 	public List<TopicProfessor> getTopicProfessors() { return topicProfessors; }
 
 	public void setTopicProfessors(List<TopicProfessor> topicProfessors) { this.topicProfessors = topicProfessors; }
 
+	@ProblemFactProperty
 	public InstitutionParametrization getInstitutionParametrization() {
 		return institutionParametrization;
 	}

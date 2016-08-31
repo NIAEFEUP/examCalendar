@@ -14,7 +14,7 @@ import java.sql.*;
 /**
  * Created by Gustavo on 15/07/2016.
  */
-public class ExaminationDBExporter extends AbstractSolutionExporter {
+public class ExaminationDBExporter extends AbstractSolutionExporter<Examination> {
     public ExaminationDBExporter(SolutionDao solutionDao) {
         super(solutionDao);
     }
@@ -29,15 +29,15 @@ public class ExaminationDBExporter extends AbstractSolutionExporter {
     }
 
     @Override
-    public void writeSolution(Solution solution, File outputFile) {
+    public void writeSolution(Examination examination, File outputFile) {
 
     }
 
-    public void writeSolution(Solution solution, int requestID) {
+    public void writeSolution(Examination examination, int requestID) {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
-            writeExamRooms(requestID, conn, (Examination)solution);
+            writeExamRooms(requestID, conn, examination);
         } catch (SQLException e) {
             e.printStackTrace();
         }

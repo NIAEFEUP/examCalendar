@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 JBoss Inc
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,29 +18,35 @@ package examcalendar.optimizer.common.persistence;
 
 import java.io.File;
 
-import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.persistence.xstream.impl.domain.solution.XStreamSolutionFileIO;
 
-public abstract class XStreamSolutionDao extends AbstractSolutionDao {
+/**
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ */
+public abstract class XStreamSolutionDao<Solution_> extends AbstractSolutionDao<Solution_> {
 
-    protected XStreamSolutionFileIO xStreamSolutionFileIO;
+    protected XStreamSolutionFileIO<Solution_> xStreamSolutionFileIO;
 
     public XStreamSolutionDao(String dirName, Class... xStreamAnnotations) {
         super(dirName);
-        xStreamSolutionFileIO = new XStreamSolutionFileIO(xStreamAnnotations);
+        xStreamSolutionFileIO = new XStreamSolutionFileIO<>(xStreamAnnotations);
     }
 
+    @Override
     public String getFileExtension() {
         return xStreamSolutionFileIO.getOutputFileExtension();
     }
 
-    public Solution readSolution(File inputSolutionFile) {
-        Solution solution = xStreamSolutionFileIO.read(inputSolutionFile);
+    @Override
+    public Solution_ readSolution(File inputSolutionFile) {
+        Solution_ solution = xStreamSolutionFileIO.read(inputSolutionFile);
         logger.info("Opened: {}", inputSolutionFile);
         return solution;
     }
 
-    public void writeSolution(Solution solution, File outputSolutionFile) {
+    @Override
+    public void writeSolution(Solution_ solution, File outputSolutionFile) {
         xStreamSolutionFileIO.write(solution, outputSolutionFile);
         logger.info("Saved: {}", outputSolutionFile);
     }

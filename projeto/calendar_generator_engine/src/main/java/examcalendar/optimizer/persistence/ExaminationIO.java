@@ -1,6 +1,7 @@
 package examcalendar.optimizer.persistence;
 
 import examcalendar.optimizer.ExaminationGenerator;
+import examcalendar.optimizer.domain.Examination;
 import org.optaplanner.core.api.domain.solution.Solution;
 import org.optaplanner.persistence.common.api.domain.solution.SolutionFileIO;
 
@@ -9,7 +10,7 @@ import java.io.File;
 /**
  * Created by Gustavo on 01/07/2016.
  */
-public class ExaminationIO implements SolutionFileIO {
+public class ExaminationIO implements SolutionFileIO<Examination> {
     @Override
     public String getInputFileExtension() {
         return null;
@@ -21,12 +22,12 @@ public class ExaminationIO implements SolutionFileIO {
     }
 
     @Override
-    public Solution read(File file) {
+    public Examination read(File file) {
         return ExaminationGenerator.createExamination();
     }
 
     @Override
-    public void write(Solution solution, File file) {
+    public void write(Examination examination, File file) {
 
     }
 }

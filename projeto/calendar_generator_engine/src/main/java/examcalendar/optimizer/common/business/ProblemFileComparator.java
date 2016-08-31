@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 JBoss Inc
+ * Copyright 2015 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,17 @@
 package examcalendar.optimizer.common.business;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Locale;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
-public class ProblemFileComparator implements Comparator<File> {
+public class ProblemFileComparator implements Comparator<File>, Serializable {
 
     private static final AlphaNumericStringComparator ALPHA_NUMERIC_STRING_COMPARATOR = new AlphaNumericStringComparator();
 
+    @Override
     public int compare(File a, File b) {
         String aLowerCaseName = a.getName().toLowerCase(Locale.US);
         String bLowerCaseName = b.getName().toLowerCase(Locale.US);

@@ -63,12 +63,12 @@ public class EvaluateRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    public static JSONObject evaluateSolution(Solution solution) {
-        SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
-        Solver solver = solverFactory.buildSolver();
-        ScoreDirectorFactory scoreDirectorFactory = solver.getScoreDirectorFactory();
-        ScoreDirector guiScoreDirector = scoreDirectorFactory.buildScoreDirector();
-        guiScoreDirector.setWorkingSolution(solution);
+    public static JSONObject evaluateSolution(Examination examination) {
+        SolverFactory<Examination> solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
+        Solver<Examination> solver = solverFactory.buildSolver();
+        ScoreDirectorFactory<Examination> scoreDirectorFactory = solver.getScoreDirectorFactory();
+        ScoreDirector<Examination> guiScoreDirector = scoreDirectorFactory.buildScoreDirector();
+        guiScoreDirector.setWorkingSolution(examination);
         HardSoftScore score = (HardSoftScore) guiScoreDirector.calculateScore();
         JSONObject jsonScore = new JSONObject();
         try {
