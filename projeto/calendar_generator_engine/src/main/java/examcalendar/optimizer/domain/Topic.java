@@ -57,6 +57,12 @@ public class Topic {
 
 	@Override
 	public String toString() {
+		if (acronym != null)
+			return "Topic " + acronym;
+
+		if (name != null)
+			return "Topic " + name;
+
 		return "Topic with id = "+this.id;
 	}
 

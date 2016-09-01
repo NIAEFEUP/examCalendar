@@ -50,6 +50,7 @@ end
 rule "notEnoughRoomsForExam"
     when
         $exam : Exam($numStudents : numStudents)
+        $num2 : Number() from $numStudents
         $totalCapacity : Number(intValue < $numStudents) from accumulate (
             RoomPeriod(exam == $exam, $room : room),
             sum($room.getCapacity())
@@ -64,7 +65,7 @@ rule "sameYearTooCloseExams"
     when
         $institutionParametrization : InstitutionParametrization(minDaysBetweenSameYearExams > 0)
         RoomPeriod(exam != null, $id1 : getId(), $exam : exam, $leftTopic : exam.getTopic(), $year : exam.topic.getYear(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod(exam != null, id > $id1, $exam != exam, $rightTopic : exam.getTopic(), $year == exam.topic.getYear(), Math.abs($leftDayIndex - period.getDayIndex()) < $institutionParametrization.minDaysBetweenSameYearExams)
+        RoomPeriod(exam != null, id > $id1, $exam != exam, $rightTopic : exam.getTopic(), $year == exam.topic.getYear(), Math.abs(period.getDayIndex() - $leftDayIndex) < $institutionParametrization.minDaysBetweenSameYearExams)
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -100);
@@ -82,13 +83,10 @@ end
 rule "gapBetweenSameTopicExams"
     when
         $institutionParametrization : InstitutionParametrization(minDaysBetweenSameTopicExams > 0)
-        $exam1 : Exam($topic : topic)
-        $exam2 : Exam(id < $exam1.getId(), $topic == topic)
-        RoomPeriod(exam != null, $exam1 == exam, $id1 : getId(), $leftDayIndex : period.getDayIndex(), exam.isNormal())
-        RoomPeriod(exam != null, $exam2 == exam, id > $id1, $rightDayIndex : period.getDayIndex(), exam != null, exam.isAppeal())
-        Number(intValue < $institutionParametrization.minDaysBetweenSameTopicExams) from $rightDayIndex - $leftDayIndex
+        RoomPeriod(exam != null, $id1 : getId(), $leftDayIndex : period.getDayIndex(), exam.isNormal(), $topic : exam.getTopic())
+        RoomPeriod(exam != null, id > $id1, exam.isAppeal(), $topic == exam.getTopic(), period.getDayIndex() - $leftDayIndex < $institutionParametrization.minDaysBetweenSameTopicExams)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -100);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
         //scoreHolder.addHardConstraintMatch(kcontext, $dist.intValue() - 14); SLOWER
 end
 
@@ -142,8 +140,8 @@ rule "periodSpread"
         $dist : Float(intValue < 7) from Math.abs($leftDayIndex - $rightDayIndex)
         $difficultyRate : Float() from $difficultyA*$difficultyB*$institutionParametrization.getDifficultyPenalty()
         TopicConflict($leftExam.getTopic() == leftTopic, $rightExam.getTopic() == rightTopic, studentSize > 0, $studentSize : studentSize)
-        not(exists(RoomPeriod(exam == $leftExam, $leftId >  id)))
-        not(exists(RoomPeriod(exam == $rightExam, $rigthId >  id)))
+        not(exists(RoomPeriod(exam == $leftExam, $leftId > id)))
+        not(exists(RoomPeriod(exam == $rightExam, $rigthId > id)))
     then
         scoreHolder.addSoftConstraintMatch(kcontext, - (int) (($difficultyRate*$studentSize / $dist) * $institutionParametrization.getSpreadPenalty()) );
 end

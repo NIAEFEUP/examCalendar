@@ -64,7 +64,7 @@ public class Exam implements Comparable<Exam> {
 
 	@Override
 	public String toString() {
-		return "Exam with id = "+ this.id + " " + topic.toString();
+		return (normal ? "Normal" : "Appeal") + " exam of " + topic + " (" + (pc ? "" : "non-") + "pc)";
 	}
 
 	@Override
