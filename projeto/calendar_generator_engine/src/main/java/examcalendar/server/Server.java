@@ -21,6 +21,7 @@ import java.util.concurrent.Semaphore;
  */
 public class Server {
     public enum Event {
+        START,
         SCHEDULER_END,
         ENQUEUEING,
         TERMINATE
@@ -63,6 +64,7 @@ public class Server {
         running = true;
         dispatcherThread.start();
         server.start();
+        events.add(Event.START);
     }
 
     boolean canStartNewScheduler() {
