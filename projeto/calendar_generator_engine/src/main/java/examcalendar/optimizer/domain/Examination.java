@@ -60,23 +60,6 @@ public class Examination {
 	}
 
 	@ProblemFactCollectionProperty
-	public Collection<?> getProblemFacts() {
-		List<Object> facts = new ArrayList<Object>();
-		facts.addAll(topicList);
-		facts.addAll(examList);
-		facts.addAll(periodList);
-		facts.addAll(roomList);
-		facts.addAll(professorUnavailableList);
-		List<TopicConflict> topicConflicts = calculateTopicConflictList();
-		facts.addAll(topicConflicts);
-		facts.add(institutionParametrization);
-
-		System.out.println("Nº topics: " + topicList.size() + " Nº exams: " + examList.size() + " Nº periods: " + periodList.size() + " Nº rooms: " + roomList.size() + " Nº professor unavailabilities: " + professorUnavailableList.size() + " Nº topic conflicts: " + topicConflicts.size());
-
-		return facts;
-	}
-
-	@ProblemFactCollectionProperty
 	private List<TopicConflict> calculateTopicConflictList() {
 		List<TopicConflict> topicConflictList = new ArrayList<TopicConflict>();
 		for (Topic leftTopic : topicList) {

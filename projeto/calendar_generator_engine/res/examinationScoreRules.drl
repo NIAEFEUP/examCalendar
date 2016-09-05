@@ -64,8 +64,8 @@ end
 rule "sameYearTooCloseExams"
     when
         $institutionParametrization : InstitutionParametrization(minDaysBetweenSameYearExams > 0)
-        RoomPeriod(exam != null, $id1 : getId(), $exam : exam, $leftTopic : exam.getTopic(), $year : exam.topic.getYear(), $leftDayIndex : period.getDayIndex())
-        RoomPeriod(exam != null, id > $id1, $exam != exam, $rightTopic : exam.getTopic(), $year == exam.topic.getYear(), Math.abs(period.getDayIndex() - $leftDayIndex) < $institutionParametrization.minDaysBetweenSameYearExams)
+        RoomPeriod(exam != null, $exam : exam, $leftTopic : exam.getTopic(), $year : exam.topic.getYear(), $leftDayIndex : period.getDayIndex())
+        RoomPeriod(exam != null, $exam != exam, $rightTopic : exam.getTopic(), $year == exam.topic.getYear(), Math.abs(period.getDayIndex() - $leftDayIndex) < $institutionParametrization.minDaysBetweenSameYearExams)
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -100);
@@ -93,8 +93,8 @@ end
 // A student can't have two exams at the same time
 rule "examsWithSameStudentsAtSamePeriods"
     when
-        RoomPeriod($period : period, $id1 : getId(), exam != null, $leftTopic : exam.getTopic())
-        RoomPeriod($period == period, id > $id1, exam != null, $rightTopic : exam.getTopic())
+        RoomPeriod($period : period, exam != null, $leftTopic : exam.getTopic())
+        RoomPeriod($period == period, exam != null, $rightTopic : exam.getTopic())
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
         scoreHolder.addHardConstraintMatch(kcontext, -1);
