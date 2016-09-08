@@ -18,6 +18,7 @@ import java.util.*;
  */
 @PlanningSolution()
 public class Examination {
+	private int id;
 	private HardSoftScore score;
 	private List<RoomPeriod> roomPeriodList = new ArrayList<RoomPeriod>();
 	private List<Topic> topicList = new ArrayList<Topic>();
@@ -32,6 +33,14 @@ public class Examination {
 	public Examination(){
 		this.examList = new ArrayList<Exam>();
 		this.roomPeriodList = new ArrayList<RoomPeriod>();
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	@PlanningEntityCollectionProperty

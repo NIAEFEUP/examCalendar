@@ -9,7 +9,11 @@ import examcalendar.optimizer.domain.RoomPeriod;
 import org.optaplanner.core.api.domain.solution.Solution;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Scanner;
 
 /**
  * Created by Gustavo on 15/07/2016.
@@ -30,6 +34,22 @@ public class ExaminationDBExporter extends AbstractSolutionExporter<Examination>
 
     @Override
     public void writeSolution(Examination examination, File outputFile) {
+        // File contents: Request ID
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(outputFile);
+            fos.write(examination.getId());
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 

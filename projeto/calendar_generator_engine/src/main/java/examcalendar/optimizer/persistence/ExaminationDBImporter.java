@@ -80,6 +80,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             removeUnavailableRoomPeriods(requestConfig.calendar, conn, roomPeriods);
             //fillRoomPeriods(calendar, conn, roomPeriods, exams);
 
+            examination.setId(calendar);
             examination.setTopicList(topics);
             examination.setTopicProfessors(topicProfessors);
             examination.setExamList(exams);
