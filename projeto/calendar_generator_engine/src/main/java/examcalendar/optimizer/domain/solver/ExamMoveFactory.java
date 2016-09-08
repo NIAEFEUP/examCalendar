@@ -33,8 +33,8 @@ public class ExamMoveFactory implements MoveListFactory<Examination> {
                     if (rp.getPeriod().equals(period) && rp.getExam() == null) {
                         capacity += rp.getRoom().getCapacity();
                         newRPs.add(rp);
+                        if (capacity >= exam.getNumStudents()) break;
                     }
-                    if (capacity >= exam.getNumStudents()) break;
                 }
                 if (capacity < exam.getNumStudents() || oldRPs.size() == 0) continue;
                 moveList.add(new ExamMove(exam, oldRPs, newRPs));
