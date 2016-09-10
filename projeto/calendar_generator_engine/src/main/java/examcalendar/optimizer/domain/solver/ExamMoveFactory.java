@@ -18,19 +18,20 @@ public class ExamMoveFactory implements MoveListFactory<Examination> {
     public List<? extends Move> createMoveList(Examination examination) {
         List<Move> moveList = new ArrayList<Move>();
         for (Exam exam : examination.getExamList()) {
+            List <RoomPeriod> oldRPs = new ArrayList<RoomPeriod>();
+            for (RoomPeriod rp : examination.getRoomPeriodList()) {
+                if (rp.getExam() != null && rp.getExam().equals(exam)) {
+                    oldRPs.add(rp);
+                }
+            }
             for (Period period : examination.getPeriodList()) {
                 int capacity = 0;
-                List <RoomPeriod> oldRPs = new ArrayList<RoomPeriod>();
                 List <RoomPeriod> newRPs = new ArrayList<RoomPeriod>();
+                if (oldRPs.size() == 0) break;
+                if (period.equals(oldRPs.get(0).getPeriod())) continue;
+                //if (!period.getDate().equals(oldRPs.get(0).getPeriod().getDate())) continue;
                 for (RoomPeriod rp : examination.getRoomPeriodList()) {
-                    if (rp.getExam() != null && rp.getExam().equals(exam)) {
-                        oldRPs.add(rp);
-                    }
-                }
-                if (oldRPs.size() == 0) continue;
-                if (period.equals(oldRPs.get(0).getPeriod())) break;
-                for (RoomPeriod rp : examination.getRoomPeriodList()) {
-                    if (rp.getPeriod().equals(period) && rp.getExam() == null) {
+                    if (rp.getPeriod().equals(period) && rp.getExam() == null && rp.getRoom().isPc() == exam.getPC()) {
                         capacity += rp.getRoom().getCapacity();
                         newRPs.add(rp);
                         if (capacity >= exam.getNumStudents()) break;

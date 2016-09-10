@@ -16,7 +16,7 @@
   <localSearch>
     <unionMoveSelector>
       <swapMoveSelector>
-        <fixedProbabilityWeight>9</fixedProbabilityWeight>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
         <filterClass>examcalendar.optimizer.domain.solver.SwapMoveFilter</filterClass>
       </swapMoveSelector>
       <changeMoveSelector>

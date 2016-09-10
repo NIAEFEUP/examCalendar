@@ -9,7 +9,8 @@ import org.optaplanner.core.api.domain.variable.PlanningVariable;
  * @version 1.0
  * @created 18-fev-2016 16:42:19
  */
-@PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class)
+@PlanningEntity
+//@PlanningEntity(difficultyComparatorClass = RoomPeriodDifficultyComparator.class) slower?
 public class RoomPeriod implements Comparable<RoomPeriod> {
 	private static int currID = 0;
 	private int id;

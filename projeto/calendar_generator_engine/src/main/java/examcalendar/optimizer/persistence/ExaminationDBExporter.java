@@ -67,7 +67,7 @@ public class ExaminationDBExporter extends AbstractSolutionExporter<Examination>
         for (Exam exam : examination.getExamList()) {
             Period period = null;
             for (RoomPeriod rp : examination.getRoomPeriodList()) {
-                if (!rp.getExam().equals(exam)) {
+                if (rp.getExam() == null || !rp.getExam().equals(exam)) {
                     continue;
                 }
                 if (period == null) {

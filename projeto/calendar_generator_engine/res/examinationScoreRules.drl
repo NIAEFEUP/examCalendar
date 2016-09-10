@@ -43,7 +43,7 @@ rule "professorUnavailable"
         TopicProfessor($topic : topic, $professor == professor)
         RoomPeriod(exam != null, $topic == exam.getTopic(), $period == getPeriod())
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -100);
+        scoreHolder.addHardConstraintMatch(kcontext, -1000);
 end
 
 // An exam must to have rooms with enough space for all of it's students
@@ -68,7 +68,7 @@ rule "sameYearTooCloseExams"
         RoomPeriod(exam != null, $exam != exam, $rightTopic : exam.getTopic(), $year == exam.topic.getYear(), Math.abs(period.getDayIndex() - $leftDayIndex) < $institutionParametrization.minDaysBetweenSameYearExams)
         TopicConflict($leftTopic == leftTopic, $rightTopic == rightTopic, studentSize > 0, $studentSize : studentSize)
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -100);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 // PC Exams must be scheduled in a PC Room
