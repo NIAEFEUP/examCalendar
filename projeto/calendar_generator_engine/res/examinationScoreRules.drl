@@ -137,11 +137,11 @@ rule "periodSpread"
         $institutionParametrization : InstitutionParametrization(spreadPenalty != 0)
         RoomPeriod(exam != null, $leftDayIndex : period.getDayIndex(), $leftExam : exam, $difficultyA : exam.getTopic().getDifficulty(), $leftId : id)
         RoomPeriod(exam != null, exam != $leftExam, $rightExam : exam, $rightDayIndex : period.getDayIndex(), $difficultyB: exam.getTopic().getDifficulty(), $rigthId : id)
-        $dist : Number(intValue < 7, intValue > 0) from Math.abs($leftDayIndex - $rightDayIndex)
+        $dist : Number(intValue < 7) from Math.abs($leftDayIndex - $rightDayIndex)
         $difficultyRate : Number() from $difficultyA*$difficultyB*$institutionParametrization.getDifficultyPenalty()
         TopicConflict($leftExam.getTopic() == leftTopic, $rightExam.getTopic() == rightTopic, studentSize > 0, $studentSize : studentSize)
         not(exists(RoomPeriod(exam == $leftExam, $leftId > id)))
         not(exists(RoomPeriod(exam == $rightExam, $rigthId > id)))
     then
-        scoreHolder.addSoftConstraintMatch(kcontext, - (int) (($difficultyRate.floatValue() * $studentSize / $dist.intValue()) * $institutionParametrization.getSpreadPenalty()) );
+        scoreHolder.addSoftConstraintMatch(kcontext, - (int) (($difficultyRate.floatValue() * $studentSize / ($dist.intValue() + 1)) * $institutionParametrization.getSpreadPenalty()) );
 end
