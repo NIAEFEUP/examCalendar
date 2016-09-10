@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 JBoss Inc
+ * Copyright 2015 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import java.util.Comparator;
  */
 public class AlphaNumericStringComparator implements Comparator<String>, Serializable {
 
+    @Override
     public int compare(String a, String b) {
         char[] aChars = a.toCharArray();
         char[] bChars = b.toCharArray();

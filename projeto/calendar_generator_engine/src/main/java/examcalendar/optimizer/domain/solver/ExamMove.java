@@ -70,7 +70,7 @@ public class ExamMove extends AbstractMove {
         StringBuilder s = new StringBuilder();
         s.append(this.exam).append(" {");
         s.append(oldRPs.get(0).getPeriod());
-        s.append("} <-> ");
+        s.append(" -> ");
         s.append(newRPs.get(0).getPeriod());
         s.append("}");
         return s.toString();

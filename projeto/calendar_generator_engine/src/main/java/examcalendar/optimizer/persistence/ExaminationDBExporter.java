@@ -9,12 +9,16 @@ import examcalendar.optimizer.domain.RoomPeriod;
 import org.optaplanner.core.api.domain.solution.Solution;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
+import java.util.Scanner;
 
 /**
  * Created by Gustavo on 15/07/2016.
  */
-public class ExaminationDBExporter extends AbstractSolutionExporter {
+public class ExaminationDBExporter extends AbstractSolutionExporter<Examination> {
     public ExaminationDBExporter(SolutionDao solutionDao) {
         super(solutionDao);
     }
@@ -29,15 +33,31 @@ public class ExaminationDBExporter extends AbstractSolutionExporter {
     }
 
     @Override
-    public void writeSolution(Solution solution, File outputFile) {
+    public void writeSolution(Examination examination, File outputFile) {
+        // File contents: Request ID
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(outputFile);
+            fos.write(examination.getId());
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 
-    public void writeSolution(Solution solution, int requestID) {
+    public void writeSolution(Examination examination, int requestID) {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
-            writeExamRooms(requestID, conn, (Examination)solution);
+            writeExamRooms(requestID, conn, examination);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +67,7 @@ public class ExaminationDBExporter extends AbstractSolutionExporter {
         for (Exam exam : examination.getExamList()) {
             Period period = null;
             for (RoomPeriod rp : examination.getRoomPeriodList()) {
-                if (!rp.getExam().equals(exam)) {
+                if (rp.getExam() == null || !rp.getExam().equals(exam)) {
                     continue;
                 }
                 if (period == null) {

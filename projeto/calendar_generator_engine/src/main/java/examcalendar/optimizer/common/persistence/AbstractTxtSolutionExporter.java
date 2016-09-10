@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 JBoss Inc
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,14 +22,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import org.apache.commons.io.IOUtils;
-import org.optaplanner.core.api.domain.solution.Solution;
+import examcalendar.optimizer.common.persistence.AbstractSolutionExporter;
+import examcalendar.optimizer.common.persistence.SolutionDao;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
-public abstract class AbstractTxtSolutionExporter extends AbstractSolutionExporter {
+/**
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ */
+public abstract class AbstractTxtSolutionExporter<Solution_> extends AbstractSolutionExporter<Solution_> {
 
     protected static final String DEFAULT_OUTPUT_FILE_SUFFIX = "txt";
 
-    protected AbstractTxtSolutionExporter(SolutionDao solutionDao) {
+    protected AbstractTxtSolutionExporter(SolutionDao<Solution_> solutionDao) {
         super(solutionDao);
     }
 
@@ -37,37 +41,39 @@ public abstract class AbstractTxtSolutionExporter extends AbstractSolutionExport
         super(withoutDao);
     }
 
+    @Override
     public String getOutputFileSuffix() {
         return DEFAULT_OUTPUT_FILE_SUFFIX;
     }
 
-    public abstract TxtOutputBuilder createTxtOutputBuilder();
+    public abstract TxtOutputBuilder<Solution_> createTxtOutputBuilder();
 
-    public void writeSolution(Solution solution, File outputFile) {
-        BufferedWriter bufferedWriter = null;
-        try {
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"));
-            TxtOutputBuilder txtOutputBuilder = createTxtOutputBuilder();
-            txtOutputBuilder.setBufferedWriter(bufferedWriter);
+    @Override
+    public void writeSolution(Solution_ solution, File outputFile) {
+        try (BufferedWriter writer =
+                     new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFile), "UTF-8"))) {
+            TxtOutputBuilder<Solution_> txtOutputBuilder = createTxtOutputBuilder();
+            txtOutputBuilder.setBufferedWriter(writer);
             txtOutputBuilder.setSolution(solution);
             txtOutputBuilder.writeSolution();
+            logger.info("Exported: {}", outputFile);
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not write the file (" + outputFile.getName() + ").", e);
-        } finally {
-            IOUtils.closeQuietly(bufferedWriter);
         }
-        logger.info("Exported: {}", outputFile);
     }
 
-    public static abstract class TxtOutputBuilder extends OutputBuilder {
+    public static abstract class TxtOutputBuilder<Solution_> extends OutputBuilder {
 
         protected BufferedWriter bufferedWriter;
+        protected Solution_ solution;
 
         public void setBufferedWriter(BufferedWriter bufferedWriter) {
             this.bufferedWriter = bufferedWriter;
         }
 
-        public abstract void setSolution(Solution solution);
+        public void setSolution(Solution_ solution) {
+            this.solution = solution;
+        }
 
         public abstract void writeSolution() throws IOException;
 

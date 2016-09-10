@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.optaplanner</groupId>
         <artifactId>optaplanner</artifactId>
-        <version>6.3.0.Final</version>
+        <version>7.0.0.Beta1</version>
     </parent>
 
     <repositories>
@@ -38,6 +38,7 @@
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-core</artifactId>
+            <version>7.0.0.Beta1</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>
@@ -48,6 +49,7 @@
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-benchmark</artifactId>
+            <version>7.0.0.Beta1</version>
         </dependency>
         <dependency>
             <groupId>org.drools</groupId>
@@ -76,10 +78,10 @@
             <artifactId>guava</artifactId>
         </dependency>
         <!-- Logging -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

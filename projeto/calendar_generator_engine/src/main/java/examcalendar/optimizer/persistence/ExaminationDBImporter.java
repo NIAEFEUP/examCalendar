@@ -78,7 +78,9 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
 
             List<RoomPeriod> roomPeriods = generateRoomPeriods(rooms, periods);
             removeUnavailableRoomPeriods(requestConfig.calendar, conn, roomPeriods);
+            //fillRoomPeriods(calendar, conn, roomPeriods, exams);
 
+            examination.setId(calendar);
             examination.setTopicList(topics);
             examination.setTopicProfessors(topicProfessors);
             examination.setExamList(exams);
@@ -273,10 +275,8 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Date currentDay = new Date(requestConfig.startingDate.getTime());
         Calendar c = Calendar.getInstance();
         c.setTime(currentDay);
-        System.out.println(c.get(Calendar.DAY_OF_MONTH));
         int dayIndex = 0;
         while (dayIndex < requestConfig.normalSeasonDuration + requestConfig.appealSeasonDuration) {
-            System.out.println(c.get(Calendar.DAY_OF_WEEK) + " " + dayIndex);
             Period period1 = new Period(dayIndex, PeriodTime.NINE_AM, dayIndex < requestConfig.normalSeasonDuration);
             Period period2 = new Period(dayIndex, PeriodTime.ONE_PM, dayIndex < requestConfig.normalSeasonDuration);
             Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM, dayIndex < requestConfig.normalSeasonDuration);
@@ -326,6 +326,46 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
                 if (rp.getRoom().getId() == roomId && rp.getPeriod().getDate().equals(day) && rp.getPeriod().getTime().ordinal() == time) {
                     roomPeriods.remove(i);
                     i--;
+                }
+            }
+        }
+    }
+
+    private void fillRoomPeriods(int calendar, Connection conn, List<RoomPeriod> roomPeriods, List<Exam> exams) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM exams WHERE calendar = ?");
+        ps.setInt(1, calendar);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int examID = rs.getInt("id");
+            Date date = rs.getDate("day");
+            int time = rs.getInt("time");
+            if (rs.wasNull() || date == null)
+                continue; // Exam unassigned
+
+            Exam exam = null;
+            for (Exam e : exams) {
+                if (e.getId() == examID) {
+                    exam = e;
+                    break;
+                }
+            }
+            if (exam == null)
+                return; // Exam not found
+
+            PreparedStatement ps2 = conn.prepareStatement("SELECT * FROM examrooms WHERE exam = ?");
+            ps2.setInt(1, rs.getInt("id"));
+            ResultSet rs2 = ps2.executeQuery();
+            while (rs2.next()) {
+                for (RoomPeriod rp : roomPeriods) {
+                    if (!rp.getPeriod().getDate().equals(date))
+                        continue;
+                    if (rp.getPeriod().getTime().ordinal() != time)
+                        continue;
+                    int roomID = rs2.getInt("room");
+                    if (rp.getRoom().getId() != roomID)
+                        continue;
+
+                    rp.setExam(exam);
                 }
             }
         }

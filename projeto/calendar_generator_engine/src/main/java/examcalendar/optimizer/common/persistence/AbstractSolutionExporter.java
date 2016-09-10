@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 JBoss Inc
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,16 +19,19 @@ package examcalendar.optimizer.common.persistence;
 import java.io.File;
 import java.util.Arrays;
 
-import org.optaplanner.core.api.domain.solution.Solution;
 import examcalendar.optimizer.common.app.LoggingMain;
 import examcalendar.optimizer.common.business.ProblemFileComparator;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
-public abstract class AbstractSolutionExporter extends LoggingMain {
+/**
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ */
+public abstract class AbstractSolutionExporter<Solution_> extends LoggingMain {
 
     private static final String DEFAULT_INPUT_FILE_SUFFIX = "xml";
-    protected SolutionDao solutionDao;
+    protected SolutionDao<Solution_> solutionDao;
 
-    public AbstractSolutionExporter(SolutionDao solutionDao) {
+    public AbstractSolutionExporter(SolutionDao<Solution_> solutionDao) {
         this.solutionDao = solutionDao;
     }
 
@@ -66,7 +69,7 @@ public abstract class AbstractSolutionExporter extends LoggingMain {
         for (File inputFile : inputFiles) {
             String inputFileName = inputFile.getName();
             if (inputFileName.endsWith("." + getInputFileSuffix())) {
-                Solution solution = solutionDao.readSolution(inputFile);
+                Solution_ solution = solutionDao.readSolution(inputFile);
                 String outputFileName = inputFileName.substring(0,
                         inputFileName.length() - getInputFileSuffix().length())
                         + getOutputFileSuffix();
@@ -76,7 +79,7 @@ public abstract class AbstractSolutionExporter extends LoggingMain {
         }
     }
 
-    public abstract void writeSolution(Solution solution, File outputFile);
+    public abstract void writeSolution(Solution_ solution, File outputFile);
 
     public static abstract class OutputBuilder extends LoggingMain {
 
