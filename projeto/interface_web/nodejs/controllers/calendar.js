@@ -52,22 +52,22 @@ module.exports = {
 
       //process exams assigned
       for (var i = 0; i < result[1].length; i++) {
-		if (result[1][i].day == null) {
-			json.unassigneds.push({
-			  'id' : result[1][i].id,
-			  'name' : result[1][i].name,
-			  'year' : result[1][i].year
-			});
-		} else {
-			var examDate = new Date(result[1][i].day * 1000);
-			var week = DateDiff.inWeeks(startDate, examDate);
-			var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
-			json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
-			  'id' : result[1][i].id,
-			  'name' : result[1][i].name,
-			  'year' : result[1][i].year
-			});
-		}
+        if (result[1][i].day == null) {
+          json.unassigneds.push({
+            'id' : result[1][i].id,
+            'name' : result[1][i].name,
+            'year' : result[1][i].year
+          });
+        } else {
+          var examDate = new Date(result[1][i].day * 1000);
+          var week = DateDiff.inWeeks(startDate, examDate);
+          var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
+          json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
+            'id' : result[1][i].id,
+            'name' : result[1][i].name,
+            'year' : result[1][i].year
+          });
+        }
       }
 
       //process rooms
