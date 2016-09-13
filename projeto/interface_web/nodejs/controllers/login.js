@@ -42,7 +42,8 @@ var validate = function (req, res) {
     if (user.authenticated) {
       registrated(req, res);
     } else {
-      res.json({"authenticated":false, "msg":user.erro_msg});
+      res.status(401);
+      res.end();
     }
   });
 };
@@ -50,14 +51,23 @@ var validate = function (req, res) {
 var registrated = function (req, res) {
   var email = req.body.email;
 
-  //TODO replace messages after addition of the database
-  var id = database.isUser(email);
+  var calls = [function(callback) {
+    database.connection.query('SELECT id FROM users WHERE email LIKE ?', [email], function(err, rows, fields) {
+      if (!err)
+        callback(null, rows[0]);
+    });
+  }];
 
-  if (id >= 0) {
-  	req.session.userID = id;
-    res.json({"authenticated":true, "msg":"TODO missing database connection"});
-  } else {
-    res.json({"authenticated":false, "msg":"TODO missing database connection"});
-  }
+  //when all the calls are finished, this function is called
+  async.parallel(calls, function(err, result) {
+    var id = result[0].id;
 
+    if (id >= 0) {
+    	req.session.userID = id;
+      res.status(200);
+    } else {
+      res.status(401);
+    }
+    res.end();
+  });
 };

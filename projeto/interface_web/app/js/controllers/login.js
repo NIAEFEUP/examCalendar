@@ -1,0 +1,16 @@
+app.controller('LoginController', ['$window', '$http', '$scope', function($window, $http, $scope) {
+
+  $scope.login = function() {
+    var email = angular.element('#email').val();
+    var password = angular.element('#password').val();
+    $http.post('http://localhost:8080/login', {"email": email, "password": password}, {headers: {'Content-Type': 'application/json'} })
+    .success(function(data) {
+      $window.location.href = '#/calendar';
+    })
+    .error(function(err, status) {
+      window.alert("Authentication error.");
+    });
+    //console.log(login(angular.element('#email'), angular.element('#password')));
+  };
+
+}]);

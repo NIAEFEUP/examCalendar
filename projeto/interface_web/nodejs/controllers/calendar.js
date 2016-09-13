@@ -10,7 +10,7 @@ var async = require('async');
 
 module.exports = {
   get: function (res, userID) {
-	var calendarId = 11;
+	var calendarId = 1;
     //add the calls to be made asynchronously
     var calls = [function(callback) {
       database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = ?', [calendarId], function(err, rows, fields) {

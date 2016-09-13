@@ -1,6 +1,7 @@
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $routeProvider
   .when('/login', {
+    controller: 'LoginController',
     templateUrl: 'views/login/'
   })
   .when('/calendar', {
