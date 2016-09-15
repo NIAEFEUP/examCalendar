@@ -1,0 +1,24 @@
+<table class="table table-striped" id="choose-exams-table">
+	<thead>
+		<tr>
+			<th class="col-sm-8">Topic</th>
+			<th>Normal season</th>
+			<th>Appeal season</th>
+			<th>Difficulty</th>
+		</tr>
+	</thead>
+	<tr ng-repeat="topic in topics">
+		<td>{{topic.name}}</td>
+		<td><input type="checkbox" class="normal-season" checked></td>
+		<td><input type="checkbox" class="appeal-season" checked></td>
+		<td>
+			<select class="form-control difficulty">
+				<option value="0">Very easy</option>
+				<option value="1">Easy</option>
+				<option value="2">Medium</option>
+				<option value="3">Hard</option>
+				<option value="4">Very hard</option>
+			</select>
+		</td>
+	</tr>
+</table>

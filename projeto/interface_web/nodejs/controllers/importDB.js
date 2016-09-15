@@ -46,5 +46,11 @@ module.exports = {
 			req2.write(body);
 			req2.end();
 		});
+  },
+  getTopics: function (res, calendarID) {
+	database.getTopics(calendarID, function(err, rows, fields) {
+		if (err) throw err;
+		res.json(rows);
+	});
   }
 };

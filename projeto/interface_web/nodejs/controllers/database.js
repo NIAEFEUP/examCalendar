@@ -70,11 +70,17 @@ module.exports = {
   },
   //importDB
   setTimespan: function (calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
-		connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
-		[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
-		function(err, rows, fields) {
-			if (err) throw err;
-		});
+	connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
+	[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
+	function(err, rows, fields) {
+		if (err) throw err;
+	});
+	return true;
+  },
+  getTopics: function (calendarID, callback) {
+	connection.query('SELECT * FROM topics WHERE topics.calendar = 11',
+	[calendarID],
+	callback);
 	return true;
   }
 };

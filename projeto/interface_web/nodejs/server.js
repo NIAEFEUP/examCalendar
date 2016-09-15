@@ -67,6 +67,12 @@ app.post('/database',function(req,res){
 	console.log(id);
 	importDB.import(res, id, req);
 });
+app.get('/importDatabase/topics', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 11;
+	importDB.getTopics(res, id);
+});
 
 //////////////////////////////////////////////////////////////////
 //                         Admin Home                           //

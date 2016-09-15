@@ -70,6 +70,7 @@ $(document).ready( function() {
 		},
 		onStepChanging: function (event, currentIndex, newIndex)
 		{
+			return true;
 			if (currentIndex == 0 && newIndex == currentIndex + 1) { // Select timespan
 				if (!$('#timespan-form').valid())
 					return false;
