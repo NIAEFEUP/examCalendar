@@ -2,9 +2,11 @@
 var express =	require('express');
 var session	=	require('express-session');
 var bodyParser = require('body-parser');
+var async = require('async');
 var cors = require('cors');
 var app = express();
 
+//allow different domain requests
 app.use(cors());
 
 app.engine('html', require('ejs').renderFile);
@@ -25,8 +27,8 @@ var importDB = require('./controllers/importDB');
 // such as the response got to be from the same domain.
 // This function tells the browser that it's secure.
 function allowRedirectAnswer(res) {
-	res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	//res.header("Access-Control-Allow-Origin", "*");
+  //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	return res;
 }
 
@@ -36,21 +38,22 @@ function isAuthenticated(req) {
 
 function unauthorizedAccess(res) {
   res.status(401);
-  res.end();
+  res.send();
 }
 
 //////////////////////////////////////////////////////////////////
 //                            Login                             //
 //////////////////////////////////////////////////////////////////
-//Should be a JSON request like {"email":{{email}}, "password":{{password}}}
-//The answer is also in JSON like {"authenticated":false, "msg":user.erro_msg}
 app.post('/login',function(req,res){
 	res = allowRedirectAnswer(res);
+  console.log("");
+  console.log(req.session.userID);
   if (isAuthenticated(req)) {
+    console.log("already");
     res.status(200);
-    res.end();
+    res.send();
   } else {
-	   login.authenticate(req, res);
+    login.authenticate(req, res);
   }
 });
 
@@ -59,16 +62,9 @@ app.post('/login',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/logout',function(req,res){
 	res = allowRedirectAnswer(res);
-	if (req.session != null) {
-		req.session.destroy(function(err){
-			if(err){
-				console.err(err);
-			}	else {
-				res.status(200);
-				res.end();
-			}
-		});
-	}
+  req.session.userID = null;
+  res.status(200);
+  res.send();
 });
 
 //////////////////////////////////////////////////////////////////

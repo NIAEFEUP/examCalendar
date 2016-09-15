@@ -8,10 +8,6 @@ app.controller('ConstraintsController', ['$scope', '$window', '$compile', 'const
     period = data.period;
   });
 
-  constraints.error(function(err) {
-    $window.location.href = '#/login';
-  });
-
   var constraintId = 0;
   $scope.addConstraint = function(type) {
     //TODO create constraint on the server

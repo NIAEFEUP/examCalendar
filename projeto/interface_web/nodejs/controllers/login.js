@@ -21,18 +21,18 @@ module.exports = {
 var validate = function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  options.path += '?pv_login=' + email + '&pv_password=' + password;
+  options.path = '/feup/pt/mob_val_geral.autentica' + '?pv_login=' + email + '&pv_password=' + password;
 
   //add the calls to be made asynchronously
   var calls = [function(callback) {
-    var req = https.get(options, function(res) {
-      res.on('data', function(d) {
+    var req1 = https.get(options, function(res1) {
+      res1.on('data', function(d) {
         var data = JSON.parse(d);
         callback(null, data);
       });
     });
 
-    req.end();
+    req1.end();
   }];
 
   //when all the calls are finished, this function is called
@@ -40,15 +40,16 @@ var validate = function (req, res) {
     //return JSON response
     var user = result[0];
     if (user.authenticated) {
-      registrated(req, res);
+      registered(req, res);
     } else {
+      console.log("not registered");
       res.status(401);
-      res.end();
+      res.send();
     }
   });
 };
 
-var registrated = function (req, res) {
+var registered = function (req, res) {
   var email = req.body.email;
 
   var calls = [function(callback) {
@@ -60,14 +61,15 @@ var registrated = function (req, res) {
 
   //when all the calls are finished, this function is called
   async.parallel(calls, function(err, result) {
-    var id = result[0].id;
 
-    if (id >= 0) {
-    	req.session.userID = id;
+    if (result[0] != null && result[0].id >= 0) {
+      console.log("auth");
+      req.session.userID = result[0].id;
       res.status(200);
     } else {
+      console.log("not auth");
       res.status(401);
     }
-    res.end();
+    res.send();
   });
 };

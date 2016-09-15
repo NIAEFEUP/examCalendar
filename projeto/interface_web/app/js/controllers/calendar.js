@@ -6,17 +6,10 @@ app.controller('CalendarController', ['$scope', '$window', 'calendar', 'modal', 
     $scope.normalDays = 2 * Math.trunc(data.normalSeasonDays / 2);
   });
 
-  calendar.error(function(err) {
-    $window.location.href = '#/login';
-  });
-
   $scope.modal = function(id) {
      modal.get('lecture').success(function(data) {
       $scope.lecture = data;
       $('#examInformation').modal('show');
-    })
-    .error(function(err) {
-      $window.location.href = '#/login';
     });
   };
 
