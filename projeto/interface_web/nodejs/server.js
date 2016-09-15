@@ -30,6 +30,15 @@ function allowRedirectAnswer(res) {
 	return res;
 }
 
+function isAuthenticated(req) {
+  return req.session != null && req.session.userID != null && req.session.userID >= 0;
+}
+
+function unauthorizedAccess(res) {
+  res.status(401);
+  res.end();
+}
+
 //////////////////////////////////////////////////////////////////
 //                            Login                             //
 //////////////////////////////////////////////////////////////////
@@ -37,7 +46,12 @@ function allowRedirectAnswer(res) {
 //The answer is also in JSON like {"authenticated":false, "msg":user.erro_msg}
 app.post('/login',function(req,res){
 	res = allowRedirectAnswer(res);
-	login.authenticate(req, res);
+  if (isAuthenticated(req)) {
+    res.status(200);
+    res.end();
+  } else {
+	   login.authenticate(req, res);
+  }
 });
 
 //////////////////////////////////////////////////////////////////
@@ -45,13 +59,16 @@ app.post('/login',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/logout',function(req,res){
 	res = allowRedirectAnswer(res);
-	req.session.destroy(function(err){
-		if(err){
-			console.err(err);
-		}	else {
-			res.end('{"authenticated":false}');
-		}
-	});
+	if (req.session != null) {
+		req.session.destroy(function(err){
+			if(err){
+				console.err(err);
+			}	else {
+				res.status(200);
+				res.end();
+			}
+		});
+	}
 });
 
 //////////////////////////////////////////////////////////////////
@@ -59,15 +76,20 @@ app.get('/logout',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.post('/setTimespan', function(req, res) {
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	var id = req.session.userID;
-	id = 11;
-	console.log(req.body);
 	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
 });
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	var id = req.session.userID;
-	console.log(id);
 	importDB.import(res, id, req);
 });
 
@@ -76,6 +98,10 @@ app.post('/database',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/adminHome',function(req,res){
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	var id = req.session.userID;
 	var limit = req.body.limit;
 	var page = req.body.page;
@@ -87,21 +113,37 @@ app.get('/adminHome',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/constraints',function(req,res){
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	constraints.get(res, req.session.userID);
 });
 
 app.put('/constraints',function(req,res){
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	constraints.add(res, req.session.userID, req.body.constraint);
 });
 
 app.post('/constraints',function(req,res){
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	constraints.update(res, req.session.userID, req.body.constraintID, req.body.constraint);
 });
 
 app.delete('/constraints',function(req,res){
 	res = allowRedirectAnswer(res);
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
 	constraints.remove(res, req.session.userID, req.body.constraintID);
 });
 
@@ -110,16 +152,28 @@ app.delete('/constraints',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/adminUsers',function(req,res){
  res = allowRedirectAnswer(res);
+ if (!isAuthenticated(req)) {
+   unauthorizedAccess(res);
+   return;
+ }
  adminUsers.get(res, req.session.userID);
 });
 
 app.put('/adminUsers',function(req,res){
  res = allowRedirectAnswer(res);
+ if (!isAuthenticated(req)) {
+   unauthorizedAccess(res);
+   return;
+ }
  adminUsers.add(res, req.session.userID, req.body.email);
 });
 
 app.delete('/adminUsers',function(req,res){
  res = allowRedirectAnswer(res);
+ if (!isAuthenticated(req)) {
+   unauthorizedAccess(res);
+   return;
+ }
  adminUsers.remove(res, req.session.userID, req.body.email);
 });
 
@@ -128,11 +182,19 @@ app.delete('/adminUsers',function(req,res){
 //////////////////////////////////////////////////////////////////
 app.get('/calendar',function(req,res){
  res = allowRedirectAnswer(res);
+ if (!isAuthenticated(req)) {
+   unauthorizedAccess(res);
+   return;
+ }
  calendar.get(res, req.session.userID);
 });
 
 app.post('/calendar',function(req,res){
  res = allowRedirectAnswer(res);
+ if (!isAuthenticated(req)) {
+   unauthorizedAccess(res);
+   return;
+ }
  calendar.generate(res, req.session.userID);
 });
 

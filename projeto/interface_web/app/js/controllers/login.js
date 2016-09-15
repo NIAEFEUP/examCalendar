@@ -8,9 +8,8 @@ app.controller('LoginController', ['$window', '$http', '$scope', function($windo
       $window.location.href = '#/calendar';
     })
     .error(function(err, status) {
-      window.alert("Authentication error.");
+      window.alert("TODO: Authentication error.");
     });
-    //console.log(login(angular.element('#email'), angular.element('#password')));
   };
 
 }]);
