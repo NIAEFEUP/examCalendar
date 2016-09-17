@@ -1,5 +1,5 @@
 # examCalendar
-MIEIC EXAM Calendar shecduler
+MIEIC EXAM Calendar scheduler
 
 ## Project Overview
 
