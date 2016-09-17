@@ -1,5 +1,5 @@
-# examCalender
-MIEIC EXAM Calender shecduler
+# examCalendar
+MIEIC EXAM Calendar shecduler
 
 ## Project Overview
 
