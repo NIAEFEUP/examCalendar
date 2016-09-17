@@ -123,13 +123,34 @@ $(document).ready( function() {
 			}
 			return true;
 		},
-		onFinishing: function (event, currentIndex)
+		onFinishing: function (event, currentIndex) // Choose exams
 		{
+			$('#pleaseWaitDialog').modal('show');
+			$.ajax({
+				url: $('#choose-exams-form').attr('action'),
+				type: 'post',
+				data: $('#choose-exams-form').serialize(),
+				success: function(data) {
+					$('#pleaseWaitDialog').modal('hide');
+					swal(
+					{
+						title: "Success",
+						text: "The database has been imported.",
+						type: "success"
+					}, function() {
+						window.location.href = "#/calendar";
+					});
+				},
+				error: function(data) {
+					$('#pleaseWaitDialog').modal('hide');
+					console.error(data);
+					swal("Error", "An error ocurred, please try again.", "error");
+				}
+			});
 			return true;
 		},
 		onFinished: function (event, currentIndex)
 		{
-			alert("Submitted!");
 		}
 	});
 

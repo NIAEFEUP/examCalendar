@@ -52,5 +52,9 @@ module.exports = {
 		if (err) throw err;
 		res.json(rows);
 	});
+  },
+  setTopics: function (res, calendarID, topics) {
+	database.setTopics(calendarID, topics);
+	res.end();
   }
 };

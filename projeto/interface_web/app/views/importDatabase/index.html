@@ -63,9 +63,11 @@
 
 		<h3>Choose exams</h3>
 		<section>
-			<p>Please select the exams that each topic has and their difficulty.</p>
+			<p>Please select the exams that each topic has, their difficulty and whether or not they should be taken in a PC room.</p>
 			<br/>
-			<chooseExams></chooseExams>
+			<form id="choose-exams-form" action="//localhost:8080/importDatabase/topics" method="post">
+				<chooseExams></chooseExams>
+			</form>
 		</section>
 	</div>
 
