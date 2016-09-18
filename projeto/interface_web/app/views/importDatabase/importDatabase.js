@@ -70,7 +70,6 @@ $(document).ready( function() {
 		},
 		onStepChanging: function (event, currentIndex, newIndex)
 		{
-			return true;
 			if (currentIndex == 0 && newIndex == currentIndex + 1) { // Select timespan
 				if (!$('#timespan-form').valid())
 					return false;
@@ -96,6 +95,9 @@ $(document).ready( function() {
 			
 				if (fileSubmitResponded) {
 					fileSubmitResponded = false;
+					
+					angular.element('#choose-exams-table').scope().fillChooseExamsTable();
+					
 					return true; // This way it won't enter in an infinite form submission loop
 				}
 				

@@ -1,3 +1,6 @@
 app.factory('chooseExams', ['$http', function($http) {
-  return $http.get('http://localhost:8080/importDatabase/topics')
+	this.getTopics = function(){
+      return $http.get('http://localhost:8080/importDatabase/topics');
+    };
+	return this;
 }]);
