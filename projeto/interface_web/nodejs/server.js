@@ -58,13 +58,12 @@ app.post('/setTimespan', function(req, res) {
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
 	id = 1;
-	console.log(req.body);
 	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
 });
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	console.log(id);
+	id = 1;
 	importDB.import(res, id, req);
 });
 app.get('/importDatabase/topics', function(req, res) {

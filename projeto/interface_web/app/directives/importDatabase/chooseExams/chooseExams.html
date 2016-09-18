@@ -19,9 +19,9 @@
 				<option value="2">Hard</option>
 			</select>
 		</td>
-		<td class="season season-normal"><input name="topics[{{$index}}][normal]" type="checkbox" checked></td>
-		<td class="pc pc-normal"><input name="topics[{{$index}}][normal_pc]" type="checkbox"></td>
-		<td class="season season-appeal"><input name="topics[{{$index}}][appeal]" type="checkbox" class="appeal-season" checked></td>
-		<td class="pc pc-appeal"><input name="topics[{{$index}}][appeal_pc]" type="checkbox"></td>
+		<td class="season season-normal"><input name="topics[{{$index}}][normal]" type="checkbox" ng-model="normal_exam[$index]"></td>
+		<td class="pc pc-normal"><input name="topics[{{$index}}][normal_pc]" type="checkbox" ng-disabled="!normal_exam[$index]"></td>
+		<td class="season season-appeal"><input name="topics[{{$index}}][appeal]" type="checkbox" ng-model="appeal_exam[$index]"></td>
+		<td class="pc pc-appeal"><input name="topics[{{$index}}][appeal_pc]" type="checkbox" ng-disabled="!appeal_exam[$index]"></td>
 	</tr>
 </table>
