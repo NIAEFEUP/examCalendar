@@ -1,6 +1,0 @@
-Época
-Estudantes
-Professores (Auxiliar, Regente)
-U.C. (Exame, N Exame, Só c/ Recurso)
-Salas (P.C. N P.C.)
-Exame

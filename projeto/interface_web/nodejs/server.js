@@ -57,15 +57,26 @@ app.get('/logout',function(req,res){
 app.post('/setTimespan', function(req, res) {
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	id = 11;
-	console.log(req.body);
+	id = 1;
 	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
 });
 app.post('/database',function(req,res){
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	console.log(id);
+	id = 1;
 	importDB.import(res, id, req);
+});
+app.get('/importDatabase/topics', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 1;
+	importDB.getTopics(res, id);
+});
+app.post('/importDatabase/topics', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 1;
+	importDB.setTopics(res, id, req.body.topics);
 });
 
 //////////////////////////////////////////////////////////////////

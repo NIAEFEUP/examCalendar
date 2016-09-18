@@ -208,7 +208,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
     private List<Exam> readExams(int calendar, Connection conn, List<Topic> topics) throws SQLException {
         List<Exam> exams = new ArrayList<Exam>();
 
-        PreparedStatement ps = conn.prepareStatement("SELECT *, (SELECT count(*) FROM studenttopic WHERE studenttopic.topic = exams.topic) AS numStudents FROM exams WHERE calendar = ?");
+        PreparedStatement ps = conn.prepareStatement("SELECT exams.*, (SELECT count(*) FROM studenttopic WHERE studenttopic.topic = exams.topic) AS numStudents FROM exams, topics WHERE topic = topics.id AND topics.calendar = ?");
         ps.setInt(1, calendar);
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
