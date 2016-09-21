@@ -10,7 +10,7 @@ var async = require('async');
 
 module.exports = {
   get: function (res, userID) {
-	var calendarId = 11;
+	var calendarId = 1;
     //add the calls to be made asynchronously
     var calls = [function(callback) {
       database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = ?', [calendarId], function(err, rows, fields) {
@@ -52,22 +52,22 @@ module.exports = {
 
       //process exams assigned
       for (var i = 0; i < result[1].length; i++) {
-		if (result[1][i].day == null) {
-			json.unassigneds.push({
-			  'id' : result[1][i].id,
-			  'name' : result[1][i].name,
-			  'year' : result[1][i].year
-			});
-		} else {
-			var examDate = new Date(result[1][i].day * 1000);
-			var week = DateDiff.inWeeks(startDate, examDate);
-			var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
-			json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
-			  'id' : result[1][i].id,
-			  'name' : result[1][i].name,
-			  'year' : result[1][i].year
-			});
-		}
+        if (result[1][i].day == null) {
+          json.unassigneds.push({
+            'id' : result[1][i].id,
+            'name' : result[1][i].name,
+            'year' : result[1][i].year
+          });
+        } else {
+          var examDate = new Date(result[1][i].day * 1000);
+          var week = DateDiff.inWeeks(startDate, examDate);
+          var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
+          json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
+            'id' : result[1][i].id,
+            'name' : result[1][i].name,
+            'year' : result[1][i].year
+          });
+        }
       }
 
       //process rooms

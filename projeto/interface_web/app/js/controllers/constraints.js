@@ -1,6 +1,6 @@
 var rooms, professors, years, period;
 
-app.controller('ConstraintsController', ['$scope', '$compile', 'constraints', function($scope, $compile, constraints) {
+app.controller('ConstraintsController', ['$scope', '$window', '$compile', 'constraints', function($scope, $window, $compile, constraints) {
   constraints.success(function(data) {
     rooms = data.rooms;
     professors = data.professors;
