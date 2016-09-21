@@ -39,7 +39,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 }]);
 
 app.run( function($rootScope, $location, $http) {
-  // register listener to watch route changes
+  /*// register listener to watch route changes
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
     $http.post('http://localhost:8080/login')
     .success(function (data) {
@@ -55,5 +55,5 @@ app.run( function($rootScope, $location, $http) {
         $location.path( "/login" );
       }
     });
-  });
+  });*/
 });

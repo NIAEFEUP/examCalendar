@@ -19,6 +19,7 @@ module.exports = {
 };
 
 var validate = function (req, res) {
+	console.log("req.body.email: " + req.body.email);
   var email = req.body.email;
   var password = req.body.password;
   options.path = '/feup/pt/mob_val_geral.autentica' + '?pv_login=' + email + '&pv_password=' + password;
@@ -39,6 +40,7 @@ var validate = function (req, res) {
   async.parallel(calls, function(err, result) {
     //return JSON response
     var user = result[0];
+	console.log("result", result);
     if (user.authenticated) {
       registered(req, res);
     } else {
@@ -53,7 +55,7 @@ var registered = function (req, res) {
   var email = req.body.email;
 
   var calls = [function(callback) {
-    database.connection.query('SELECT id FROM users WHERE email LIKE ?', [email], function(err, rows, fields) {
+    database.connection.query('SELECT id FROM users WHERE email LIKE ?', [email + "@fe.up.pt"], function(err, rows, fields) {
       if (!err)
         callback(null, rows[0]);
     });
