@@ -11,7 +11,7 @@ app.use(cors());
 
 app.engine('html', require('ejs').renderFile);
 
-app.use(session({secret: 'secret_key', saveUninitialized: true, resave: true}));
+app.use(session({secret: 'secret_key', saveUninitialized: true, resave: false}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -27,8 +27,9 @@ var importDB = require('./controllers/importDB');
 // such as the response got to be from the same domain.
 // This function tells the browser that it's secure.
 function allowRedirectAnswer(res) {
-	//res.header("Access-Control-Allow-Origin", "*");
-  //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header("Access-Control-Allow-Origin", "http://localhost");
+	res.header("Access-Control-Allow-Credentials", "true");
+    //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	return res;
 }
 
@@ -48,6 +49,8 @@ app.post('/login',function(req,res){
 	res = allowRedirectAnswer(res);
   console.log("");
   console.log(req.session.userID);
+  console.log(req.session);
+  req.session.userID = 69;
   if (isAuthenticated(req)) {
     console.log("already");
     res.status(200);
