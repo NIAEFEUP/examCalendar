@@ -8,7 +8,7 @@ var app = express();
 
 //allow different domain requests
 var whitelist = [
-    'http://localhost', // TODO (hardcoded)
+    'http://localhost' // TODO (hardcoded)
 ];
 var corsOptions = {
     origin: function(origin, callback){
@@ -62,9 +62,7 @@ app.all('*', function(req, res, next) {
 //                            Login                             //
 //////////////////////////////////////////////////////////////////
 app.post('/login',function(req,res){
-  console.log("User ID", req.session.userID);
   if (isAuthenticated(req)) {
-    console.log("already");
     res.status(200);
     res.send();
   } else {
