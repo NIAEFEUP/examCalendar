@@ -2,7 +2,7 @@ app.controller('CalendarController', ['$scope', '$window', 'calendar', 'modal', 
   calendar.success(function(data) {
     $scope.weeks = data.weeks;
     $scope.unassigneds = data.unassigneds;
-    $scope.classrooms = data.classrooms;
+    $scope.rooms = data.rooms;
     $scope.normalDays = 2 * Math.trunc(data.normalSeasonDays / 2);
   });
 

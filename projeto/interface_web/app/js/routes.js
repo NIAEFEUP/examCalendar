@@ -17,6 +17,7 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     templateUrl: 'views/constraints/'
   })
   .when('/importDatabase', {
+	controller: 'ImportDatabaseController',
     templateUrl: 'views/importDatabase/'
   })
   .when('/faq', {

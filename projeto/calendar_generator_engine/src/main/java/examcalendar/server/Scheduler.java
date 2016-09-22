@@ -1,11 +1,14 @@
 package examcalendar.server;
 
+import examcalendar.optimizer.domain.Exam;
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBExporter;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
 import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
+import org.optaplanner.core.api.solver.event.BestSolutionChangedEvent;
+import org.optaplanner.core.api.solver.event.SolverEventListener;
 import org.optaplanner.core.config.solver.termination.TerminationConfig;
 
 import java.sql.Connection;
@@ -39,6 +42,16 @@ public class Scheduler extends Thread {
             solverFactory.getSolverConfig().setTerminationConfig(terminationConfig);
 
             Solver solver = solverFactory.buildSolver();
+
+            solver.addEventListener(new SolverEventListener<Examination>() {
+                public void bestSolutionChanged(BestSolutionChangedEvent<Examination> event) {
+                    // Ignore infeasible (including uninitialized) solutions
+                    if (event.getNewBestSolution().getScore().isSolutionInitialized()) {
+                        new ExaminationDBExporter(true).writeSolution(event.getNewBestSolution(), calendarID);
+                    }
+                }
+            });
+
             solver.solve(unsolvedExamination);
             Examination solvedExamination = (Examination) solver.getBestSolution();
             solvedExamination.removeNullPeriodsExams();

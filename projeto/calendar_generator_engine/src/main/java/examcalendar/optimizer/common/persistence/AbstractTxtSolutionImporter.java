@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 JBoss Inc
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,15 +25,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import examcalendar.optimizer.common.persistence.AbstractSolutionImporter;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
-public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImporter {
+/**
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ */
+public abstract class AbstractTxtSolutionImporter<Solution_> extends AbstractSolutionImporter<Solution_> {
 
     private static final String DEFAULT_INPUT_FILE_SUFFIX = "txt";
 
-    protected AbstractTxtSolutionImporter(SolutionDao solutionDao) {
+    protected AbstractTxtSolutionImporter(SolutionDao<Solution_> solutionDao) {
         super(solutionDao);
     }
 
@@ -41,22 +45,23 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
         super(withoutDao);
     }
 
+    @Override
     public String getInputFileSuffix() {
         return DEFAULT_INPUT_FILE_SUFFIX;
     }
 
-    public abstract TxtInputBuilder createTxtInputBuilder();
+    public abstract TxtInputBuilder<Solution_> createTxtInputBuilder();
 
-    public Solution readSolution(File inputFile) {
-        Solution solution;
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), "UTF-8"));
-            TxtInputBuilder txtInputBuilder = createTxtInputBuilder();
+    @Override
+    public Solution_ readSolution(File inputFile) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFile), "UTF-8"))) {
+            TxtInputBuilder<Solution_> txtInputBuilder = createTxtInputBuilder();
             txtInputBuilder.setInputFile(inputFile);
-            txtInputBuilder.setBufferedReader(bufferedReader);
+            txtInputBuilder.setBufferedReader(reader);
             try {
-                solution = txtInputBuilder.readSolution();
+                Solution_ solution = txtInputBuilder.readSolution();
+                logger.info("Imported: {}", inputFile);
+                return solution;
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Exception in inputFile (" + inputFile + ")", e);
             } catch (IllegalStateException e) {
@@ -64,18 +69,13 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
             }
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not read the file (" + inputFile.getName() + ").", e);
-        } finally {
-            IOUtils.closeQuietly(bufferedReader);
         }
-        logger.info("Imported: {}", inputFile);
-        return solution;
     }
 
-    public Solution readSolution(URL inputURL) {
-        BufferedReader bufferedReader = null;
-        try {
-            bufferedReader = new BufferedReader(new InputStreamReader(inputURL.openStream(), "UTF-8"));
-            TxtInputBuilder txtInputBuilder = createTxtInputBuilder();
+    public Solution_ readSolution(URL inputURL) {
+        try (BufferedReader bufferedReader = new BufferedReader(
+                new InputStreamReader(inputURL.openStream(), "UTF-8"))) {
+            TxtInputBuilder<Solution_> txtInputBuilder = createTxtInputBuilder();
             txtInputBuilder.setInputFile(new File(inputURL.getFile()));
             txtInputBuilder.setBufferedReader(bufferedReader);
             try {
@@ -87,12 +87,10 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
             }
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not read the inputURL (" + inputURL + ").", e);
-        } finally {
-            IOUtils.closeQuietly(bufferedReader);
         }
     }
 
-    public static abstract class TxtInputBuilder extends InputBuilder {
+    public static abstract class TxtInputBuilder<Solution_> extends InputBuilder {
 
         protected File inputFile;
         protected BufferedReader bufferedReader;
@@ -105,7 +103,7 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
             this.bufferedReader = bufferedReader;
         }
 
-        public abstract Solution readSolution() throws IOException;
+        public abstract Solution_ readSolution() throws IOException;
 
         // ************************************************************************
         // Helper methods
@@ -133,6 +131,31 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
             if (!value.matches(constantRegex)) {
                 throw new IllegalArgumentException("Read line (" + line + ") is expected to be a constant regex ("
                         + constantRegex + ").");
+            }
+        }
+
+        public boolean readOptionalConstantLine(String constantRegex) throws IOException {
+            bufferedReader.mark(1024);
+            boolean valid = true;
+            String line = bufferedReader.readLine();
+            if (line == null) {
+                valid = false;
+            } else {
+                String value = line.trim();
+                if (!value.matches(constantRegex)) {
+                    valid = false;
+                }
+            }
+            if (!valid) {
+                bufferedReader.reset();
+            }
+            return valid;
+        }
+
+        public void skipOptionalConstantLines(String constantRegex) throws IOException {
+            boolean valid = true;
+            while (valid) {
+                valid = readOptionalConstantLine(constantRegex);
             }
         }
 
@@ -194,6 +217,7 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
                         + value + ").", e);
             }
         }
+
         public String readStringValue() throws IOException {
             return readStringValue("");
         }
@@ -210,6 +234,7 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
             }
             return removePrefixSuffixFromLine(line, prefixRegex, suffixRegex);
         }
+
         public String readOptionalStringValue(String defaultValue) throws IOException {
             return readOptionalStringValue("", defaultValue);
         }
@@ -324,7 +349,7 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
                 Integer minimumNumberOfTokens, Integer maximumNumberOfTokens, boolean trim, boolean removeQuotes) {
             String[] lineTokens = line.split(delimiterRegex);
             if (removeQuotes) {
-                List<String> lineTokenList = new ArrayList<String>(lineTokens.length);
+                List<String> lineTokenList = new ArrayList<>(lineTokens.length);
                 for (int i = 0; i < lineTokens.length; i++) {
                     String token = lineTokens[i];
                     while ((trim ? token.trim() : token).startsWith("\"") && !(trim ? token.trim() : token).endsWith("\"")) {
@@ -334,12 +359,15 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
                                     + ") has an invalid use of quotes (\").");
                         }
                         String delimiter;
-                        if (delimiterRegex.equals("\\ ")) {
-                            delimiter = " ";
-                        } else if (delimiterRegex.equals("\\,")) {
-                            delimiter = ",";
-                        } else {
-                            throw new IllegalArgumentException("Not supported delimiterRegex (" + delimiterRegex + ")");
+                        switch (delimiterRegex) {
+                            case "\\ ":
+                                delimiter = " ";
+                                break;
+                            case "\\,":
+                                delimiter = ",";
+                                break;
+                            default:
+                                throw new IllegalArgumentException("Not supported delimiterRegex (" + delimiterRegex + ")");
                         }
                         token += delimiter + lineTokens[i];
                     }
@@ -352,7 +380,7 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
                     }
                     lineTokenList.add(token);
                 }
-                lineTokens = lineTokenList.toArray(new String[lineTokenList.size()]);
+                lineTokens = lineTokenList.toArray(new String[0]);
             }
             if (minimumNumberOfTokens != null && lineTokens.length < minimumNumberOfTokens) {
                 throw new IllegalArgumentException("Read line (" + line + ") has " + lineTokens.length
@@ -373,13 +401,14 @@ public abstract class AbstractTxtSolutionImporter extends AbstractSolutionImport
         }
 
         public boolean parseBooleanFromNumber(String token) {
-            if (token.equals("0")) {
-                return false;
-            } else if (token.equals("1")) {
-                return true;
-            } else {
-                throw new IllegalArgumentException("The token (" + token
-                        + ") is expected to be 0 or 1 representing a boolean.");
+            switch (token) {
+                case "0":
+                    return false;
+                case "1":
+                    return true;
+                default:
+                    throw new IllegalArgumentException("The token (" + token
+                            + ") is expected to be 0 or 1 representing a boolean.");
             }
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 JBoss Inc
+ * Copyright 2015 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,19 +19,20 @@ package examcalendar.optimizer.common.persistence;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 
+import examcalendar.optimizer.common.persistence.AbstractSolutionImporter;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
-public abstract class AbstractPngSolutionImporter extends AbstractSolutionImporter {
+/**
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
+ */
+public abstract class AbstractPngSolutionImporter<Solution_> extends AbstractSolutionImporter<Solution_> {
 
     private static final String DEFAULT_INPUT_FILE_SUFFIX = "png";
 
-    protected AbstractPngSolutionImporter(SolutionDao solutionDao) {
+    protected AbstractPngSolutionImporter(SolutionDao<Solution_> solutionDao) {
         super(solutionDao);
     }
 
@@ -39,22 +40,24 @@ public abstract class AbstractPngSolutionImporter extends AbstractSolutionImport
         super(withoutDao);
     }
 
+    @Override
     public String getInputFileSuffix() {
         return DEFAULT_INPUT_FILE_SUFFIX;
     }
 
-    public abstract PngInputBuilder createPngInputBuilder();
+    public abstract PngInputBuilder<Solution_> createPngInputBuilder();
 
-    public Solution readSolution(File inputFile) {
-        Solution solution;
-        InputStream in = null;
+    @Override
+    public Solution_ readSolution(File inputFile) {
         try {
             BufferedImage image = ImageIO.read(inputFile);
-            PngInputBuilder pngInputBuilder = createPngInputBuilder();
+            PngInputBuilder<Solution_> pngInputBuilder = createPngInputBuilder();
             pngInputBuilder.setInputFile(inputFile);
             pngInputBuilder.setImage(image);
             try {
-                solution = pngInputBuilder.readSolution();
+                Solution_ solution = pngInputBuilder.readSolution();
+                logger.info("Imported: {}", inputFile);
+                return solution;
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Exception in inputFile (" + inputFile + ")", e);
             } catch (IllegalStateException e) {
@@ -62,14 +65,10 @@ public abstract class AbstractPngSolutionImporter extends AbstractSolutionImport
             }
         } catch (IOException e) {
             throw new IllegalArgumentException("Could not read the file (" + inputFile.getName() + ").", e);
-        } finally {
-            IOUtils.closeQuietly(in);
         }
-        logger.info("Imported: {}", inputFile);
-        return solution;
     }
 
-    public static abstract class PngInputBuilder extends InputBuilder {
+    public static abstract class PngInputBuilder<Solution_> extends InputBuilder {
 
         protected File inputFile;
         protected BufferedImage image;
@@ -82,7 +81,7 @@ public abstract class AbstractPngSolutionImporter extends AbstractSolutionImport
             this.image = image;
         }
 
-        public abstract Solution readSolution() throws IOException;
+        public abstract Solution_ readSolution() throws IOException;
 
         // ************************************************************************
         // Helper methods

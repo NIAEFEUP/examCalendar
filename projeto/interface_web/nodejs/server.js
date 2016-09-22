@@ -98,6 +98,18 @@ app.post('/database',function(req,res){
 	var id = req.session.userID;
 	importDB.import(res, id, req);
 });
+app.get('/importDatabase/topics', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 1;
+	importDB.getTopics(res, id);
+});
+app.post('/importDatabase/topics', function(req, res) {
+	res = allowRedirectAnswer(res);
+	var id = req.session.userID;
+	id = 1;
+	importDB.setTopics(res, id, req.body.topics);
+});
 
 //////////////////////////////////////////////////////////////////
 //                         Admin Home                           //

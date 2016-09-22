@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 JBoss Inc
+ * Copyright 2010 Red Hat, Inc. and/or its affiliates.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ package examcalendar.optimizer.common.persistence;
 
 import java.io.File;
 
-import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.core.api.domain.solution.PlanningSolution;
 
 /**
  * Data Access Object for the examples.
+ * @param <Solution_> the solution type, the class with the {@link PlanningSolution} annotation
  */
-public interface SolutionDao {
+public interface SolutionDao<Solution_> {
 
     String getDirName();
 
@@ -31,8 +32,8 @@ public interface SolutionDao {
 
     String getFileExtension();
 
-    Solution readSolution(File inputSolutionFile);
+    Solution_ readSolution(File inputSolutionFile);
 
-    void writeSolution(Solution solution, File outputSolutionFile);
+    void writeSolution(Solution_ solution, File outputSolutionFile);
 
 }

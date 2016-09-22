@@ -202,7 +202,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
             int calendarID = resetCalendar(conn, clientID, startingDate);
             insertProfessorsInDB(conn, calendarID, professors);
             insertTopicsInDB(conn, calendarID, topics);
-            insertExamsInDB(conn, calendarID, topics);
+            insertExamsInDB(conn, topics);
             insertStudentsInDB(conn, calendarID, students);
             insertStudentTopicAssociationsInDB(conn, calendarID, topics);
             insertRoomsInDB(conn, calendarID, rooms);
@@ -267,16 +267,14 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    private void insertExamsInDB(Connection conn, int calendar, Set<Topic> topics) throws SQLException {
+    private void insertExamsInDB(Connection conn, Set<Topic> topics) throws SQLException {
         for (Topic topic : topics) {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (calendar, topic, normal, pc) VALUES (?, ?, TRUE, FALSE)");
-            ps.setInt(1, calendar);
-            ps.setInt(2, topic.getId());
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO exams (topic, normal, pc) VALUES (?, TRUE, FALSE)");
+            ps.setInt(1, topic.getId());
             ps.execute();
 
-            ps = conn.prepareStatement("INSERT INTO exams (calendar, topic, normal, pc) VALUES (?, ?, FALSE, FALSE)");
-            ps.setInt(1, calendar);
-            ps.setInt(2, topic.getId());
+            ps = conn.prepareStatement("INSERT INTO exams (topic, normal, pc) VALUES (?, FALSE, FALSE)");
+            ps.setInt(1, topic.getId());
             ps.execute();
         }
     }

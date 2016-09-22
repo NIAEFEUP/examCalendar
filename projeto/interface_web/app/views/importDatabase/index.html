@@ -63,29 +63,12 @@
 
 		<h3>Choose exams</h3>
 		<section>
-			<p>Please select the exams that each topic has (normal and appeal season).</p>
+			<p>Please select the exams that each topic has, their difficulty and whether or not they should be taken in a PC room.</p>
 			<br/>
-			<table class="table table-striped" id="choose-exams-table">
-				<thead>
-					<tr>
-						<th class="col-sm-8">Topic</th>
-						<th>Normal season</th>
-						<th>Appeal season</th>
-					</tr>
-				</thead>
-				<tr>
-					<td>Análise Matemática</td>
-					<td><input type="checkbox" class="normal-season" checked></td>
-					<td><input type="checkbox" class="appeal-season" checked></td>
-				</tr>
-				<tr>
-					<td>Computação Gráfica</td>
-					<td><input type="checkbox" class="normal-season" checked></td>
-					<td><input type="checkbox" class="appeal-season" checked></td>
-				</tr>
-			</table>
+			<form id="choose-exams-form" action="//localhost:8080/importDatabase/topics" method="post">
+				<chooseExams></chooseExams>
+			</form>
 		</section>
-
 	</div>
 
   </div>

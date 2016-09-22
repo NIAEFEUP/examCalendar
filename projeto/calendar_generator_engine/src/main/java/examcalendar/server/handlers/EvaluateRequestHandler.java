@@ -5,8 +5,6 @@ import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.optaplanner.core.api.domain.solution.Solution;
-import org.optaplanner.core.api.score.Score;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import org.optaplanner.core.api.score.constraint.ConstraintMatch;
 import org.optaplanner.core.api.score.constraint.ConstraintMatchTotal;
@@ -30,21 +28,21 @@ public class EvaluateRequestHandler extends AbstractRequestHandler {
                 String method = exchange.getRequestMethod();
                 if (method.equals("GET")) {
                     Map<String, String> params = parseQueryParams(exchange.getRequestURI());
-                    String creator = params.get("creator");
-                    if (creator == null) {
+                    String calendar = params.get("calendar");
+                    if (calendar == null) {
                         JSONObject data = new JSONObject();
-                        data.put("creator", "Missing creator ID.");
+                        data.put("calendar", "Missing calendar ID.");
                         throw new RequestHandlerFailException(400, data);
                     }
-                    int creatorID;
+                    int calendarID;
                     try {
-                        creatorID = Integer.parseInt(params.get("creator"));
+                        calendarID = Integer.parseInt(params.get("calendar"));
                     } catch (NumberFormatException e) {
                         JSONObject data = new JSONObject();
-                        data.put("creator", "Creator ID is invalid.");
+                        data.put("calendar", "Calendar ID is invalid.");
                         throw new RequestHandlerFailException(400, data);
                     }
-                    Examination solution = new ExaminationDBImporter(true).readSolution(creatorID);
+                    Examination solution = new ExaminationDBImporter(true).readSolution(calendarID);
                     evaluateSolution(solution);
                     this.sendSuccessResponse(exchange, JSONObject.NULL, 200);
                 } else {
@@ -63,12 +61,12 @@ public class EvaluateRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    public static JSONObject evaluateSolution(Solution solution) {
-        SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
-        Solver solver = solverFactory.buildSolver();
-        ScoreDirectorFactory scoreDirectorFactory = solver.getScoreDirectorFactory();
-        ScoreDirector guiScoreDirector = scoreDirectorFactory.buildScoreDirector();
-        guiScoreDirector.setWorkingSolution(solution);
+    public static JSONObject evaluateSolution(Examination examination) {
+        SolverFactory<Examination> solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
+        Solver<Examination> solver = solverFactory.buildSolver();
+        ScoreDirectorFactory<Examination> scoreDirectorFactory = solver.getScoreDirectorFactory();
+        ScoreDirector<Examination> guiScoreDirector = scoreDirectorFactory.buildScoreDirector();
+        guiScoreDirector.setWorkingSolution(examination);
         HardSoftScore score = (HardSoftScore) guiScoreDirector.calculateScore();
         JSONObject jsonScore = new JSONObject();
         try {
@@ -85,7 +83,9 @@ public class EvaluateRequestHandler extends AbstractRequestHandler {
             for (ConstraintMatch constraintMatch : constraintMatchTotal.getConstraintMatchSet()) {
                 List<Object> justificationList = constraintMatch.getJustificationList();
                 Number weight = constraintMatch.getWeightAsNumber();
-                System.out.println(justificationList.get(0) + " --- " + constraintMatch.getConstraintName() + " --- " + weight);
+                for (Object justification : justificationList)
+                    System.out.print(justification + " - ");
+                System.out.println(" --- " + constraintMatch.getIdentificationString() + " --- " + constraintMatch.getConstraintName() + " --- " + weight);
             }
         }
         return jsonScore; // TODO

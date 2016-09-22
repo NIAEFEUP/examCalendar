@@ -40,7 +40,7 @@ module.exports = {
 
 		//when all the calls are finished, this function is called
 		async.parallel(calls, function(err, result) {
-		console.log("done");
+
 		  var json = {};
 		  json.normalSeasonDays = result[0].normalSeasonDuration;
 		  json.weeks = [];

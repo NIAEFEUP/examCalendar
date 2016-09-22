@@ -76,11 +76,46 @@ module.exports = {
   },
   //importDB
   setTimespan: function (calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
-		connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
-		[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
+	connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
+	[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
+	function(err, rows, fields) {
+		if (err) throw err;
+	});
+	return true;
+  },
+  getTopics: function (calendarID, callback) {
+	connection.query('SELECT * FROM topics WHERE calendar = ?',
+	[calendarID],
+	callback);
+	return true;
+  },
+  setTopics: function (calendarID, topics) {
+	for (var i = 0; i < topics.length; i++) {
+		console.log(topics[i]);
+		connection.query('UPDATE topics SET difficulty = ? WHERE id = ?',
+		[topics[i].difficulty, topics[i].id],
 		function(err, rows, fields) {
 			if (err) throw err;
 		});
+		createOrDeleteExam(topics[i].normal, topics[i].id, 'normal', topics[i].normal_pc ? 1 : 0);
+		createOrDeleteExam(topics[i].appeal, topics[i].id, 'appeal', topics[i].appeal_pc ? 1 : 0);
+	}
 	return true;
   }
 };
+
+var createOrDeleteExam = function(create, topic, seasonName, pc) {
+	if (create) {
+		connection.query('INSERT INTO exams (topic, normal, pc) VALUES (?, ?, ?)',
+		[topic, seasonName == 'normal', pc],
+		function(err, rows, fields) {
+			if (err) throw err;
+		});
+	} else {
+		connection.query('DELETE FROM exams WHERE topic = ? AND normal = ?',
+		[topic, seasonName == 'normal' ? 1 : 0],
+		function(err, rows, fields) {
+			if (err) throw err;
+		});
+	}
+}

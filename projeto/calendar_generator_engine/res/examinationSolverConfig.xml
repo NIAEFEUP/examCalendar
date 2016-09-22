@@ -16,7 +16,7 @@
   <localSearch>
     <unionMoveSelector>
       <swapMoveSelector>
-        <fixedProbabilityWeight>9</fixedProbabilityWeight>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
         <filterClass>examcalendar.optimizer.domain.solver.SwapMoveFilter</filterClass>
       </swapMoveSelector>
       <changeMoveSelector>
@@ -30,7 +30,7 @@
   </localSearch>
 
   <termination>
-    <secondsSpentLimit>25</secondsSpentLimit>
+    <secondsSpentLimit>3600</secondsSpentLimit>
     <bestScoreLimit>-0hard/-99999soft</bestScoreLimit>
   </termination>
 </solver>
