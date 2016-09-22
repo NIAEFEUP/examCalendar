@@ -7,7 +7,17 @@ var cors = require('cors');
 var app = express();
 
 //allow different domain requests
-app.use(cors());
+var whitelist = [
+    'http://localhost', // TODO (hardcoded)
+];
+var corsOptions = {
+    origin: function(origin, callback){
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+    },
+    credentials: true
+};
+app.use(cors(corsOptions));
 
 app.engine('html', require('ejs').renderFile);
 
@@ -42,15 +52,17 @@ function unauthorizedAccess(res) {
   res.send();
 }
 
+// For all requests
+app.all('*', function(req, res, next) {
+	allowRedirectAnswer(res);
+	next(); // Do the action specific to the request
+});
+
 //////////////////////////////////////////////////////////////////
 //                            Login                             //
 //////////////////////////////////////////////////////////////////
 app.post('/login',function(req,res){
-	res = allowRedirectAnswer(res);
-  console.log("");
-  console.log(req.session.userID);
-  console.log(req.session);
-  req.session.userID = 69;
+  console.log("User ID", req.session.userID);
   if (isAuthenticated(req)) {
     console.log("already");
     res.status(200);
@@ -64,7 +76,6 @@ app.post('/login',function(req,res){
 //                            Logout                            //
 //////////////////////////////////////////////////////////////////
 app.get('/logout',function(req,res){
-	res = allowRedirectAnswer(res);
   req.session.userID = null;
   res.status(200);
   res.send();
@@ -74,7 +85,6 @@ app.get('/logout',function(req,res){
 //                          Database                            //
 //////////////////////////////////////////////////////////////////
 app.post('/setTimespan', function(req, res) {
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -83,7 +93,6 @@ app.post('/setTimespan', function(req, res) {
 	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
 });
 app.post('/database',function(req,res){
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -96,7 +105,6 @@ app.post('/database',function(req,res){
 //                         Admin Home                           //
 //////////////////////////////////////////////////////////////////
 app.get('/adminHome',function(req,res){
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -111,7 +119,6 @@ app.get('/adminHome',function(req,res){
 //                         Constraints                          //
 //////////////////////////////////////////////////////////////////
 app.get('/constraints',function(req,res){
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -120,7 +127,6 @@ app.get('/constraints',function(req,res){
 });
 
 app.put('/constraints',function(req,res){
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -129,7 +135,6 @@ app.put('/constraints',function(req,res){
 });
 
 app.post('/constraints',function(req,res){
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -138,7 +143,6 @@ app.post('/constraints',function(req,res){
 });
 
 app.delete('/constraints',function(req,res){
-	res = allowRedirectAnswer(res);
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
@@ -150,7 +154,6 @@ app.delete('/constraints',function(req,res){
 //                        Admin Users                           //
 //////////////////////////////////////////////////////////////////
 app.get('/adminUsers',function(req,res){
- res = allowRedirectAnswer(res);
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);
    return;
@@ -159,7 +162,6 @@ app.get('/adminUsers',function(req,res){
 });
 
 app.put('/adminUsers',function(req,res){
- res = allowRedirectAnswer(res);
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);
    return;
@@ -168,7 +170,6 @@ app.put('/adminUsers',function(req,res){
 });
 
 app.delete('/adminUsers',function(req,res){
- res = allowRedirectAnswer(res);
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);
    return;
@@ -180,7 +181,6 @@ app.delete('/adminUsers',function(req,res){
 //                          Calendar                            //
 //////////////////////////////////////////////////////////////////
 app.get('/calendar',function(req,res){
- res = allowRedirectAnswer(res);
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);
    return;
@@ -189,7 +189,6 @@ app.get('/calendar',function(req,res){
 });
 
 app.post('/calendar',function(req,res){
- res = allowRedirectAnswer(res);
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);
    return;
