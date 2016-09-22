@@ -10,75 +10,82 @@ var async = require('async');
 
 module.exports = {
   get: function (res, userID) {
-	var calendarId = 1;
-    //add the calls to be made asynchronously
-    var calls = [function(callback) {
-      database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = ?', [calendarId], function(err, rows, fields) {
-        if (!err)
-          callback(null, rows[0]);
-      });
-    },
-    function(callback) {
-      //assigned
-      database.connection.query('SELECT exams.id, year, name, (CASE day WHEN NULL THEN NULL ELSE UNIX_TIMESTAMP(day) END) AS day, time FROM exams, topics where topic = topics.id and topics.calendar = ? order by day asc', [calendarId], function(err, rows, fields) {
-        if (!err)
-          callback(null, rows);
-      });
-    },
-    function(callback) {
-      database.connection.query('SELECT id, cod, pc FROM rooms where calendar = ?', [calendarId], function(err, rows, fields) {
-        if (!err)
-          callback(null, rows);
-      });
-    }];
-	
-    //when all the calls are finished, this function is called
-    async.parallel(calls, function(err, result) {
-	
-      var json = {};
-      json.normalSeasonDays = result[0].normalSeasonDuration;
-      json.weeks = [];
-      json.unassigneds = [];
-      json.rooms = {'no_pc':[], 'pc':[]};
+	database.getIDByUserID(userID, function (calendarId) {
+		//add the calls to be made asynchronously
+		var calls = [function(callback) {
+		  database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = ?', [calendarId], function(err, rows, fields) {
+			if (err)
+				console.error(err);
+			else
+			  callback(null, rows[0]);
+		  });
+		},
+		function(callback) {
+		  //assigned
+		  database.connection.query('SELECT exams.id, year, name, (CASE day WHEN NULL THEN NULL ELSE UNIX_TIMESTAMP(day) END) AS day, time FROM exams, topics where topic = topics.id and topics.calendar = ? order by day asc', [calendarId], function(err, rows, fields) {
+			if (err)
+				console.error(err);
+			else
+			  callback(null, rows);
+		  });
+		},
+		function(callback) {
+		  database.connection.query('SELECT id, cod, pc FROM rooms where calendar = ?', [calendarId], function(err, rows, fields) {
+			if (err)
+				console.error(err);
+			else
+			  callback(null, rows);
+		  });
+		}];
 
-      var startDate = new Date(result[0].startingDate * 1000);
+		//when all the calls are finished, this function is called
+		async.parallel(calls, function(err, result) {
 
-      //process dates
-      for (var i = 0; i < (result[0].normalSeasonDuration + result[0].appealSeasonDuration) / 7; i++) {
-        var dates = generateWeekDays(startDate, i);
-        var periods = generateWeekPeriods();
-        json.weeks.push({'dates' : dates, 'periods' : periods});
-      }
+		  var json = {};
+		  json.normalSeasonDays = result[0].normalSeasonDuration;
+		  json.weeks = [];
+		  json.unassigneds = [];
+		  json.rooms = {'no_pc':[], 'pc':[]};
 
-      //process exams assigned
-      for (var i = 0; i < result[1].length; i++) {
-		if (result[1][i].day == null) {
-			json.unassigneds.push({
-			  'id' : result[1][i].id,
-			  'name' : result[1][i].name,
-			  'year' : result[1][i].year
-			});
-		} else {
-			var examDate = new Date(result[1][i].day * 1000);
-			var week = DateDiff.inWeeks(startDate, examDate);
-			var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
-			json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
-			  'id' : result[1][i].id,
-			  'name' : result[1][i].name,
-			  'year' : result[1][i].year
-			});
-		}
-      }
+		  var startDate = new Date(result[0].startingDate * 1000);
 
-      //process rooms
-      for (var i = 0; i < result[2].length; i++) {
-        json.rooms[result[2][i].pc ? 'pc' : 'no_pc'].push({'id' : result[2][i].id, 'name' : result[2][i].cod});
-      }
+		  //process dates
+		  for (var i = 0; i < (result[0].normalSeasonDuration + result[0].appealSeasonDuration) / 7; i++) {
+			var dates = generateWeekDays(startDate, i);
+			var periods = generateWeekPeriods();
+			json.weeks.push({'dates' : dates, 'periods' : periods});
+		  }
 
-      /*console.log(startDate.getDay()+7);
-      console.log(startDate.getMonth()+1);
-      console.log(startDate.getYear()+1900);*/
-      res.json(json);//database.getCalendar(userID));
+		  //process exams assigned
+		  for (var i = 0; i < result[1].length; i++) {
+			if (result[1][i].day == null) {
+			  json.unassigneds.push({
+				'id' : result[1][i].id,
+				'name' : result[1][i].name,
+				'year' : result[1][i].year
+			  });
+			} else {
+			  var examDate = new Date(result[1][i].day * 1000);
+			  var week = DateDiff.inWeeks(startDate, examDate);
+			  var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
+			  json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
+				'id' : result[1][i].id,
+				'name' : result[1][i].name,
+				'year' : result[1][i].year
+			  });
+			}
+		  }
+
+		  //process rooms
+		  for (var i = 0; i < result[2].length; i++) {
+			json.rooms[result[2][i].pc ? 'pc' : 'no_pc'].push({'id' : result[2][i].id, 'name' : result[2][i].cod});
+		  }
+
+		  /*console.log(startDate.getDay()+7);
+		  console.log(startDate.getMonth()+1);
+		  console.log(startDate.getYear()+1900);*/
+		  res.json(json);//database.getCalendar(userID));
+		});
     });
   },
   generate: function (res, userID) {

@@ -18,6 +18,12 @@ module.exports = {
     // -1 = error, positive otherwise
     return -1;
   },
+  getIDByUserID: function (userID, callback) {
+	connection.query("SELECT id FROM calendars WHERE creator = ?", [userID], function(err, rows, fields) {
+		if (!err)
+			callback(rows[0].id);
+	});
+  },
   //notes
   getNotes: function (userID) {
     return [];
