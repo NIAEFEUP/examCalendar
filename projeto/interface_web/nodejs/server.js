@@ -206,6 +206,14 @@ app.post('/calendar',function(req,res){
  calendar.generate(res, req.session.userID);
 });
 
+app.post('/calendar/exams', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.moveExam(res, req.session.userID, req.body);
+});
+
 //////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////

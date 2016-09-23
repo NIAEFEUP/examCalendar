@@ -6,7 +6,7 @@ app.directive('calendar', function($timeout) {
     templateUrl: 'directives/calendar/calendar.html',
     link: function (scope, element, attrs) {
       $timeout(function() {
-		redipsInit();
+		redipsInit(scope);
       });
     }
   };
@@ -27,7 +27,7 @@ app.directive('modal', function() {
 });
 
 // redips initialization
-redipsInit = function () {
+redipsInit = function (scope) {
 	// reference to the REDIPS.drag library and message line
 	var	rd = REDIPS.drag;
 	// how to display disabled elements
@@ -38,10 +38,17 @@ redipsInit = function () {
 	rd.event.dropped = function (targetCell) {
 		var examID = $(rd.obj).data("id");
 		var slot = $(targetCell);
-		var date = slot.data("date") || null;
+		var date = slot.data("day") || null;
+		
+		// Do some magic to convert the date to a format accepted by MySQL
+		var starttime = new Date(date);
+		var isotime = new Date((new Date(starttime)).toISOString() );
+		var fixedtime = new Date(isotime.getTime()-(starttime.getTimezoneOffset()*60000));
+		date = fixedtime.toISOString().slice(0, 19).replace('T', ' ');
+		
 		var time = slot.data("time");
 		if (typeof time == 'undefined')
 			time = null;
-		console.log(date, time);
+		scope.setExamPeriod(examID, date, time);
 	};
 };

@@ -58,7 +58,8 @@ module.exports = {
 
 		  //process exams assigned
 		  for (var i = 0; i < result[1].length; i++) {
-			if (result[1][i].day == null) {
+		  var day = result[1][i].day;
+			if (day == null || day == 0) {
 			  json.unassigneds.push({
 				'id' : result[1][i].id,
 				'name' : result[1][i].name,
@@ -90,6 +91,15 @@ module.exports = {
   },
   generate: function (res, userID) {
     database.generateCalendar(userID) ? shared.success(res) : shared.error(res);
+  },
+  moveExam: function (res, userID, body) {
+	// TODO check if the user is the creator of the exam
+	// TODO validate day and time values
+	database.setExamPeriod(body.id, body.day, body.time, function(err) {
+		if (err)
+			console.error(err);
+		res.end();
+	});
   }
 };
 
