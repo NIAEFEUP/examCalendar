@@ -9,7 +9,7 @@ module.exports = {
 		database.setTimespan(calendarID, startingDate, normalSeasonDuration, appealSeasonDuration);
 		res.end();
 	},
-  import: function (res, userID, req ) {
+  import: function (res, userID, req) {
 		var content_type = req.headers['content-type'];
 		var boundary = content_type.split('; ')[1].split('=')[1];
 		var userIDString = '--'

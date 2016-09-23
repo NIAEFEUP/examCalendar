@@ -6,7 +6,7 @@
   </tr>
     <tr>
       <td class="redips-drag t3 unassigned-body">
-        <div class="redips-drag year{{unassigned.year}}" ng-repeat="unassigned in unassigneds" ng-click="modal(unassigned.id)">{{unassigned.name}}</div>
+        <div class="redips-drag year{{unassigned.year}}" ng-repeat="unassigned in unassigneds" data-id="{{unassigned.id}}" ng-click="modal(unassigned.id)">{{unassigned.name}}</div>
       </td>
     </tr>
 </table>

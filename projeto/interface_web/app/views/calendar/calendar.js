@@ -3,11 +3,10 @@
 /*global window: false, REDIPS: true */
 
 /* enable strict mode */
-"use strict";
+/*"use strict";
 
 // define redips_init variable
 var redipsInit;
-
 
 // redips initialization
 redipsInit = function () {
@@ -134,4 +133,4 @@ if (window.addEventListener) {
 }
 else if (window.attachEvent) {
 	window.attachEvent('onload', redipsInit);
-}
+}*/
