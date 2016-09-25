@@ -1,0 +1,27 @@
+<table class="table table-striped" id="choose-exams-table">
+	<thead>
+		<tr>
+			<th class="col-md-6">Topic</th>
+			<th class="col-md-2">Difficulty</th>
+			<th class="col-md-1 season">Normal season</th>
+			<th class="col-md-1 pc">PC room</th>
+			<th class="col-md-1 season">Appeal season</th>
+			<th class="col-md-1 pc">PC room</th>
+		</tr>
+	</thead>
+	<tr ng-repeat="topic in topics">
+		<input type="hidden" name="topics[{{$index}}][id]" value="{{topic.id}}">
+		<td>{{topic.name}}</td>
+		<td>
+			<select name="topics[{{$index}}][difficulty]" class="form-control difficulty">
+				<option value="0">Easy</option>
+				<option value="1" selected>Medium</option>
+				<option value="2">Hard</option>
+			</select>
+		</td>
+		<td class="season season-normal"><input name="topics[{{$index}}][normal]" type="checkbox" ng-model="normal_exam[$index]"></td>
+		<td class="pc pc-normal"><input name="topics[{{$index}}][normal_pc]" type="checkbox" ng-disabled="!normal_exam[$index]"></td>
+		<td class="season season-appeal"><input name="topics[{{$index}}][appeal]" type="checkbox" ng-model="appeal_exam[$index]"></td>
+		<td class="pc pc-appeal"><input name="topics[{{$index}}][appeal_pc]" type="checkbox" ng-disabled="!appeal_exam[$index]"></td>
+	</tr>
+</table>

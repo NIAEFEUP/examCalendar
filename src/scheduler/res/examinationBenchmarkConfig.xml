@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plannerBenchmark>
+    <benchmarkDirectory>res/test</benchmarkDirectory>
+    <!--<parallelBenchmarkCount>AUTO</parallelBenchmarkCount>-->
+    <warmUpSecondsSpentLimit>10</warmUpSecondsSpentLimit>
+    <inheritedSolverBenchmark>
+        <problemBenchmarks>
+            <solutionFileIOClass>examcalendar.optimizer.persistence.ExaminationIO</solutionFileIOClass>
+            <inputSolutionFile>res/test/unsolved/unsolvedExamination.xml</inputSolutionFile>
+            <problemStatisticType>BEST_SCORE</problemStatisticType>
+        </problemBenchmarks>
+        <solver>
+            <solutionClass>examcalendar.optimizer.domain.Examination</solutionClass>
+            <entityClass>examcalendar.optimizer.domain.RoomPeriod</entityClass>
+
+            <scoreDirectorFactory>
+                <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
+                <scoreDrl>examinationScoreRules.drl</scoreDrl>
+                <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+            </scoreDirectorFactory>
+
+            <termination>
+                <secondsSpentLimit>100</secondsSpentLimit>
+                <bestScoreLimit>-0hard/-0soft</bestScoreLimit>
+            </termination>
+
+            <constructionHeuristic>
+                <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
+                <forager>
+                    <pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>
+                </forager>
+            </constructionHeuristic>
+        </solver>
+    </inheritedSolverBenchmark>
+    <solverBenchmark>
+        <name>Entity tabu</name>
+        <solver>
+            <localSearch>
+                <changeMoveSelector>
+                    <selectionOrder>ORIGINAL</selectionOrder>
+                </changeMoveSelector>
+                <acceptor>
+                    <entityTabuSize>5</entityTabuSize>
+                </acceptor>
+                <forager>
+                    <pickEarlyType>NEVER</pickEarlyType>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
+    <solverBenchmark>
+        <name>Value tabu</name>
+        <solver>
+            <localSearch>
+                <changeMoveSelector>
+                    <selectionOrder>ORIGINAL</selectionOrder>
+                </changeMoveSelector>
+                <acceptor>
+                    <valueTabuSize>5</valueTabuSize>
+                </acceptor>
+                <forager>
+                    <pickEarlyType>NEVER</pickEarlyType>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
+    <solverBenchmark>
+        <name>Move tabu</name>
+        <solver>
+            <localSearch>
+                <changeMoveSelector>
+                    <selectionOrder>ORIGINAL</selectionOrder>
+                </changeMoveSelector>
+                <acceptor>
+                    <moveTabuSize>5</moveTabuSize>
+                </acceptor>
+                <forager>
+                    <pickEarlyType>NEVER</pickEarlyType>
+                </forager>
+            </localSearch>
+        </solver>
+    </solverBenchmark>
+</plannerBenchmark>

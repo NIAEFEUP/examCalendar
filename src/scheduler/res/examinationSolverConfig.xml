@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+  <!--<environmentMode>FAST_ASSERT</environmentMode>-->
+  <solutionClass>examcalendar.optimizer.domain.Examination</solutionClass>
+  <entityClass>examcalendar.optimizer.domain.RoomPeriod</entityClass>
+
+  <scoreDirectorFactory>
+    <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
+    <scoreDrl>examinationScoreRules.drl</scoreDrl>
+    <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
+  </scoreDirectorFactory>
+
+  <constructionHeuristic>
+  </constructionHeuristic>
+
+  <localSearch>
+    <unionMoveSelector>
+      <swapMoveSelector>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+        <filterClass>examcalendar.optimizer.domain.solver.SwapMoveFilter</filterClass>
+      </swapMoveSelector>
+      <changeMoveSelector>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+      </changeMoveSelector>
+      <moveListFactory>
+        <fixedProbabilityWeight>1</fixedProbabilityWeight>
+        <moveListFactoryClass>examcalendar.optimizer.domain.solver.ExamMoveFactory</moveListFactoryClass>
+      </moveListFactory>
+    </unionMoveSelector>
+  </localSearch>
+
+  <termination>
+    <secondsSpentLimit>3600</secondsSpentLimit>
+    <bestScoreLimit>-0hard/-99999soft</bestScoreLimit>
+  </termination>
+</solver>
