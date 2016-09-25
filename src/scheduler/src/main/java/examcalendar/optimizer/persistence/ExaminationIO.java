@@ -2,7 +2,6 @@ package examcalendar.optimizer.persistence;
 
 import examcalendar.optimizer.ExaminationGenerator;
 import examcalendar.optimizer.domain.Examination;
-import org.optaplanner.core.api.domain.solution.Solution;
 import org.optaplanner.persistence.common.api.domain.solution.SolutionFileIO;
 
 import java.io.File;

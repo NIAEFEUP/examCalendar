@@ -1,12 +1,11 @@
 package examcalendar.optimizer.persistence;
 
-import examcalendar.optimizer.common.persistence.AbstractSolutionExporter;
-import examcalendar.optimizer.common.persistence.SolutionDao;
 import examcalendar.optimizer.domain.Exam;
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.domain.Period;
 import examcalendar.optimizer.domain.RoomPeriod;
-import org.optaplanner.core.api.domain.solution.Solution;
+import org.optaplanner.examples.common.persistence.AbstractSolutionExporter;
+import org.optaplanner.examples.common.persistence.SolutionDao;
 
 import java.io.File;
 import java.io.FileNotFoundException;
