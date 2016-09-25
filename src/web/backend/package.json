@@ -1,0 +1,14 @@
+{
+  "name": "Node-Express4-Session",
+  "version": "0.0.1",
+  "main": "server.js",
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "body-parser": "^1.7.0",
+	"cors": "^2.8.1",
+    "ejs": "^1.0.0",
+    "express": "^4.8.7",
+    "express-session": "^1.14.1",
+	"mysql": "^2.11.1"
+  }
+}
