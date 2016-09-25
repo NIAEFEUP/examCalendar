@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>niaefeup</groupId>
-    <artifactId>calendar_generator_engine</artifactId>
+    <artifactId>scheduler</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <parent>
@@ -51,6 +51,12 @@
             <artifactId>optaplanner-benchmark</artifactId>
             <version>7.0.0.Beta1</version>
         </dependency>
+        <dependency>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-examples</artifactId>
+            <version>7.0.0.Beta1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.drools</groupId>
             <artifactId>drools-decisiontables</artifactId>
@@ -139,5 +145,9 @@
         </dependency>
     </dependencies>
 
+    <organization>
+    	<name>NIAEFEUP</name>
+    	<url>http://ni.fe.up.pt/</url>
+    </organization>
 </project>
 
