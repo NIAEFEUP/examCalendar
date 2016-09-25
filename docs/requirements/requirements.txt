@@ -1,0 +1,44 @@
+RESTRIÇÕES
+
+- Restringir as cadeiras (Com exame e sem exame)
+- Salas por UC (Sala de pc's ou não)
+- Preferencialmente no bloco da manhã (Existem 3 blocos - 9 / 13:30 / 17)
+- Começo e termino de exame com definição dinâmica (Interface tem que permitir definir o intervalo de marcação de Exame)
+- Intervalo de marcação de exames da mesma UC variavel (mínimo de 14 dias)
+- Proximidade de exames de UC's diferentes com preferencia para uma separação maior entre 2 anos consecutivos
+- UC's do mesmo ano em dias diferentes(com uma separação preferencial de 2 dias)
+- Ter em conta marcação de Exames em comum (Interface tem que permitir colocação manual de Exame)
+- Classificar exames em termos de dificuldade (Cotação de 1 a 5)
+- Minorar número de alunos inscritos em exames simultanêos ou próximos
+- Prever indisponibilidade de professores ou problemas externos
+- Evitar exames ao mesmo tempo com alunos em comum
+
+
+BASE DE CONHECIMENTO
+
+- Alunos de cada ano inscritos em cada UC divididos por turmas
+- Salas disponíveis para exame
+
+-------------- Restrições relevantes
+1-Preferencialmente no bloco da manhã (Existem 3 blocos - 9 / 13:30 / 17)
+2-Começo e termino de exame com definição dinâmica (Interface tem que permitir definir o intervalo de marcação de Exame)
+3-Intervalo de marcação de exames da mesma UC variavel (mínimo de 14 dias)
+4-Proximidade de exames de UC's diferentes com preferencia para uma separação maior entre 2 anos consecutivos
+5-UC's do mesmo ano em dias diferentes(com uma separação pelo menos de 2 dias (2+))
+6-Classificar exames em termos de dificuldade (Cotação de 1 a 5)
+7-Minorar número de alunos inscritos em exames simultanêos ou próximos ( evitar também ao longo do dia)
+8-Prever indisponibilidade de professores ou problemas externos
+9-Evitar exames ao mesmo tempo com alunos em comum!
+
+
+Hierarquia das restriçoes (das mais importantes para as menos importantes)
+2,8,3,5,9 (restrições obrigatórias)
+1       (facil de optimizar)
+6       (otimizar espaço entre cadeiras dificies)=>(ver numero de inscritos e curva de gauss das notas dos exames ao longo dos anos)
+7,4     (otimizar)
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+<table class="calendar-table" ng-repeat="week in weeks">
+    <tr class="row-head">
+      <td class="elem-empty redips-mark"></td>
+      <td class="redips-mark">Monday</td>
+      <td class="redips-mark">Tuesday</td>
+      <td class="redips-mark">Wednesday</td>
+      <td class="redips-mark">Thursday</td>
+      <td class="redips-mark">Friday</td>
+      <td class="redips-mark">Saturday</td>
+    </tr>
+
+    <tr>
+      <td class="elem-empty redips-mark"></td>
+      <td class="redips-mark {{($parent.$index * 7 + $index) < normalDays ? 'normalSeason' : 'appealSeason'}}" ng-repeat="day in week.dates">
+        <b>{{day}}</b>
+      </td>
+    </tr>
+
+    <tr class="row-type1">
+      <td class="elem-time-interval redips-mark"><b>09h00 - 12h00</b></td>
+      <td ng-repeat="mornings in week.periods.mornings" data-day="{{week.dates[$index]}}" data-time="0">
+        <div ng-repeat="lecture in mornings" data-id="{{lecture.id}}" ng-click="modal(lecture.id)" class="redips-drag year{{lecture.year}}" ng-drag="true">
+          {{lecture.name}}
+        </div>
+      </td>
+    </tr>
+
+    <tr class="row-type2">
+      <td class="elem-time-interval redips-mark"><b>13h30 - 16h30</b></td>
+      <td ng-repeat="afternoons in week.periods.afternoons" data-day="{{week.dates[$index]}}" data-time="1">
+        <div ng-repeat="lecture in afternoons" data-id="{{lecture.id}}" ng-click="modal(lecture.id)" class="redips-drag year{{lecture.year}}" ng-drag="true">
+          {{lecture.name}}
+        </div>
+      </td>
+    </tr>
+
+    <tr class="row-type1">
+      <td class="elem-time-interval redips-mark"><b>17h00 - 20h00</b></td>
+      <td ng-repeat="evenings in week.periods.evenings" data-day="{{week.dates[$index]}}" data-time="2">
+        <div ng-repeat="lecture in evenings" data-id="{{lecture.id}}" ng-click="modal(lecture.id)" class="redips-drag year{{lecture.year}}" ng-drag="true">
+          {{lecture.name}}
+        </div>
+      </td>
+    </tr>
+</table>
