@@ -74,6 +74,12 @@ module.exports = {
   generateCalendar: function (userID) {
     return false;
   },
+  setExamPeriod: function (examID, day, time, callback) {
+	connection.query('UPDATE exams SET day = ?, time = ? WHERE id = ?',
+	[day, time, examID],
+	callback);
+	return true;
+  },
   //importDB
   setTimespan: function (calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
 	connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',

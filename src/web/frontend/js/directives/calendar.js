@@ -39,13 +39,13 @@ redipsInit = function (scope) {
 		var examID = $(rd.obj).data("id");
 		var slot = $(targetCell);
 		var date = slot.data("day") || null;
-		
+		console.log(date);
 		// Do some magic to convert the date to a format accepted by MySQL
 		var starttime = new Date(date);
 		var isotime = new Date((new Date(starttime)).toISOString() );
 		var fixedtime = new Date(isotime.getTime()-(starttime.getTimezoneOffset()*60000));
 		date = fixedtime.toISOString().slice(0, 19).replace('T', ' ');
-		
+		console.log(date);
 		var time = slot.data("time");
 		if (typeof time == 'undefined')
 			time = null;
