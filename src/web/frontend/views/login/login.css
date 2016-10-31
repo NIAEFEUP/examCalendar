@@ -6,12 +6,6 @@ body {
 	background-size: cover;
 }
 
-#ni {
-	display: block;
-	margin: auto;
-	opacity: 0.9;
-}
-
 #forgotPassword {
 	font-size: 85%;
 	color: 	#132639;
@@ -95,3 +89,8 @@ body {
   color: #fff;
   outline: 0;
 }
+
+.center {
+  text-align: center;
+}
+
