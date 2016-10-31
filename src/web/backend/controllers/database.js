@@ -20,8 +20,14 @@ module.exports = {
   },
   getIDByUserID: function (userID, callback) {
 	connection.query("SELECT id FROM calendars WHERE creator = ?", [userID], function(err, rows, fields) {
-		if (!err)
-			callback(rows[0].id);
+		if (!err){
+            if (rows.length == 0) {
+                callback(null);
+            }
+            else {
+                callback(rows[0].id);
+            }
+        }
 	});
   },
   //notes
