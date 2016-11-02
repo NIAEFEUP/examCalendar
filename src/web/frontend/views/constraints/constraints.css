@@ -18,3 +18,7 @@
 .row {
 	margin-right: 0 !important;
 }
+
+ul.dropdown-menu li {
+	list-style-type: none;
+}

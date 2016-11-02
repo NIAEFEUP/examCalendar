@@ -44,6 +44,7 @@ function allowRedirectAnswer(res) {
 }
 
 function isAuthenticated(req) {
+  console.log(req.session);
   return req.session != null && req.session.userID != null && req.session.userID >= 0;
 }
 

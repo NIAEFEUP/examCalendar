@@ -26,13 +26,13 @@ app.controller('ConstraintsController', ['$scope', '$window', '$compile', 'const
 
     options += datesHTML();
 
-    var btnhtml = '<div id="constraint' + constraintId + '" class="form-inline">'+
+    var btnhtml = '<div id="constraint' + constraintId + '" class="form-inline" style="display:none;">'+
     '<h3>'+type+' Constraint '+
       '<button class="btn btn-primary" type="button" onclick="removeConstraint('+constraintId+')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>'+
       options+
       '</h3></div>';
-    $('#constraints').append(btnhtml);
-	  runDateTimePicker($('#constraint' + constraintId + ' [name="start-period"]'),
+	$(btnhtml).appendTo($('#constraints')).show('normal');
+	runDateTimePicker($('#constraint' + constraintId + ' [name="start-period"]'),
                       $('#constraint' + constraintId + ' [name="end-period"]'));
     constraintId++;
   };

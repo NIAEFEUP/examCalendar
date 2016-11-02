@@ -78,6 +78,9 @@ $(document).ready( function() {
 				$.ajax({
 					url:$('#timespan-form').attr('action'),
 					type:'post',
+					xhrFields: {
+						withCredentials: true
+					},
 					data: {
 						normalStartDate: localISOTime,
 						normalDuration: normalDuration,
@@ -106,6 +109,9 @@ $(document).ready( function() {
 				$.ajax({
 					url:$('#file-import-form').attr('action'),
 					type:'post',
+					xhrFields: {
+						withCredentials: true
+					},
 					cache: false,
 					contentType: false,
 					processData: false,

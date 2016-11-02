@@ -61,7 +61,7 @@ var registered = function (req, res) {
 
   //when all the calls are finished, this function is called
   async.parallel(calls, function(err, result) {
-
+  
     if (result[0] != null && result[0].id >= 0) {
       console.log("auth");
       req.session.userID = result[0].id;
