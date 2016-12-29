@@ -200,8 +200,8 @@ public class ParseRequestHandler extends AbstractRequestHandler {
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE); // TODO think if we really need this to be serializable
             int calendarID = resetCalendar(conn, clientID, startingDate);
-            insertProfessorsInDB(conn, calendarID, professors);
             insertTopicsInDB(conn, calendarID, topics);
+            insertProfessorsInDB(conn, calendarID, professors);
             insertExamsInDB(conn, topics);
             insertStudentsInDB(conn, calendarID, students);
             insertStudentTopicAssociationsInDB(conn, calendarID, topics);

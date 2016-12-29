@@ -47,14 +47,14 @@ module.exports = {
 			req2.end();
 		});
   },
-  getTopics: function (res, calendarID) {
-	database.getTopics(calendarID, function(err, rows, fields) {
+  getTopics: function (res, userID) {
+	database.getTopics(userID, function(err, rows, fields) {
 		if (err) throw err;
 		res.json(rows);
 	});
   },
-  setTopics: function (res, calendarID, topics) {
-	database.setTopics(calendarID, topics);
+  setTopics: function (res, userID, topics) {
+	database.setTopics(userID, topics);
 	res.end();
   }
 };

@@ -87,21 +87,21 @@ module.exports = {
 	return true;
   },
   //importDB
-  setTimespan: function (calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
-	connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE id = ?',
-	[startingDate, normalSeasonDuration, appealSeasonDuration, calendarID],
+  setTimespan: function (userID, startingDate, normalSeasonDuration, appealSeasonDuration) {
+	connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE creator = ?',
+	[startingDate, normalSeasonDuration, appealSeasonDuration, userID],
 	function(err, rows, fields) {
 		if (err) throw err;
 	});
 	return true;
   },
-  getTopics: function (calendarID, callback) {
-	connection.query('SELECT * FROM topics WHERE calendar = ?',
-	[calendarID],
+  getTopics: function (userID, callback) {
+	connection.query('SELECT topics.* FROM topics INNER JOIN calendars ON calendars.id = topics.calendar WHERE calendars.creator = ? ORDER BY year, name',
+	[userID],
 	callback);
 	return true;
   },
-  setTopics: function (calendarID, topics) {
+  setTopics: function (topics) {
 	for (var i = 0; i < topics.length; i++) {
 		console.log(topics[i]);
 		connection.query('UPDATE topics SET difficulty = ? WHERE id = ?',
