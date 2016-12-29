@@ -101,11 +101,11 @@ module.exports = {
 	callback);
 	return true;
   },
-  setTopics: function (topics) {
+  setTopics: function (userID, topics) {
 	for (var i = 0; i < topics.length; i++) {
 		console.log(topics[i]);
-		connection.query('UPDATE topics SET difficulty = ? WHERE id = ?',
-		[topics[i].difficulty, topics[i].id],
+		connection.query('UPDATE topics INNER JOIN calendars ON topics.calendar = calendars.id SET topics.difficulty = ? WHERE topics.id = ? AND calendars.creator = ?',
+		[topics[i].difficulty, topics[i].id, userID],
 		function(err, rows, fields) {
 			if (err) throw err;
 		});
