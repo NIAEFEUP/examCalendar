@@ -21,24 +21,24 @@
             <p><b>Professors:</b> {{lecture.professors.join(', ')}} </p>
             <p><b>Classrooms:</b></p>
           </div>
-          <!-- TODO @Marcelo está o mesmo id para os dois "p"-->
+		  
           <div class="col-12 col-sm-6">
             <p id="withoutPC">Without PC's</p>
-            <div class="input-group" ng-repeat="room in classrooms.no_pc">
+            <div class="input-group" ng-repeat="room in lecture.classrooms.non_pc">
               <span class="input-group-addon">
-                <input type="checkbox" ng-checked="isActive(lecture.classrooms, room.id)">
+                <input type="checkbox" ng-checked="room.checked">
               </span>
-              <input class="form-control" type="text" value="{{room.name}}" readonly>
+              <input class="form-control" type="text" value="{{room.cod}}" readonly>
             </div>
           </div>
 
           <div class="col-12 col-sm-6">
-            <p id="withoutPC">With PC's</p>
-            <div class="input-group" ng-repeat="room in classrooms.pc">
+            <p id="withPC">With PC's</p>
+            <div class="input-group" ng-repeat="room in lecture.classrooms.pc">
               <span class="input-group-addon">
-                <input type="checkbox" ng-checked="isActive(lecture.classrooms, room.id)">
+                <input type="checkbox" ng-checked="room.checked">
               </span>
-              <input class="form-control" type="text" value="{{room.name}}" readonly>
+              <input class="form-control" type="text" value="{{room.cod}}" readonly>
             </div>
           </div>
 

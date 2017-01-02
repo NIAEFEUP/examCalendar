@@ -1,0 +1,35 @@
+{
+  "shortname": "IART",
+  "name": "Inteligência Artificial",
+  "season": "Normal",
+  "year": 3,
+  "date": "July 1",
+  "hour": "09:00 - 12:00",
+  "students": 100,
+  "professors": [
+    "Professor1",
+    "Professor2",
+    "Professor3"
+  ],
+  "classrooms": {
+    "pc": [
+      {
+		"id": 65,
+        "cod": "B104",
+        "checked": true
+      }
+    ],
+    "non_pc": [
+      {
+		"id": 66,
+        "cod": "B001",
+        "checked": false
+      },
+      {
+		"id": 67,
+        "cod": "B002",
+        "checked": false
+      }
+    ]
+  }
+}

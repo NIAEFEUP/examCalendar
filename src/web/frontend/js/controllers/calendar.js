@@ -8,14 +8,10 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
   });
 
   $scope.modal = function(id) {
-     modal.get('lecture').success(function(data) {
+     modal.get('topic').success(function(data) {
       $scope.lecture = data;
       $('#examInformation').modal('show');
     });
-  };
-
-  $scope.isActive = function(array, id) {
-    return array != null && array.indexOf(id) != -1;
   };
 
   $scope.setExamPeriod = function (examID, day, time) {
