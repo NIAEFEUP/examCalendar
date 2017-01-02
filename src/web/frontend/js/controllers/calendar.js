@@ -8,7 +8,16 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
   });
 
   $scope.modal = function(id) {
-     modal.get('topic').success(function(data) {
+     modal.get(id).success(function(data) {
+	  var classrooms = data.classrooms;
+	  classrooms.pc = [];
+	  classrooms.non_pc = [];
+	  for (var i = 0; i < classrooms.length; i++) {
+		if (classrooms[i].pc)
+			classrooms.pc.push(classrooms[i]);
+		else
+			classrooms.non_pc.push(classrooms[i]);
+	  }
       $scope.lecture = data;
       $('#examInformation').modal('show');
     });

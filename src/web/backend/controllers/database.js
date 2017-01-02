@@ -89,7 +89,7 @@ module.exports = {
   },
   getExam: function (userID, examID, callback) {
 	// Fetch single-row data
-	connection.query('SELECT topics.name, exams.normal, topics.year, exams.day, exams.time, (SELECT count(studenttopic.topic) FROM studenttopic WHERE studenttopic.topic = topics.id)'
+	connection.query('SELECT topics.name, exams.normal, topics.year, exams.day, exams.time, (SELECT count(studenttopic.topic) FROM studenttopic WHERE studenttopic.topic = topics.id) AS students'
 		+ ' FROM exams'
 		+ ' INNER JOIN topics ON exams.topic = topics.id'
 		+ ' INNER JOIN calendars ON topics.calendar = calendars.id'
@@ -106,9 +106,9 @@ module.exports = {
 			}
 			
 			var calls = [function(callback) {
-				database.connection.query('SELECT professors'
+				connection.query('SELECT professors.name'
 					+ ' FROM professors'
-					+ ' INNER JOIN topicprofessor ON topicprofessor.professor = professor.id'
+					+ ' INNER JOIN topicprofessor ON topicprofessor.professor = professors.id'
 					+ ' INNER JOIN exams ON exams.topic = topicprofessor.topic'
 					+ ' WHERE exams.id = ?',
 					[examID],
@@ -119,7 +119,7 @@ module.exports = {
 						  callback(null, rows);
 				});
 			}, function(callback) {
-				database.connection.query('SELECT rooms.id, rooms.cod, rooms.capacity, EXISTS (SELECT examrooms.exam FROM examrooms WHERE examrooms.exam = ?'
+				connection.query('SELECT rooms.id, rooms.cod, rooms.capacity, rooms.pc, EXISTS (SELECT examrooms.exam FROM examrooms WHERE examrooms.exam = ?) AS checked'
 					+ ' FROM rooms'
 					+ ' INNER JOIN topics ON rooms.calendar = topics.calendar'
 					+ ' INNER JOIN exams ON exams.topic = topics.id'
@@ -133,8 +133,9 @@ module.exports = {
 				});
 			}];
 			async.parallel(calls, function(err, result) {
-				console.log(result[0], result[1]);
-				res.json(rows);
+				rows[0].professors = result[0];
+				rows[0].classrooms = result[1];
+				callback(null, rows[0]);
 			});
 		}
 	);

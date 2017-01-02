@@ -13,7 +13,7 @@
         <div class="row">
           <div class="col-12 col-sm-12">
             <p><b>Exam Name:</b> {{lecture.name}}</p>
-            <p><b>Season:</b> {{lecture.season}}</p>
+            <p><b>Season:</b> {{lecture.normal && 'Normal' || 'Appeal'}}</p>
             <p><b>Year:</b> {{lecture.year}}</p>
             <p><b>Date:</b> {{lecture.date}}</p>
             <p><b>Hour:</b> {{lecture.hour}}</p>
