@@ -104,6 +104,13 @@ module.exports = {
 			console.error(err);
 		res.end();
 	});
+  },
+  getExam: function (res, userID, topicID) {
+	database.getExam(userID, topicID, function(err, result) {
+		if (err)
+			console.error(err);
+		res.json(result);
+	});
   }
 };
 

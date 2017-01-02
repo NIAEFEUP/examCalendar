@@ -12,7 +12,7 @@ app.factory('modal', ['$http', function($http) {
   var lecture = {};
   lecture.get = function(id) {
     //TODO replace link
-    return $http.get('http://localhost/examCalendar/' + id + '.json')
+    return $http.get('http://localhost:8080/exams/' + id)
     .success(function(data) {
       return data;
     })

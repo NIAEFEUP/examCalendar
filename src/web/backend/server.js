@@ -197,6 +197,14 @@ app.get('/calendar',function(req,res){
  calendar.get(res, req.session.userID);
 });
 
+app.get('/exams/:id', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.getExam(res, req.session.userID, req.params.id);
+});
+
 app.post('/calendar',function(req,res){
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);

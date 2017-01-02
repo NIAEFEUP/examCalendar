@@ -1,6 +1,7 @@
 //TODO database integration
 
 var mysql = require('mysql');
+var async = require('async');
 var connection = mysql.createConnection({
 		host : 'localhost',
 		port : 3306,
@@ -85,6 +86,58 @@ module.exports = {
 	[day, time, examID],
 	callback);
 	return true;
+  },
+  getExam: function (userID, examID, callback) {
+	// Fetch single-row data
+	connection.query('SELECT topics.name, exams.normal, topics.year, exams.day, exams.time, (SELECT count(studenttopic.topic) FROM studenttopic WHERE studenttopic.topic = topics.id)'
+		+ ' FROM exams'
+		+ ' INNER JOIN topics ON exams.topic = topics.id'
+		+ ' INNER JOIN calendars ON topics.calendar = calendars.id'
+		+ ' WHERE exams.id = ? AND calendars.creator = ?',
+		[examID, userID],
+		function (err, rows, fields) {
+			if (err) {
+				callback(err);
+				return;
+			}
+			if (rows.length == 0) {
+				callback("Exam not found.");
+				return;
+			}
+			
+			var calls = [function(callback) {
+				database.connection.query('SELECT professors'
+					+ ' FROM professors'
+					+ ' INNER JOIN topicprofessor ON topicprofessor.professor = professor.id'
+					+ ' INNER JOIN exams ON exams.topic = topicprofessor.topic'
+					+ ' WHERE exams.id = ?',
+					[examID],
+					function(err, rows, fields) {
+						if (err)
+							console.error(err);
+						else
+						  callback(null, rows);
+				});
+			}, function(callback) {
+				database.connection.query('SELECT rooms.id, rooms.cod, rooms.capacity, EXISTS (SELECT examrooms.exam FROM examrooms WHERE examrooms.exam = ?'
+					+ ' FROM rooms'
+					+ ' INNER JOIN topics ON rooms.calendar = topics.calendar'
+					+ ' INNER JOIN exams ON exams.topic = topics.id'
+					+ ' WHERE exams.id = ?',
+					[examID, examID],
+					function(err, rows, fields) {
+						if (err)
+							console.error(err);
+						else
+						  callback(null, rows);
+				});
+			}];
+			async.parallel(calls, function(err, result) {
+				console.log(result[0], result[1]);
+				res.json(rows);
+			});
+		}
+	);
   },
   //importDB
   setTimespan: function (userID, startingDate, normalSeasonDuration, appealSeasonDuration) {
