@@ -57,7 +57,7 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
   $scope.updateExamRoom = function ($event, examID, roomID) {
 	console.log($event.target.checked, examID, roomID);
 	if ($event.target.checked) {
-		$http.put('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID,
+		$http.put('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID, // TODO (hardcoded)
 		{
 			examID: examID,
 			roomID: roomID
@@ -72,7 +72,7 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
 			swal("Error", "Could not add room.", "error");
 		});
 	} else {
-		$http.delete('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID,
+		$http.delete('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID, // TODO (hardcoded)
 		{
 			examID: examID,
 			roomID: roomID
