@@ -31,7 +31,7 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
 		else
 			classrooms.non_pc.push(classrooms[i]);
 	  }
-      $scope.lecture = data;
+      $scope.exam = data;
       $('#examInformation').modal('show');
     });
   };
@@ -46,11 +46,46 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
 		{
 			withCredentials: true
 		})
-    .success(function(data) {
-		console.log("Success!");
-    })
-    .error(function(err, status) {
-      window.alert("TODO: Error." + err);
-    });
+		.success(function(data) {
+			console.log("Success!");
+		})
+		.error(function(err, status) {
+		  window.alert("TODO: Error." + err);
+		});
   }
+  
+  $scope.updateExamRoom = function ($event, examID, roomID) {
+	console.log($event.target.checked, examID, roomID);
+	if ($event.target.checked) {
+		$http.put('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID,
+		{
+			examID: examID,
+			roomID: roomID
+		},
+		{
+			withCredentials: true
+		})
+		.success(function(data) {
+			console.log("Success!");
+		})
+		.error(function(err, status) {
+			swal("Error", "Could not add room.", "error");
+		});
+	} else {
+		$http.delete('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID,
+		{
+			examID: examID,
+			roomID: roomID
+		},
+		{
+			withCredentials: true
+		})
+		.success(function(data) {
+			console.log("Success!");
+		})
+		.error(function(err, status) {
+			swal("Error", "Could not remove room.", "error");
+		});
+	}
+  };
 }]);

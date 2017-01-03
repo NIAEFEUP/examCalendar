@@ -105,14 +105,27 @@ module.exports = {
 		res.end();
 	});
   },
-  getExam: function (res, userID, topicID) {
-	database.getExam(userID, topicID, function(err, result) {
+  getExam: function (res, userID, examID) {
+	database.getExam(userID, examID, function(err, result) {
 		if (err) {
 			res.send(404, err);
 		} else {
 			res.json(result);
 		}
 	});
+  },
+  updateExamRoom: function (res, userID, examID, roomID, checked) {
+	var callback = function(err, result) {
+		if (err) {
+			res.send(404, err);
+		} else {
+			res.json(result);
+		}
+	};
+	if (checked)
+		database.addExamRoom(userID, examID, roomID, callback);
+	else
+		database.removeExamRoom(userID, examID, roomID, callback);
   }
 };
 

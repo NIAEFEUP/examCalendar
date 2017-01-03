@@ -7,26 +7,26 @@
     <div class="modal-content" id="examModal">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h3 class="modal-title">{{lecture.shortname}}</h3>
+        <h3 class="modal-title">{{exam.shortname}}</h3>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-12 col-sm-12">
-            <p><b>Exam Name:</b> {{lecture.name}}</p>
-            <p><b>Season:</b> {{lecture.season}}</p>
-            <p><b>Year:</b> {{lecture.year}}</p>
-            <p><b>Date:</b> {{lecture.day | date:'dd/MM/yyyy'}}</p>
-            <p><b>Hour:</b> {{lecture.hour}}</p>
-            <p><b>Students:</b> {{lecture.students}}</p>
-            <p><b>Professors:</b> {{lecture.professors.join(', ')}} </p>
+            <p><b>Exam Name:</b> {{exam.name}}</p>
+            <p><b>Season:</b> {{exam.season}}</p>
+            <p><b>Year:</b> {{exam.year}}</p>
+            <p><b>Date:</b> {{exam.day | date:'dd/MM/yyyy'}}</p>
+            <p><b>Hour:</b> {{exam.hour}}</p>
+            <p><b>Students:</b> {{exam.students}}</p>
+            <p><b>Professors:</b> {{exam.professors.join(', ')}} </p>
             <p><b>Classrooms:</b></p>
           </div>
 		  
           <div class="col-12 col-sm-6">
             <p id="withoutPC">Without PC's</p>
-            <div class="input-group" ng-repeat="room in lecture.classrooms.non_pc">
+            <div class="input-group" ng-repeat="room in exam.classrooms.non_pc">
               <span class="input-group-addon">
-                <input type="checkbox" ng-checked="room.checked">
+                <input type="checkbox" ng-checked="room.checked" ng-click="updateExamRoom($event, exam.id, room.id)">
               </span>
               <input class="form-control" type="text" value="{{room.cod}}" readonly>
             </div>
@@ -34,9 +34,9 @@
 
           <div class="col-12 col-sm-6">
             <p id="withPC">With PC's</p>
-            <div class="input-group" ng-repeat="room in lecture.classrooms.pc">
+            <div class="input-group" ng-repeat="room in exam.classrooms.pc">
               <span class="input-group-addon">
-                <input type="checkbox" ng-checked="room.checked">
+                <input type="checkbox" ng-checked="room.checked" ng-click="updateExamRoom($event, exam.id, room.id)">
               </span>
               <input class="form-control" type="text" value="{{room.cod}}" readonly>
             </div>

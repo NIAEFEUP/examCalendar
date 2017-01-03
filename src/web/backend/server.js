@@ -221,6 +221,22 @@ app.post('/calendar/exams', function(req, res) {
 	calendar.moveExam(res, req.session.userID, req.body);
 });
 
+app.put('/calendar/exams/:examid/rooms/:roomid', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.updateExamRoom(res, req.session.userID, req.params.examid, req.params.roomid, true);
+});
+
+app.delete('/calendar/exams/:examid/rooms/:roomid', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.updateExamRoom(res, req.session.userID, req.params.examid, req.params.roomid, false);
+});
+
 //////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////

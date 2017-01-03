@@ -89,7 +89,7 @@ module.exports = {
   },
   getExam: function (userID, examID, callback) {
 	// Fetch single-row data
-	connection.query('SELECT topics.name, exams.normal, topics.year, exams.day, exams.time, (SELECT count(studenttopic.topic) FROM studenttopic WHERE studenttopic.topic = topics.id) AS students'
+	connection.query('SELECT topics.name, exams.id, exams.normal, topics.year, exams.day, exams.time, (SELECT count(studenttopic.topic) FROM studenttopic WHERE studenttopic.topic = topics.id) AS students'
 		+ ' FROM exams'
 		+ ' INNER JOIN topics ON exams.topic = topics.id'
 		+ ' INNER JOIN calendars ON topics.calendar = calendars.id'
@@ -167,6 +167,18 @@ module.exports = {
 		createOrDeleteExam(topics[i].appeal, topics[i].id, 'appeal', topics[i].appeal_pc ? 1 : 0);
 	}
 	return true;
+  },
+  addExamRoom: function (userID, examID, roomID, callback) {
+	// TODO check if exam and room belong to the same calendar
+	connection.query('INSERT INTO examrooms (exam, room) VALUES (?, ?)',
+	[examID, roomID],
+	callback);
+  },
+  removeExamRoom: function (userID, examID, roomID, callback) {
+	// TODO check if exam and room belong to the same calendar
+	connection.query('DELETE FROM examrooms WHERE exam = ? AND room = ?',
+	[examID, roomID],
+	callback);
   }
 };
 
