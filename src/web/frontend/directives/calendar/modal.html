@@ -15,7 +15,7 @@
             <p><b>Exam Name:</b> {{lecture.name}}</p>
             <p><b>Season:</b> {{lecture.season}}</p>
             <p><b>Year:</b> {{lecture.year}}</p>
-            <p><b>Date:</b> {{lecture.day}}</p>
+            <p><b>Date:</b> {{lecture.day | date:'dd/MM/yyyy'}}</p>
             <p><b>Hour:</b> {{lecture.hour}}</p>
             <p><b>Students:</b> {{lecture.students}}</p>
             <p><b>Professors:</b> {{lecture.professors.join(', ')}} </p>
