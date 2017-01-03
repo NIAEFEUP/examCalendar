@@ -65,6 +65,12 @@ public class ExaminationDBExporter extends AbstractSolutionExporter<Examination>
     public void writeExamRooms(int creator, Connection conn, Examination examination) throws SQLException {
         for (Exam exam : examination.getExamList()) {
             Period period = null;
+
+            // Clean old rooms
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM examrooms WHERE exam = ?");
+            ps.setInt(1, exam.getId());
+            ps.execute();
+
             for (RoomPeriod rp : examination.getRoomPeriodList()) {
                 if (rp.getExam() == null || !rp.getExam().equals(exam)) {
                     continue;
@@ -74,12 +80,16 @@ public class ExaminationDBExporter extends AbstractSolutionExporter<Examination>
                 } else if (rp.getPeriod() != period) {
                     continue;
                 }
-                PreparedStatement ps = conn.prepareStatement("INSERT INTO examrooms (exam, room) VALUES (?, ?)");
+
+                // Insert new rooms
+                ps = conn.prepareStatement("INSERT INTO examrooms (exam, room) VALUES (?, ?)");
                 ps.setInt(1, exam.getId());
                 ps.setInt(2, rp.getRoom().getId());
                 ps.execute();
             }
-            PreparedStatement ps = conn.prepareStatement("UPDATE exams SET day = ?, time = ? WHERE id = ?");
+
+            // Set day and time
+            ps = conn.prepareStatement("UPDATE exams SET day = ?, time = ? WHERE id = ?");
             if (period == null) {
                 ps.setNull(1, Types.DATE);
                 ps.setNull(2, Types.INTEGER);

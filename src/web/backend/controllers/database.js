@@ -119,7 +119,7 @@ module.exports = {
 						  callback(null, rows);
 				});
 			}, function(callback) {
-				connection.query('SELECT rooms.id, rooms.cod, rooms.capacity, rooms.pc, EXISTS (SELECT examrooms.exam FROM examrooms WHERE examrooms.exam = ?) AS checked'
+				connection.query('SELECT rooms.id, rooms.cod, rooms.capacity, rooms.pc, rooms.id IN (SELECT examrooms.room FROM examrooms WHERE examrooms.exam = ?) AS checked'
 					+ ' FROM rooms'
 					+ ' INNER JOIN topics ON rooms.calendar = topics.calendar'
 					+ ' INNER JOIN exams ON exams.topic = topics.id'

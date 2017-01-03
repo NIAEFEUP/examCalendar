@@ -107,9 +107,11 @@ module.exports = {
   },
   getExam: function (res, userID, topicID) {
 	database.getExam(userID, topicID, function(err, result) {
-		if (err)
-			console.error(err);
-		res.json(result);
+		if (err) {
+			res.send(404, err);
+		} else {
+			res.json(result);
+		}
 	});
   }
 };
