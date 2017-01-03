@@ -1,6 +1,7 @@
 //TODO database integration
 
 var mysql = require('mysql');
+var async = require('async');
 var connection = mysql.createConnection({
 		host : 'localhost',
 		port : 3306,
@@ -86,6 +87,59 @@ module.exports = {
 	callback);
 	return true;
   },
+  getExam: function (userID, examID, callback) {
+	// Fetch single-row data
+	connection.query('SELECT topics.name, exams.id, exams.normal, topics.year, exams.day, exams.time, (SELECT count(studenttopic.topic) FROM studenttopic WHERE studenttopic.topic = topics.id) AS students'
+		+ ' FROM exams'
+		+ ' INNER JOIN topics ON exams.topic = topics.id'
+		+ ' INNER JOIN calendars ON topics.calendar = calendars.id'
+		+ ' WHERE exams.id = ? AND calendars.creator = ?',
+		[examID, userID],
+		function (err, rows, fields) {
+			if (err) {
+				callback(err);
+				return;
+			}
+			if (rows.length == 0) {
+				callback("Exam not found.");
+				return;
+			}
+			
+			var calls = [function(callback) {
+				connection.query('SELECT professors.name'
+					+ ' FROM professors'
+					+ ' INNER JOIN topicprofessor ON topicprofessor.professor = professors.id'
+					+ ' INNER JOIN exams ON exams.topic = topicprofessor.topic'
+					+ ' WHERE exams.id = ?',
+					[examID],
+					function(err, rows, fields) {
+						if (err)
+							console.error(err);
+						else
+						  callback(null, rows);
+				});
+			}, function(callback) {
+				connection.query('SELECT rooms.id, rooms.cod, rooms.capacity, rooms.pc, rooms.id IN (SELECT examrooms.room FROM examrooms WHERE examrooms.exam = ?) AS checked'
+					+ ' FROM rooms'
+					+ ' INNER JOIN topics ON rooms.calendar = topics.calendar'
+					+ ' INNER JOIN exams ON exams.topic = topics.id'
+					+ ' WHERE exams.id = ?',
+					[examID, examID],
+					function(err, rows, fields) {
+						if (err)
+							console.error(err);
+						else
+						  callback(null, rows);
+				});
+			}];
+			async.parallel(calls, function(err, result) {
+				rows[0].professors = result[0];
+				rows[0].classrooms = result[1];
+				callback(null, rows[0]);
+			});
+		}
+	);
+  },
   //importDB
   setTimespan: function (userID, startingDate, normalSeasonDuration, appealSeasonDuration) {
 	connection.query('UPDATE calendars SET startingDate = ?, normalSeasonDuration = ?, appealSeasonDuration = ? WHERE creator = ?',
@@ -113,6 +167,18 @@ module.exports = {
 		createOrDeleteExam(topics[i].appeal, topics[i].id, 'appeal', topics[i].appeal_pc ? 1 : 0);
 	}
 	return true;
+  },
+  addExamRoom: function (userID, examID, roomID, callback) {
+	// TODO check if exam and room belong to the same calendar
+	connection.query('INSERT INTO examrooms (exam, room) VALUES (?, ?)',
+	[examID, roomID],
+	callback);
+  },
+  removeExamRoom: function (userID, examID, roomID, callback) {
+	// TODO check if exam and room belong to the same calendar
+	connection.query('DELETE FROM examrooms WHERE exam = ? AND room = ?',
+	[examID, roomID],
+	callback);
   }
 };
 
