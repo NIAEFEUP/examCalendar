@@ -9,6 +9,19 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
 
   $scope.modal = function(id) {
      modal.get(id).success(function(data) {
+	 
+	  if (data.normal)
+		data.season = "Normal";
+	  else
+		data.season = "Appeal";
+		
+	  switch (data.time) {
+		case 0: data.hour = "9:00 - 12:00"; break;
+		case 1: data.hour = "13:00 - 16:00"; break;
+		case 2: data.hour = "17:00 - 20:00"; break;
+		default: data.hour = "";
+	  }
+		
 	  var classrooms = data.classrooms;
 	  classrooms.pc = [];
 	  classrooms.non_pc = [];
