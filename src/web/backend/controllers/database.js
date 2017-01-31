@@ -152,7 +152,7 @@ module.exports = {
 
     //TODO MUDAR este método PARA CREATE CALENDAR MUDAR QUERY PARA CREATE
     createCalendar: function (userID, startingDate, normalSeasonDuration, appealSeasonDuration) {
-        connection.query('INSER INTO calendars (startingDate, normalSeasonDuration, appealSeasonDuration, creator) (?, ?, ?, ?)',
+        connection.query('INSERT INTO calendars (startingDate, normalSeasonDuration, appealSeasonDuration, creator) (?, ?, ?, ?)',
             [startingDate, normalSeasonDuration, appealSeasonDuration, userID],
             function (err, rows, fields) {
                 if (err) throw err;
