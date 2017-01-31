@@ -5,12 +5,12 @@ var database = require('./database');
 var http = require('http');
 
 module.exports = {
-    createCalendar: function (res, calendarID, startingDate, normalSeasonDuration, appealSeasonDuration) {
-        database.createCalendar(calendarID, startingDate, normalSeasonDuration, appealSeasonDuration);
+    createCalendar: function (res, creatorID, startingDate, normalSeasonDuration, appealSeasonDuration) {
+        database.createCalendar(creatorID, startingDate, normalSeasonDuration, appealSeasonDuration);
         res.end();
     },
-    deleteCalendar: function (res, calendarID) {
-        database.createCalendar(calendarID);
+    deleteCalendar: function (res, creatorID) {
+        database.createCalendar(creatorID);
         res.end();
     },
 
