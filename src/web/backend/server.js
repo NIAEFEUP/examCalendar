@@ -97,7 +97,7 @@ app.post('/deleteCalendar', function(req, res) {
     return;
   }
 	var id = req.session.userID;
-	importDB.createCalendar(res, id);
+	importDB.deleteCalendar(res, id);
 });
 app.post('/database',function(req,res){
   if (!isAuthenticated(req)) {
