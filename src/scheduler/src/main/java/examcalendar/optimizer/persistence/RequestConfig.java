@@ -10,7 +10,7 @@ import java.util.Date;
 public class RequestConfig {
     public InstitutionParametrization institutionParametrization;
     public int calendar;
-    public int normalSeasonDuration = 21;
+    public int normalSeasonDuration = 14;
     public int appealSeasonDuration = 14;
     public Date startingDate;
     public int timeout = 1000;
