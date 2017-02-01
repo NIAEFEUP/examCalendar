@@ -10,7 +10,7 @@ module.exports = {
         res.end();
     },
     deleteCalendar: function (res, creatorID) {
-        database.createCalendar(creatorID);
+        database.deleteCalendar(creatorID);
         res.end();
     },
 
