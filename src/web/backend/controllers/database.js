@@ -72,8 +72,16 @@ module.exports = {
         return false;
     },
     //calendar
-    getCalendar: function (userID) {
-        return [];
+    getCalendar: function (userID, callback) {
+        connection.query('SELECT id FROM calendars WHERE creator = ?',
+            [userID],
+            function (err, rows, fields) {
+                if (err) {
+                    throw err;
+                }
+				callback(rows[0].id);
+			}
+		);
     },
     importCalendar: function (userID, calendar) {
         return false;
@@ -193,17 +201,18 @@ module.exports = {
 };
 
 var createOrDeleteExam = function (create, topic, seasonName, pc) {
-    if (create) {
-        connection.query('INSERT INTO exams (topic, normal, pc) VALUES (?, ?, ?)',
-            [topic, seasonName == 'normal', pc],
-            function (err, rows, fields) {
-                if (err) throw err;
-            });
-    } else {
-        connection.query('DELETE FROM exams WHERE topic = ? AND normal = ?',
-            [topic, seasonName == 'normal' ? 1 : 0],
-            function (err, rows, fields) {
-                if (err) throw err;
-            });
-    }
+	//console.log("Deleting " + seasonName + " exam for topic #" + topic);
+	connection.query('DELETE FROM exams WHERE topic = ? AND normal = ?',
+		[topic, seasonName == 'normal' ? 1 : 0],
+		function (err, rows, fields) {
+			if (err) throw err;
+		});
+	if (create) {
+		//console.log("Creating " + seasonName + " exam for topic #" + topic);
+		connection.query('INSERT INTO exams (topic, normal, pc) VALUES (?, ?, ?)',
+			[topic, seasonName == 'normal', pc],
+			function (err, rows, fields) {
+				if (err) throw err;
+			});
+	}
 }

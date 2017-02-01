@@ -110,10 +110,10 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 fileItem.write(file);
                 files.add(file);
             }
-            FileItem userIDFileItem = getFileItemFromMultipartForm("userid", result);
-            if (userIDFileItem == null) return -1;
+            FileItem calendarIDFileItem = getFileItemFromMultipartForm("calendarid", result);
+            if (calendarIDFileItem == null) return -1;
             try {
-                return Integer.parseInt(userIDFileItem.getString());
+                return Integer.parseInt(calendarIDFileItem.getString());
             } catch (NumberFormatException e) {
                 return -1;
             }
@@ -138,8 +138,8 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
 
                 List<File> files = new ArrayList<File>();
-                int clientID = getUploadedFiles(httpExchange, files);
-                if (clientID == -1) throw new RequestHandlerFailException(400, null);
+                int calendarID = getUploadedFiles(httpExchange, files);
+                if (calendarID == -1) throw new RequestHandlerFailException(400, null);
 
                 Date date = new Date(new java.util.Date().getTime()); // TODO
 
@@ -179,7 +179,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                     Set<Topic> topics = ucMapParser.getTopics();
                     Hashtable<String, Professor> professors = professorParser.getProfessors();
                     Hashtable<String, Room> rooms = roomsParser.getRooms();
-                    insertDataInDB(conn, clientID, date, students, topics, professors, rooms);
+                    insertDataInDB(conn, calendarID, date, students, topics, professors, rooms);
                     this.sendSuccessResponse(httpExchange, data, 200);
                 } else {
                     throw new RequestHandlerFailException(400, data);
@@ -195,11 +195,10 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         }
     }
 
-    private boolean insertDataInDB(Connection conn, int clientID, Date startingDate, Hashtable<String, Student> students, Set<Topic> topics, Hashtable<String, Professor> professors, Hashtable<String, Room> rooms) {
+    private boolean insertDataInDB(Connection conn, int calendarID, Date startingDate, Hashtable<String, Student> students, Set<Topic> topics, Hashtable<String, Professor> professors, Hashtable<String, Room> rooms) {
         try {
             conn.setAutoCommit(false);
             conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE); // TODO think if we really need this to be serializable
-            int calendarID = resetCalendar(conn, clientID, startingDate);
             insertTopicsInDB(conn, calendarID, topics);
             insertProfessorsInDB(conn, calendarID, professors);
             insertExamsInDB(conn, topics);
