@@ -44,6 +44,7 @@ function allowRedirectAnswer(res) {
 }
 
 function isAuthenticated(req) {
+  console.log(req.session);
   return req.session != null && req.session.userID != null && req.session.userID >= 0;
 }
 
@@ -82,13 +83,21 @@ app.get('/logout',function(req,res){
 //////////////////////////////////////////////////////////////////
 //                          Database                            //
 //////////////////////////////////////////////////////////////////
-app.post('/setTimespan', function(req, res) {
+app.post('/createCalendar', function(req, res) {
   if (!isAuthenticated(req)) {
     unauthorizedAccess(res);
     return;
   }
 	var id = req.session.userID;
-	importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
+	importDB.createCalendar(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
+});
+app.post('/deleteCalendar', function(req, res) {
+  if (!isAuthenticated(req)) {
+    unauthorizedAccess(res);
+    return;
+  }
+	var id = req.session.userID;
+	importDB.deleteCalendar(res, id);
 });
 app.post('/database',function(req,res){
   if (!isAuthenticated(req)) {
@@ -101,13 +110,11 @@ app.post('/database',function(req,res){
 app.get('/importDatabase/topics', function(req, res) {
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	id = 1;
 	importDB.getTopics(res, id);
 });
 app.post('/importDatabase/topics', function(req, res) {
 	res = allowRedirectAnswer(res);
 	var id = req.session.userID;
-	id = 1;
 	importDB.setTopics(res, id, req.body.topics);
 });
 
@@ -198,6 +205,14 @@ app.get('/calendar',function(req,res){
  calendar.get(res, req.session.userID);
 });
 
+app.get('/exams/:id', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.getExam(res, req.session.userID, req.params.id);
+});
+
 app.post('/calendar',function(req,res){
  if (!isAuthenticated(req)) {
    unauthorizedAccess(res);
@@ -212,6 +227,22 @@ app.post('/calendar/exams', function(req, res) {
 		return;
 	}
 	calendar.moveExam(res, req.session.userID, req.body);
+});
+
+app.put('/calendar/exams/:examid/rooms/:roomid', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.updateExamRoom(res, req.session.userID, req.params.examid, req.params.roomid, true);
+});
+
+app.delete('/calendar/exams/:examid/rooms/:roomid', function(req, res) {
+	if (!isAuthenticated(req)) {
+		unauthorizedAccess(res);
+		return;
+	}
+	calendar.updateExamRoom(res, req.session.userID, req.params.examid, req.params.roomid, false);
 });
 
 //////////////////////////////////////////////////////////////////

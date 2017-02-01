@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.optaplanner</groupId>
         <artifactId>optaplanner</artifactId>
-        <version>7.0.0.Beta1</version>
+        <version>7.0.0.Beta4</version>
     </parent>
 
     <repositories>

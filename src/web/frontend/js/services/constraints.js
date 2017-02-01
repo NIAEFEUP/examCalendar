@@ -1,6 +1,6 @@
 app.factory('constraints', ['$http', function($http) {
   //TODO replace link
-  return $http.get('http://localhost/examCalendar/app/resources/constraints.json')
+  return $http.get('http://localhost/examCalendar/resources/constraints.json')
   .success(function(data) {
     return data;
   })

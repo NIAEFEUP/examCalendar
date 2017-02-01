@@ -11,6 +11,10 @@ var async = require('async');
 module.exports = {
   get: function (res, userID) {
 	database.getIDByUserID(userID, function (calendarId) {
+		if(calendarId == null){
+			res.end();
+			return;
+		}
 		//add the calls to be made asynchronously
 		var calls = [function(callback) {
 		  database.connection.query('SELECT UNIX_TIMESTAMP(startingDate) AS startingDate, normalSeasonDuration, appealSeasonDuration from calendars where id = ?', [calendarId], function(err, rows, fields) {
@@ -69,6 +73,7 @@ module.exports = {
 			  var examDate = new Date(result[1][i].day * 1000);
 			  var week = DateDiff.inWeeks(startDate, examDate);
 			  var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
+			  //console.log(week, json.weeks[week]);
 			  json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
 				'id' : result[1][i].id,
 				'name' : result[1][i].name,
@@ -100,6 +105,28 @@ module.exports = {
 			console.error(err);
 		res.end();
 	});
+  },
+  getExam: function (res, userID, examID) {
+	database.getExam(userID, examID, function(err, result) {
+		if (err) {
+			res.send(404, err);
+		} else {
+			res.json(result);
+		}
+	});
+  },
+  updateExamRoom: function (res, userID, examID, roomID, checked) {
+	var callback = function(err, result) {
+		if (err) {
+			res.send(404, err);
+		} else {
+			res.json(result);
+		}
+	};
+	if (checked)
+		database.addExamRoom(userID, examID, roomID, callback);
+	else
+		database.removeExamRoom(userID, examID, roomID, callback);
   }
 };
 

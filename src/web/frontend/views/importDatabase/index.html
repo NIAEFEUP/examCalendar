@@ -4,92 +4,119 @@
 
 <div class="row">
 
-  <div class="col-12 col-sm-3"></div>
+    <div class="col-12 col-sm-3"></div>
 
-	<div class="col-12 col-sm-8">
-		<div id="importDatabase">
-		<h3>Define timespan</h3>
-		<section>
-			<form id="timespan-form" action="//localhost:8080/setTimespan" method="post">
-				<h3>Normal season:</h3>
-				<div class="input-group">
-					<input type="daterange" class="form-control" name="normal-season-date-range" data-rule-daterange="true" value="" required/>
-					<span class="input-group-addon">
+    <div class="col-12 col-sm-8">
+        <div id="importDatabase">
+            <h3>Reset calendar</h3>
+            <section>
+                <h2>
+                <span class="glyphicon glyphicon-warning-sign"> <strong>WARNING </strong> <span
+                        class="glyphicon glyphicon-warning-sign"></span></span>
+                </h2>
+                <h3> Bear in mind that after proceeding to the next step the existing calendar will
+                    be removed from the database!</h3>
+            </section>
+            <h3>Define timespan</h3>
+            <section>
+                <form id="timespan-form" action="//localhost:8080/createCalendar" method="post">
+                    <h3>Normal season:</h3>
+                    <div class="input-group">
+                        <input type="daterange" class="form-control" name="normal-season-date-range"
+                               data-rule-daterange="true" value="" required/>
+                        <span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
-				</div>
-				<br/>
-				<h3>Appeal season:</h3>
-				<div class="input-group">
-					<input type="daterange" class="form-control" name="appeal-season-date-range" data-rule-daterange="true" value="" required disabled/>
-					<span class="input-group-addon">
+                    </div>
+                    <br/>
+                    <h3>Appeal season:</h3>
+                    <div class="input-group">
+                        <input type="daterange" class="form-control" name="appeal-season-date-range"
+                               data-rule-daterange="true" value="" required disabled/>
+                        <span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
-				</div>
-				<small class="form-text text-muted">The appeal season must start in the day after the normal season ends.</small>
-			</form>
-		</section>
-		<h3>Import Database</h3>
-		<section>
-			<form id="file-import-form" action="//localhost:8080/database" method="post" enctype="multipart/form-data">
-				<h4>UC Map</h4>
-				<div class="input-group">
-					<input type="text" class="form-control" readonly>
-					<label class="input-group-btn">
-						<span class="btn btn-primary">Browse<input type="file" name="ucmap" id="ucmapButton" accept=".xls,.xlsx"></span>
-					</label>
-				</div>
-				<small class="form-text text-muted">Spreadsheet containing a list of curricular units and its corresponding students. The file extension must be ".xls" or ".xlsx". It must follow the same format as <a href="resources/mapa_exames_mieic.xls">this example file</a>.</small>
+                    </div>
+                    <small class="form-text text-muted">The appeal season must start in the day after the normal season
+                        ends.
+                    </small>
+                </form>
+            </section>
+            <h3>Import Database</h3>
+            <section>
+                <form id="file-import-form" action="//localhost:8080/database" method="post"
+                      enctype="multipart/form-data">
+                    <h4>UC Map</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control" readonly>
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">Browse<input type="file" name="ucmap" id="ucmapButton"
+                                                                       accept=".xls,.xlsx"></span>
+                        </label>
+                    </div>
+                    <small class="form-text text-muted">Spreadsheet containing a list of curricular units and its
+                        corresponding students. The file extension must be ".xls" or ".xlsx". It must follow the same
+                        format as <a href="resources/mapa_exames_mieic.xls">this example file</a>.
+                    </small>
 
-				<h4>Rooms</h4>
-				<div class="input-group">
-					<input type="text" class="form-control" readonly>
-					<label class="input-group-btn">
-						<span class="btn btn-primary">Browse<input type="file" name="rooms" id="roomsButton" accept=".xls,.xlsx"></span>
-					</label>
-				</div>
-				<small class="form-text text-muted">Spreadsheet containing a list of exam rooms, their maximum occupation and whether or not they have PCs. The file extension must be ".xls" or ".xlsx". It must follow the same format as <a href="resources/rooms.xlsx">this example file</a>.</small>
+                    <h4>Rooms</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control" readonly>
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">Browse<input type="file" name="rooms" id="roomsButton"
+                                                                       accept=".xls,.xlsx"></span>
+                        </label>
+                    </div>
+                    <small class="form-text text-muted">Spreadsheet containing a list of exam rooms, their maximum
+                        occupation and whether or not they have PCs. The file extension must be ".xls" or ".xlsx". It
+                        must follow the same format as <a href="resources/rooms.xlsx">this example file</a>.
+                    </small>
 
-				<h4>Professors</h4>
-				<div class="input-group">
-					<input type="text" class="form-control" readonly>
-					<label class="input-group-btn">
-						<span class="btn btn-primary">Browse<input type="file" name="professors" id="professorsButton" accept=".xls,.xlsx"></span>
-					</label>
-				</div>
-				<small class="form-text text-muted">Spreadsheet containing a list of topic codes and the teachers that must be present in the corresponding exams.The file extension must be ".xls" or ".xlsx". It must follow the same format as <a href="resources/professors.xlsx">this example file</a>.</small>
-			</form>
-		</section>
+                    <h4>Professors</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control" readonly>
+                        <label class="input-group-btn">
+                            <span class="btn btn-primary">Browse<input type="file" name="professors"
+                                                                       id="professorsButton" accept=".xls,.xlsx"></span>
+                        </label>
+                    </div>
+                    <small class="form-text text-muted">Spreadsheet containing a list of topic codes and the teachers
+                        that must be present in the corresponding exams.The file extension must be ".xls" or ".xlsx". It
+                        must follow the same format as <a href="resources/professors.xlsx">this example file</a>.
+                    </small>
+                </form>
+            </section>
 
-		<h3>Choose exams</h3>
-		<section>
-			<p>Please select the exams that each topic has, their difficulty and whether or not they should be taken in a PC room.</p>
-			<br/>
-			<form id="choose-exams-form" action="//localhost:8080/importDatabase/topics" method="post">
-				<chooseExams></chooseExams>
-			</form>
-		</section>
-	</div>
+            <h3>Choose exams</h3>
+            <section>
+                <p>Please select the exams that each topic has, their difficulty and whether or not they should be taken
+                    in a PC room.</p>
+                <br/>
+                <form id="choose-exams-form" action="//localhost:8080/importDatabase/topics" method="post">
+                    <chooseExams></chooseExams>
+                </form>
+            </section>
+        </div>
 
-  </div>
+    </div>
 
 </div>
 
 <!-- Modal Start here-->
 <div class="modal fade bs-example-modal-sm" id="pleaseWaitDialog" tabindex="-1"
-    role="dialog" aria-hidden="true" data-backdrop="static">
+     role="dialog" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">
                     </span>Please wait, the data is being imported...
-                 </h4>
+                </h4>
             </div>
             <div class="modal-body">
                 <div class="progress">
                     <div class="progress-bar progress-bar-info
                     progress-bar-striped active"
-                    style="width: 100%">
+                         style="width: 100%">
                     </div>
                 </div>
             </div>
@@ -101,5 +128,5 @@
 <script src="views/importDatabase/jquery.steps.min.js"></script>
 <script src="views/importDatabase/importDatabase.js"></script>
 
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
 <link href="views/importDatabase/jquery.steps.css" rel="stylesheet">
