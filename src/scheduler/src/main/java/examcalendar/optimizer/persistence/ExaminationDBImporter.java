@@ -1,16 +1,16 @@
 package examcalendar.optimizer.persistence;
 
 import examcalendar.optimizer.domain.*;
+import javafx.util.Pair;
 import org.optaplanner.examples.common.persistence.AbstractSolutionImporter;
 import org.optaplanner.examples.common.persistence.SolutionDao;
+import sun.util.resources.cldr.mas.CalendarData_mas_KE;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Scanner;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * Created by Gustavo on 02/07/2016.
@@ -269,6 +269,31 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return rooms;
     }
 
+    public static void main(String[] args) {
+
+       /* RequestConfig rc = new RequestConfig();
+        rc.startingDate = new Date(System.currentTimeMillis());
+        ExaminationDBImporter ex = new ExaminationDBImporter(true);
+
+        List<Period> ret = ex.generatePeriods(rc);
+        int[] x = new int[temp.size()];
+        Arrays.fill(x,0);
+
+        ArrayList<Integer> indexs = new ArrayList<>();
+        for (Period aRet : ret) indexs.add(aRet.getDayIndex());
+
+        for(int i = 0; i < temp.size(); i++){
+            x[temp.get(ret.get(i).getDayIndex())]++;
+        }
+
+        //System.out.println(ret);
+        System.out.println(temp.toString());
+        System.out.println(Arrays.toString(x));
+        System.out.println(indexs.toString());*/
+    }
+
+    // public static ArrayList<Integer> temp = new ArrayList<>();
+
     private List<Period> generatePeriods(RequestConfig requestConfig) {
         List<Period> periods = new ArrayList<Period>();
 
@@ -276,7 +301,19 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Calendar c = Calendar.getInstance();
         c.setTime(currentDay);
         int dayIndex = 0;
+        Pair<Calendar,Integer> ret;
+
         while (dayIndex < requestConfig.normalSeasonDuration + requestConfig.appealSeasonDuration) {
+
+            ret = skipToNextWorkingDayAux(c,dayIndex);
+            if(ret != null) {
+                c = ret.getKey();
+                dayIndex = ret.getValue();
+            }
+
+           // System.out.println(dayIndex);
+            //temp.add(dayIndex);
+
             Period period1 = new Period(dayIndex, PeriodTime.NINE_AM, dayIndex < requestConfig.normalSeasonDuration);
             Period period2 = new Period(dayIndex, PeriodTime.ONE_PM, dayIndex < requestConfig.normalSeasonDuration);
             Period period3 = new Period(dayIndex, PeriodTime.FIVE_PM, dayIndex < requestConfig.normalSeasonDuration);
@@ -289,16 +326,27 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             periods.add(period2);
             periods.add(period3);
 
-            int dow;
-            do {
-                c.add(Calendar.DATE, 1); // Advance to next day
-                dayIndex++;
-                dow = c.get(Calendar.DAY_OF_WEEK);
-            } while (dow == Calendar.SUNDAY || dow == Calendar.SATURDAY);
+            c.add(Calendar.DATE, 1); // Advance to next day
+            dayIndex++;
         }
 
         return periods;
     }
+
+    private Pair<Calendar, Integer> skipToNextWorkingDayAux(Calendar c, int dayIndex){
+
+        if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ){
+            c.add(Calendar.DATE, 1); // Advance to monday (nextday = +1)
+            dayIndex++;
+        }else if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+            c.add(Calendar.DATE, 2); // Advance to monday
+            dayIndex+=2;
+        }else
+            return null;
+
+        return new Pair<>(c, dayIndex);
+    }
+
 
     private List<RoomPeriod> generateRoomPeriods(List<Room> rooms, List<Period> periods) {
         List<RoomPeriod> roomPeriods = new ArrayList<RoomPeriod>();
@@ -410,4 +458,6 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
     public RequestConfig getRequestConfig() {
         return requestConfig;
     }
+
+
 }
