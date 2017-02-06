@@ -3,6 +3,7 @@
 
 var database = require('./database');
 var http = require('http');
+var nconf = require('nconf');
 
 module.exports = {
     createCalendar: function (res, creatorID, startingDate, normalSeasonDuration, appealSeasonDuration) {
@@ -29,8 +30,8 @@ module.exports = {
 
 			req.headers['content-length'] = '' + (parseInt(req.headers['content-length'], 10) + calendarIDString.length);
 			var options = {
-				hostname: 'localhost',
-				port: 8081,
+				hostname: nconf.get("scheduler:host"),
+				port: nconf.get("scheduler:port"),
 				path: '/parser',
 				method: 'POST',
 				headers: req.headers
