@@ -79,9 +79,9 @@ module.exports = {
                 if (err) {
                     throw err;
                 }
-				callback(rows[0].id);
-			}
-		);
+                callback(rows[0].id);
+            }
+        );
     },
     importCalendar: function (userID, calendar) {
         return false;
@@ -201,18 +201,18 @@ module.exports = {
 };
 
 var createOrDeleteExam = function (create, topic, seasonName, pc) {
-	//console.log("Deleting " + seasonName + " exam for topic #" + topic);
-	connection.query('DELETE FROM exams WHERE topic = ? AND normal = ?',
-		[topic, seasonName == 'normal' ? 1 : 0],
-		function (err, rows, fields) {
-			if (err) throw err;
-		});
-	if (create) {
-		//console.log("Creating " + seasonName + " exam for topic #" + topic);
-		connection.query('INSERT INTO exams (topic, normal, pc) VALUES (?, ?, ?)',
-			[topic, seasonName == 'normal', pc],
-			function (err, rows, fields) {
-				if (err) throw err;
-			});
-	}
+    //console.log("Deleting " + seasonName + " exam for topic #" + topic);
+    connection.query('DELETE FROM exams WHERE topic = ? AND normal = ?',
+        [topic, seasonName == 'normal' ? 1 : 0],
+        function (err, rows, fields) {
+            if (err) throw err;
+        });
+    if (create) {
+        //console.log("Creating " + seasonName + " exam for topic #" + topic);
+        connection.query('INSERT INTO exams (topic, normal, pc) VALUES (?, ?, ?)',
+            [topic, seasonName == 'normal', pc],
+            function (err, rows, fields) {
+                if (err) throw err;
+            });
+    }
 }
