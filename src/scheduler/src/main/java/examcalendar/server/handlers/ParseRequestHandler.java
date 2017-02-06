@@ -8,6 +8,7 @@ import examcalendar.optimizer.domain.Topic;
 import examcalendar.parser.ProfessorParser;
 import examcalendar.parser.RoomsParser;
 import examcalendar.parser.UCMapParser;
+import examcalendar.server.Server;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.RequestContext;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -28,7 +29,9 @@ import java.util.*;
  */
 public class ParseRequestHandler extends AbstractRequestHandler {
     public static final String TEMP_DIR = "tmp/";
-    public ParseRequestHandler() {
+    private final Server server;
+    public ParseRequestHandler(Server server) {
+        this.server = server;
     }
 
     private UCMapParser ucMapFileHandler(Connection conn, HttpExchange httpExchange, File file) throws SQLException {
@@ -135,7 +138,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
         try {
             Connection conn = null;
             try {
-                conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+                conn = server.createDatabaseConnection();
 
                 List<File> files = new ArrayList<File>();
                 int calendarID = getUploadedFiles(httpExchange, files);

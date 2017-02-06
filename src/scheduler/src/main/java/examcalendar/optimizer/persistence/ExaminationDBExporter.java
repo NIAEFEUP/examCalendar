@@ -4,6 +4,7 @@ import examcalendar.optimizer.domain.Exam;
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.domain.Period;
 import examcalendar.optimizer.domain.RoomPeriod;
+import examcalendar.server.Server;
 import org.optaplanner.examples.common.persistence.AbstractSolutionExporter;
 import org.optaplanner.examples.common.persistence.SolutionDao;
 
@@ -18,12 +19,11 @@ import java.util.Scanner;
  * Created by Gustavo on 15/07/2016.
  */
 public class ExaminationDBExporter extends AbstractSolutionExporter<Examination> {
-    public ExaminationDBExporter(SolutionDao solutionDao) {
-        super(solutionDao);
-    }
+    private final Server server;
 
-    public ExaminationDBExporter(boolean withoutDao) {
-        super(withoutDao);
+    public ExaminationDBExporter(Server server) {
+        super(true);
+        this.server = server;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ExaminationDBExporter extends AbstractSolutionExporter<Examination>
     public void writeSolution(Examination examination, int requestID) {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+            conn = server.createDatabaseConnection();
             writeExamRooms(requestID, conn, examination);
         } catch (SQLException e) {
             e.printStackTrace();
