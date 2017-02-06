@@ -97,7 +97,7 @@ app.post('/setTimespan', function (req, res) {
     }
     var id = req.session.userID;
     importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
-}
+});
 
 app.post('/createCalendar', function (req, res) {
     if (!isAuthenticated(req)) {
