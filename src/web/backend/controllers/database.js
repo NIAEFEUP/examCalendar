@@ -12,12 +12,19 @@ var connection = mysql.createConnection({
 connection.connect();
 
 module.exports = {
-  connection,
-  //login
-  getUser: function (email) {
-    //return user's id
-    // -1 = error, positive otherwise
-    return -1;
+  connection : connection,
+  //users
+  getUser: function (id, callback) {
+      connection.query("SELECT email FROM users WHERE id = ?", [id], function(err, rows, fields) {
+          if (!err){
+              if (rows.length == 0) {
+                  callback(null);
+              }
+              else {
+                  callback(rows[0].email);
+              }
+          }
+      });
   },
   getIDByUserID: function (userID, callback) {
 	connection.query("SELECT id FROM calendars WHERE creator = ?", [userID], function(err, rows, fields) {
