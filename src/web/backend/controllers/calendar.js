@@ -73,6 +73,7 @@ module.exports = {
 			  var examDate = new Date(result[1][i].day * 1000);
 			  var week = DateDiff.inWeeks(startDate, examDate);
 			  var period = ['mornings', 'afternoons', 'evenings'][result[1][i].time];
+			  //console.log(week, json.weeks[week]);
 			  json.weeks[week]['periods'][period][DateDiff.inDays(startDate, examDate) - (week * 7)].push({
 				'id' : result[1][i].id,
 				'name' : result[1][i].name,
