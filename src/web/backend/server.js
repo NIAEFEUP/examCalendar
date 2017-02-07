@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 //controllers required
-var login = require('./controllers/login');
+var users = require('./controllers/users');
 var adminHome = require('./controllers/adminHome');
 var adminUsers = require('./controllers/adminUsers');
 var calendar = require('./controllers/calendar');
@@ -59,6 +59,11 @@ app.all('*', function (req, res, next) {
     next(); // Do the action specific to the request
 });
 
+app.get('/currentUser', function (req, res) {
+    users.getCurrent(req, res);
+});
+
+
 //////////////////////////////////////////////////////////////////
 //                            Login                             //
 //////////////////////////////////////////////////////////////////
@@ -67,7 +72,7 @@ app.post('/login', function (req, res) {
         res.status(200);
         res.send();
     } else {
-        login.authenticate(req, res);
+        users.authenticate(req, res);
     }
 });
 
@@ -75,7 +80,8 @@ app.post('/login', function (req, res) {
 //                            Logout                            //
 //////////////////////////////////////////////////////////////////
 app.get('/logout', function (req, res) {
-    req.session.userID = null;
+    console.log("LOGOUT");
+    req.session.destroy();
     res.status(200);
     res.send();
 });
@@ -83,6 +89,16 @@ app.get('/logout', function (req, res) {
 //////////////////////////////////////////////////////////////////
 //                          Database                            //
 //////////////////////////////////////////////////////////////////
+
+app.post('/setTimespan', function (req, res) {
+    if (!isAuthenticated(req)) {
+        unauthorizedAccess(res);
+        return;
+    }
+    var id = req.session.userID;
+    importDB.setTimespan(res, id, req.body.normalStartDate, req.body.normalDuration, req.body.appealDuration);
+});
+
 app.post('/createCalendar', function (req, res) {
     if (!isAuthenticated(req)) {
         unauthorizedAccess(res);
