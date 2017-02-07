@@ -44,12 +44,10 @@ app.run(['$rootScope', '$location', 'auth', function ($rootScope, $location, aut
 
     // register listener to watch route changes
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-
         auth.getAuth(
             //success
             function (data) {
                 //TODO armazenar info do utilizador presente em "data"
-
                 if (next.templateUrl === "views/login/") {
                     $location.path("/calendar");
                 }

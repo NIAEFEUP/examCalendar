@@ -81,7 +81,7 @@ app.post('/login', function (req, res) {
 //////////////////////////////////////////////////////////////////
 app.get('/logout', function (req, res) {
     console.log("LOGOUT");
-    req.session.userID = null;
+    req.session.destroy();
     res.status(200);
     res.send();
 });
