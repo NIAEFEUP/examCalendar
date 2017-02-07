@@ -48,12 +48,17 @@ app.run(['$rootScope', '$location', 'auth', function ($rootScope, $location, aut
             //success
             function (data) {
                 //TODO armazenar info do utilizador presente em "data"
-                if (next.templateUrl === "views/login/") {
-                    $location.path("/calendar");
+
+                if (next.templateUrl === "views/login/" ) {
+                    if( $location.path() === "/logout")
+                        $location.path("/login");
+                    else
+                        $location.path("/calendar");
                 }
             },
             //error
             function (data) {
+
                 if (!(next.templateUrl === "views/login/" || next.templateUrl === undefined)) {
                     swal("Não se encontra autenticado. Por favor proceda à autenticação.");
                     $location.path("/login");

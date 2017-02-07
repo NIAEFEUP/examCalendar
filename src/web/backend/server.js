@@ -80,7 +80,6 @@ app.post('/login', function (req, res) {
 //                            Logout                            //
 //////////////////////////////////////////////////////////////////
 app.get('/logout', function (req, res) {
-    console.log("LOGOUT");
     req.session.destroy();
     res.status(200);
     res.send();

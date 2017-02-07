@@ -13,7 +13,7 @@ app.controller('LoginController', ['$window', '$http', '$scope', function ($wind
                 $window.location.href = '#/calendar';
             })
             .error(function (err, status) {
-                window.alert("TODO: Authentication error.");
+                swal("Erro ao autenticar. Por favor verifique as suas credenciais e tente novamente.");
             });
     };
 
