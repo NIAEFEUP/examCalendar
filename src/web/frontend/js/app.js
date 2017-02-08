@@ -1,5 +1,7 @@
 var app = angular.module('ExamCalendar', ['ngRoute'])
-.config(['$httpProvider', '$sceDelegateProvider', function($httpProvider, $sceDelegateProvider) {
-	$httpProvider.defaults.withCredentials = true;
-	$sceDelegateProvider.resourceUrlWhitelist(['self', 'http://localhost:8080/**', 'http://localhost/**']);
-}]);
+	.constant('backendURL', 'http://localhost:8080')
+	.constant('whiteList', ['self', 'http://localhost:8080/**', 'http://localhost/**'])
+	.config(['$httpProvider', '$sceDelegateProvider', 'backendURL', 'whiteList', function($httpProvider, $sceDelegateProvider, backendURL, whiteList) {
+		$httpProvider.defaults.withCredentials = true;
+		$sceDelegateProvider.resourceUrlWhitelist(whiteList);
+	}])

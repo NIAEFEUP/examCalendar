@@ -1,4 +1,4 @@
-app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 'modal', function($scope, $window, $http, calendar, modal) {
+app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 'modal', 'backendURL', function($scope, $window, $http, calendar, modal, backendURL) {
 
   calendar.success(function(data) {
     $scope.weeks = data.weeks;
@@ -37,7 +37,7 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
   };
 
   $scope.setExamPeriod = function (examID, day, time) {
-	$http.post('http://localhost:8080/calendar/exams',
+	$http.post(backendURL + '/calendar/exams',
 		{
 			id: examID,
 			day: day,
@@ -57,7 +57,7 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
   $scope.updateExamRoom = function ($event, examID, roomID) {
 	console.log($event.target.checked, examID, roomID);
 	if ($event.target.checked) {
-		$http.put('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID, // TODO (hardcoded)
+		$http.put(backendURL + '/calendar/exams/' + examID + '/rooms/' + roomID, // TODO (hardcoded)
 		{
 			examID: examID,
 			roomID: roomID
@@ -72,7 +72,7 @@ app.controller('CalendarController', ['$scope', '$window', '$http', 'calendar', 
 			swal("Error", "Could not add room.", "error");
 		});
 	} else {
-		$http.delete('http://localhost:8080/calendar/exams/' + examID + '/rooms/' + roomID, // TODO (hardcoded)
+		$http.delete(backendURL + '/calendar/exams/' + examID + '/rooms/' + roomID, // TODO (hardcoded)
 		{
 			examID: examID,
 			roomID: roomID

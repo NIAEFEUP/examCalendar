@@ -1,6 +1,6 @@
-app.factory('chooseExams', ['$http', function($http) {
+app.factory('chooseExams', ['$http', 'backendURL', function($http, backendURL) {
 	this.getTopics = function(){
-      return $http.get('http://localhost:8080/importDatabase/topics');
+      return $http.get(backendURL + '/importDatabase/topics');
     };
 	return this;
 }]);
