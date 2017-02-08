@@ -1,6 +1,7 @@
 package examcalendar.optimizer.persistence;
 
 import examcalendar.optimizer.domain.*;
+import examcalendar.server.Server;
 import javafx.util.Pair;
 import org.optaplanner.examples.common.persistence.AbstractSolutionImporter;
 import org.optaplanner.examples.common.persistence.SolutionDao;
@@ -17,12 +18,11 @@ import java.util.*;
  */
 public class ExaminationDBImporter extends AbstractSolutionImporter {
     private RequestConfig requestConfig;
-    public ExaminationDBImporter(SolutionDao solutionDao) {
-        super(solutionDao);
-    }
+    private final Server server;
 
-    public ExaminationDBImporter(boolean withoutDao) {
-        super(withoutDao);
+    public ExaminationDBImporter(Server server) {
+        super(true);
+        this.server = server;
     }
 
     @Override

@@ -2,9 +2,10 @@
 
 var mysql = require('mysql');
 var async = require('async');
+var nconf = require('nconf');
 var connection = mysql.createConnection({
-    host: 'localhost',
-    port: 3306,
+    host: nconf.get("database:host"),
+    port: nconf.get("database:port"),
     user: 'root',
     password: '',
     database: 'examcalendar'
@@ -31,9 +32,10 @@ module.exports = {
             if (!err) {
                 if (rows.length == 0) {
                     callback(null);
+                } else {
+                    callback(rows[0].id);
                 }
             }
-            ;
         });
     },
     //notes

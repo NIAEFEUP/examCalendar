@@ -1,4 +1,4 @@
-app.controller('ImportDatabaseController', ['$scope', 'chooseExams', function($scope, chooseExams) {
+app.controller('ImportDatabaseController', ['$scope', 'chooseExams', 'backendURL', function($scope, chooseExams, backendURL) {
 	$scope.normalExams = {};
 	$scope.appealExams = {};
 	$scope.fillChooseExamsTable = function() {
@@ -10,4 +10,5 @@ app.controller('ImportDatabaseController', ['$scope', 'chooseExams', function($s
 				console.error(response);
 		});
 	};
+	$scope.backendURL = backendURL;
 }]);

@@ -3,6 +3,7 @@ package examcalendar.server.handlers;
 import com.sun.net.httpserver.HttpExchange;
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
+import examcalendar.server.Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
@@ -21,6 +22,11 @@ import java.util.Map;
  * Created by Gustavo on 10/07/2016.
  */
 public class EvaluateRequestHandler extends AbstractRequestHandler {
+    private final Server server;
+    public EvaluateRequestHandler(Server server) {
+        this.server = server;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -42,7 +48,7 @@ public class EvaluateRequestHandler extends AbstractRequestHandler {
                         data.put("calendar", "Calendar ID is invalid.");
                         throw new RequestHandlerFailException(400, data);
                     }
-                    Examination solution = new ExaminationDBImporter(true).readSolution(calendarID);
+                    Examination solution = new ExaminationDBImporter(server).readSolution(calendarID);
                     evaluateSolution(solution);
                     this.sendSuccessResponse(exchange, JSONObject.NULL, 200);
                 } else {

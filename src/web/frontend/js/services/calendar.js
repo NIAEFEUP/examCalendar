@@ -1,5 +1,5 @@
-app.factory('calendar', ['$http', function($http) {
-  return $http.get('http://localhost:8080/calendar')
+app.factory('calendar', ['$http', 'backendURL', function($http, backendURL) {
+  return $http.get(backendURL + '/calendar')
   .success(function(data) {
     return data;
   })
@@ -8,11 +8,10 @@ app.factory('calendar', ['$http', function($http) {
   });
 }]);
 
-app.factory('modal', ['$http', function($http) {
+app.factory('modal', ['$http', 'backendURL', function($http, backendURL) {
   var lecture = {};
   lecture.get = function(id) {
-    //TODO replace link
-    return $http.get('http://localhost:8080/exams/' + id)
+    return $http.get(backendURL + '/exams/' + id)
     .success(function(data) {
       return data;
     })

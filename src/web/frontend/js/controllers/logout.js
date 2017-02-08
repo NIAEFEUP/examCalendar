@@ -1,3 +1,3 @@
-app.controller('LogoutController', ['$window', '$http', '$scope', function($window, $http, $scope) {
-  $http.get('http://localhost:8080/logout');
+app.controller('LogoutController', ['$window', '$http', '$scope', 'backendURL', function($window, $http, $scope, backendURL) {
+  $http.get(backendURL + '/logout');
 }]);

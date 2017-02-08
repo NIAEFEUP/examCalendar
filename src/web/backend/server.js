@@ -4,16 +4,28 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var async = require('async');
 var cors = require('cors');
+var nconf = require('nconf');
 var app = express();
 
-//allow different domain requests
-var whitelist = [
-    'http://localhost' // TODO (hardcoded)
-];
+nconf.argv().env().file({ file: 'config.json' });
+nconf.defaults({
+    'database': {
+        'host': 'localhost',
+        'port': 3306
+    },
+    'scheduler': {
+        'host': 'localhost',
+        'port': 8081
+    },
+    'whiteList': [
+        'http://localhost'
+    ]
+});
+
 var corsOptions = {
-    origin: function (origin, callback) {
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-        callback(null, originIsWhitelisted);
+    origin: function(origin, callback){
+        var originIsWhiteListed = nconf.get("whiteList").indexOf(origin) !== -1;
+        callback(null, originIsWhiteListed);
     },
     credentials: true
 };
@@ -37,7 +49,7 @@ var importDB = require('./controllers/importDB');
 // such as the response got to be from the same domain.
 // This function tells the browser that it's secure.
 function allowRedirectAnswer(res) {
-    res.header("Access-Control-Allow-Origin", "http://localhost");
+    res.header("Access-Control-Allow-Origin", nconf.get("whiteList").join());
     res.header("Access-Control-Allow-Credentials", "true");
     //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     return res;

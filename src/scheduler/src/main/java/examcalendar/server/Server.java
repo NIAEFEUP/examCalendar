@@ -56,9 +56,9 @@ public class Server {
         events = new LinkedBlockingQueue<Event>();
         runningSchedulers = new ArrayList<Scheduler>();
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
-        server.createContext("/parse", new ParseRequestHandler());
+        server.createContext("/parse", new ParseRequestHandler(this));
         server.createContext("/queuehook", new QueueHookRequestHandler(this));
-        server.createContext("/evaluate", new EvaluateRequestHandler());
+        server.createContext("/evaluate", new EvaluateRequestHandler(this));
         server.setExecutor(null);
         dispatcherThread = new Thread(new EventDispatcher(this));
         running = true;
