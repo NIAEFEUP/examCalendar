@@ -15,6 +15,24 @@ var options = {
 module.exports = {
     authenticate: function (req, res) {
         validate(req, res);
+    },
+    getCurrent: function (req, res) {
+        if(req.session != null && req.session.userID != null && req.session.userID >= 0){
+            database.getUser(req.session.userID, function (data) {
+                if(data!=null){
+                    //TODO store data.email (user's info)
+                    res.status(200);
+                    res.send();
+                }else{
+                    res.status(500);
+                    res.send();
+                }
+            });
+        }
+        else{
+            res.status(403);
+            res.send();
+        }
     }
 };
 
