@@ -56,6 +56,7 @@
 
 .t1, .unassigned-body, .unassigned-header {
 	border: 2px solid #132639;
+	padding: 5px;
 }
 
 .unassigned-body {
@@ -184,4 +185,8 @@
 
 .calendar-buttons {
 	padding-bottom: 10px;
+}
+
+.calendar-buttons > * {
+	white-space: normal;
 }
