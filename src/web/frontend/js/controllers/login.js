@@ -1,4 +1,4 @@
-app.controller('LoginController', ['$window', '$http', '$scope', 'backendURL',  ($window, $http, $scope, backendURL) {
+app.controller('LoginController', ['$window', '$http', '$scope', 'backendURL', function($window, $http, $scope, backendURL) {
 
     $scope.login = function () {
         var email = angular.element('#email').val();

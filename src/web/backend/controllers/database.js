@@ -32,9 +32,10 @@ module.exports = {
             if (!err) {
                 if (rows.length == 0) {
                     callback(null);
+                } else {
+                    callback(rows[0].id);
                 }
             }
-            ;
         });
     },
     //notes
