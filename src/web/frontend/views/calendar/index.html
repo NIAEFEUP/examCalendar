@@ -5,27 +5,26 @@
 
 <div id="redips-drag" class="row">
 
-  <div class="col-12 col-sm-3"></div>
+  <div id="examCalendar">
+    <br>
+    <h1>Exam Calendar</h1>
+    <hr>
 
-  <div class="col-12 col-sm-6">
-    <div id="examCalendar">
-      <br>
-      <h1>Exam Calendar</h1>
-      <hr>
+    <div class="col-sm-10" id="calendar_div">
+      <calendar></calendar>
+    </div>
 
-      <div id="calendar_div">
-        <calendar></calendar>
+    <div class="col-sm-2">
+
+      <div class="col-sm-12 btn-group-vertical calendar-buttons">
+        <button type="button" class="btn btn-success" id="validate_button">Validate Calendar</button>
+        <a href="constraints" class="btn btn-danger" id="generate_button">Generate Calendar</a>
       </div>
-
+      <div class="col-sm-12">
+        <unassigned></unassigned>
+      </div>
     </div>
   </div>
-
-  <div class="col-12 col-sm-3" id="right_buttons">
-    <button type="button" class="btn btn-success" id="validate_button">Validate Calendar</button><br>
-    <a href="constraints" class="btn btn-danger" id="generate_button">Generate Calendar</a><br>
-  </div>
-
-  <unassigned></unassigned>
 
 </div>
 
