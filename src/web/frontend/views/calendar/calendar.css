@@ -1,6 +1,6 @@
 #examCalendar {
 	margin: auto;
-	margin-top: 10%;
+	margin-top: 50px;
 	width: 90%;
 }
 
@@ -16,7 +16,6 @@
 
 #validate_button {
 	border-color: #132639;
-	font-size: 100% !important;
 }
 
 .row-head {
@@ -41,11 +40,6 @@
 	background-color: #00cc99;
 }
 
-#calendar_div {
-	margin: auto;
-	width: 50%;
-}
-
 .redips-drag {
 	cursor: move;
 	margin: auto;
@@ -55,7 +49,6 @@
 	background-color: white;
 	text-align: center;
 	font-size: 10pt;
-	width: 87px;
 	line-height: 20px;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -70,18 +63,10 @@
 }
 
 #calendar_div td {
-	height: 32px;
 	border: 2px solid #132639;
 	text-align: center;
 	font-size: 10pt;
 	padding: 1%;
-	width: 130px !important;
-}
-
-#calendar_div {
-	margin: auto;
-	width: 120%;
-	margin-left: -70px;
 }
 
 .row.ng-scope{
@@ -101,7 +86,6 @@
 #right_buttons {
 	text-align: center;
 	margin-top: 7.5%;
-	clear: right;
 }
 
 #right_buttons button{
@@ -119,7 +103,7 @@
 }
 
 .year1, .year2, .year3, .year4, .year5 {
-	border: 4px;
+	border: 3px;
 	border-radius: 7px;
 }
 .legend_year1, .legend_year2, .legend_year3, .legend_year4, .legend_year5 {
@@ -184,4 +168,13 @@
 #legend {
 	margin: auto;
 	width: 50%;
+}
+
+.exam {
+	padding: 10px;
+}
+
+.calendar-table {
+	table-layout: fixed;
+	margin-bottom: 0;
 }

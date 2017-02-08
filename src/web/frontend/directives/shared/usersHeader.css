@@ -1,8 +1,8 @@
 #fullNavbar {
   background-color: #132639;
   border-radius: 0 !important;
-  height: 8.1vh !important;
-  position: fixed !important;
+  height: 50px;
+  position: fixed;
   width: 100%;
   z-index: 2;
 }
