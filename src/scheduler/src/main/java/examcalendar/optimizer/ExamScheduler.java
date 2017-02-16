@@ -2,6 +2,7 @@ package examcalendar.optimizer;
 
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
+import examcalendar.server.Server;
 import examcalendar.server.handlers.EvaluateRequestHandler;
 import org.optaplanner.core.api.solver.Solver;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -10,8 +11,10 @@ import org.optaplanner.core.api.solver.SolverFactory;
  * Created by Duarte on 10/02/2016.
  */
 public class ExamScheduler implements Runnable {
-    public static void main(String [] args){
-        new ExamScheduler().run();
+    private Server server;
+
+    public ExamScheduler(Server server) {
+        this.server = server;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class ExamScheduler implements Runnable {
         plannerBenchmark.benchmark();*/
 
         //Examination unsolvedExamination = new ExaminationGenerator().createExamination();
-        Examination unsolvedExamination = new ExaminationDBImporter(true).readSolution(1);
+        Examination unsolvedExamination = new ExaminationDBImporter(server).readSolution(1);
         solver.solve(unsolvedExamination);
         Examination solvedExamination = (Examination) solver.getBestSolution();
         solvedExamination.removeNullPeriodsExams();

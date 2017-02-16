@@ -1,6 +1,5 @@
 package examcalendar.server;
 
-import examcalendar.optimizer.domain.Exam;
 import examcalendar.optimizer.domain.Examination;
 import examcalendar.optimizer.persistence.ExaminationDBExporter;
 import examcalendar.optimizer.persistence.ExaminationDBImporter;
@@ -33,7 +32,7 @@ public class Scheduler extends Thread {
             ps.setInt(1, calendarID);
             ps.execute();
 
-            ExaminationDBImporter examinationDBImporter = new ExaminationDBImporter(true);
+            ExaminationDBImporter examinationDBImporter = new ExaminationDBImporter(server);
             Examination unsolvedExamination = examinationDBImporter.readSolution(calendarID);
 
             SolverFactory solverFactory = SolverFactory.createFromXmlResource("examinationSolverConfig.xml");
@@ -47,7 +46,7 @@ public class Scheduler extends Thread {
                 public void bestSolutionChanged(BestSolutionChangedEvent<Examination> event) {
                     // Ignore infeasible (including uninitialized) solutions
                     if (event.getNewBestSolution().getScore().isSolutionInitialized()) {
-                        new ExaminationDBExporter(true).writeSolution(event.getNewBestSolution(), calendarID);
+                        new ExaminationDBExporter(server).writeSolution(event.getNewBestSolution(), calendarID);
                     }
                 }
             });
@@ -60,7 +59,7 @@ public class Scheduler extends Thread {
             System.out.println(solvedExamination);
             System.out.println(EvaluateRequestHandler.evaluateSolution(solvedExamination));
 
-            new ExaminationDBExporter(true).writeSolution(solvedExamination, calendarID);
+            new ExaminationDBExporter(server).writeSolution(solvedExamination, calendarID);
             ps = conn.prepareStatement("UPDATE calendars SET endtime = NOW() WHERE id = ?");
             ps.setInt(1, calendarID);
             ps.execute();
