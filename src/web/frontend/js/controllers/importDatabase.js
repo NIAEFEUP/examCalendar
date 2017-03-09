@@ -1,4 +1,4 @@
-app.controller('ImportDatabaseController', ['$scope', 'chooseExams', 'backendURL', function($scope, chooseExams, backendURL) {
+app.controller('ImportDatabaseController', ['$scope', '$sce', 'chooseExams', 'backendURL', function($scope, $sce, chooseExams, backendURL) {
 	$scope.normalExams = {};
 	$scope.appealExams = {};
 	$scope.fillChooseExamsTable = function() {
@@ -10,5 +10,7 @@ app.controller('ImportDatabaseController', ['$scope', 'chooseExams', 'backendURL
 				console.error(response);
 		});
 	};
-	$scope.backendURL = backendURL;
+	$scope.createCalendarURL = $sce.trustAsResourceUrl(backendURL + "/createCalendar");
+	$scope.importDatabaseURL = $sce.trustAsResourceUrl(backendURL + "/database");
+	$scope.chooseExamsURL = $sce.trustAsResourceUrl(backendURL + "/importDatabase/topics");
 }]);

@@ -19,7 +19,7 @@
             </section>
             <h3>Define timespan</h3>
             <section>
-                <form id="timespan-form" action="{{backendURL}}/createCalendar" method="post">
+                <form id="timespan-form" action="{{createCalendarURL}}" method="post">
                     <h3>Normal season:</h3>
                     <div class="input-group">
                         <input type="daterange" class="form-control" name="normal-season-date-range"
@@ -44,7 +44,7 @@
             </section>
             <h3>Import Database</h3>
             <section>
-                <form id="file-import-form" action="{{backendURL}}/database" method="post"
+                <form id="file-import-form" action="{{importDatabaseURL}}" method="post"
                       enctype="multipart/form-data">
                     <h4>UC Map</h4>
                     <div class="input-group">
@@ -92,7 +92,7 @@
                 <p>Please select the exams that each topic has, their difficulty and whether or not they should be taken
                     in a PC room.</p>
                 <br/>
-                <form id="choose-exams-form" action="{{backendURL}}/importDatabase/topics" method="post">
+                <form id="choose-exams-form" action="{{chooseExamsURL}}" method="post">
                     <chooseExams></chooseExams>
                 </form>
             </section>
