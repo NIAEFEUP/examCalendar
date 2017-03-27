@@ -5,7 +5,6 @@
   <entityClass>examcalendar.optimizer.domain.RoomPeriod</entityClass>
 
   <scoreDirectorFactory>
-    <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
     <scoreDrl>examinationScoreRules.drl</scoreDrl>
     <initializingScoreTrend>ONLY_DOWN</initializingScoreTrend>
   </scoreDirectorFactory>
