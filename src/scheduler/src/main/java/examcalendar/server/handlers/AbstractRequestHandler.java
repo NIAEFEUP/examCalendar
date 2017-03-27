@@ -2,7 +2,6 @@ package examcalendar.server.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.sun.xml.internal.ws.policy.spi.AssertionCreationException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
