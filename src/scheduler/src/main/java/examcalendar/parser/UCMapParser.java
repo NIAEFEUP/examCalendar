@@ -45,11 +45,14 @@ public class UCMapParser extends ExcelParser {
         int currTopicYear;
         Topic currTopic = null;
 
-
         for (int i = 0; i < sheet.getLastRowNum(); i++) {
             row = sheet.getRow(i);
             if(row != null){
+
                 cell = row.getCell(0);
+                if(cell == null){
+                    continue;
+                }
                 cell.setCellType(Cell.CELL_TYPE_STRING);
                 cellContent = cell.getStringCellValue().trim();
                 switch (state){
@@ -211,7 +214,9 @@ public class UCMapParser extends ExcelParser {
     }
 
     public static void main(String[] args) {
-        String file = "src/test/java/mapa_exames_mieic.xls";
+        String file = "src/scheduler/src/test/java/mapa_exames_mieic.xlsx";
+        System.out.println("Working Directory = " +
+                System.getProperty("user.dir"));
         UCMapParser parser = new UCMapParser(file);
         parser.generate();
         System.out.println(parser.toString());

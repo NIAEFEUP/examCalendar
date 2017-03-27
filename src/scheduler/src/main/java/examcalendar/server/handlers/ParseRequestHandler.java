@@ -16,6 +16,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONString;
 
 import java.io.File;
 import java.io.IOException;
@@ -155,7 +156,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                     data.put("ucmap", "UC Map file is missing.");
                 } else {
                     ucMapParser = ucMapFileHandler(conn, httpExchange, files.get(0));
-                    data.put("ucmap", new JSONObject(ucMapParser.getFeedback()));
+                    data.put("ucmap", ucMapParser.getFeedback());
                 }
 
                 if (files.get(1) == null) {
@@ -165,7 +166,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                         data.put("professors", "Cannot load the professors file without the UC Map file.");
                     } else {
                         professorParser = professorsFileHandler(conn, httpExchange, files.get(1), ucMapParser.getTopics());
-                        data.put("professors", new JSONObject(professorParser.getFeedback()));
+                        data.put("professors", professorParser.getFeedback());
                     }
                 }
 
@@ -173,7 +174,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                     data.put("rooms", "Rooms file is missing.");
                 } else {
                     roomsParser = roomsFileHandler(conn, httpExchange, files.get(2));
-                    data.put("rooms", new JSONObject(roomsParser.getFeedback()));
+                    data.put("rooms", roomsParser.getFeedback());
                 }
 
                 if (ucMapParser != null && professorParser != null && roomsParser != null && ucMapParser.getFeedback().isGenerated() && professorParser.getFeedback().isGenerated() && roomsParser.getFeedback().isGenerated()) {
@@ -191,6 +192,7 @@ public class ParseRequestHandler extends AbstractRequestHandler {
                 e.printStackTrace();
                 throw new RequestHandlerErrorException(503, "Could not connect to the database.");
             } catch (JSONException e) {
+                e.printStackTrace();
                 throw new AssertionError();
             }
         } catch (RequestHandlerException e) {

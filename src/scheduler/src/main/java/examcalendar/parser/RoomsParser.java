@@ -33,8 +33,11 @@ public class RoomsParser extends ExcelParser {
 
         for (int i = 0; i < sheet.getLastRowNum(); i++) {
             row = sheet.getRow(i);
-            if(row != null) {
+            if(row != null) { // TODO: refactor
                 cell = row.getCell(0);
+                if(cell == null){ // TODO: refactor
+                    continue;
+                }
                 cellContent = cell.getStringCellValue();
                 if(isBlankCell(cellContent) || !cellContent.matches(ROOM))
                     continue;

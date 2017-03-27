@@ -39,6 +39,9 @@ public class ProfessorParser extends ExcelParser{
             row = sheet.getRow(i);
             if (row != null) {
                 cell = row.getCell(0);
+                if(cell == null){
+                    continue;
+                }
                 cellContent = cell.getStringCellValue().trim();
                 if(isBlankCell(cellContent) || !cellContent.matches(UC_ID))
                     continue;
@@ -104,12 +107,12 @@ public class ProfessorParser extends ExcelParser{
     }
 
     public static void main(String[] args) {
-        String ucFile = "src/test/java/mapa_exames_mieic.xls";
+        String ucFile = "src/scheduler/src/test/java/mapa_exames_mieic.xlsx";
         UCMapParser parser = new UCMapParser(ucFile);
         parser.generate();
         System.out.println(parser.toString());
 
-        String profFile = "src/test/java/professors.xlsx";
+        String profFile = "src/scheduler/src/test/java/professors.xlsx";
         ProfessorParser professorParser = new ProfessorParser(profFile,parser.getTopics());
         professorParser.generate();
         System.out.println(professorParser.toString());

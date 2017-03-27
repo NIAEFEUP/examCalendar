@@ -44,6 +44,7 @@ public abstract class ExcelParser {
             return parseSheet(sheet);
         }catch (Exception e){
             getFeedback().addError(e.getMessage(),0+"",0+"");
+            e.printStackTrace();
             return false;
         }
     }

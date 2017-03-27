@@ -47,6 +47,7 @@ public class Feedback {
 
         for(String message : getErrors()){
             stringBuilder.append(message);
+            System.out.println(message);
         }
 
         for(String message : getWarnings()){
