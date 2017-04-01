@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Iterator;
 
 /**
  * Created by Duarte on 01/07/2016.
@@ -37,9 +38,6 @@ public abstract class ExcelParser {
                 return false;
             }
             Sheet sheet = wb.getSheetAt(0);
-            Row row;
-            Cell cell;
-            String cellContent;
 
             return parseSheet(sheet);
         }catch (Exception e){
@@ -49,7 +47,30 @@ public abstract class ExcelParser {
         }
     }
 
-    protected abstract boolean parseSheet(Sheet sheet);
+    protected boolean parseSheet(Sheet sheet) {
+        Row row = null;
+
+        Iterator<Row> rowIterator = sheet.rowIterator();
+
+        while (rowIterator.hasNext()){
+            row = rowIterator.next();
+            parseRow(row);
+        }
+
+
+        if(hasGenerated()) {
+            feedback.setGenerated(true);
+        }else{
+            feedback.addError("Erro a ler a lista de professores", row.getRowNum()+"",0+"");
+            return false;
+        }
+        return true;
+    }
+
+
+    protected abstract boolean hasGenerated();
+
+    protected abstract void parseRow(Row row);
 
     protected boolean isBlankCell(String cell){
         return cell.isEmpty() || cell.matches("^\\s+$");

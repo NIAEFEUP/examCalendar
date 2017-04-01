@@ -34,103 +34,88 @@ public class UCMapParser extends ExcelParser {
         super(file);
     }
 
+    @Override
+    protected boolean hasGenerated() {
+        return state.equals(UCMapParser.State.STUDENT);
+    }
 
     @Override
-    protected boolean parseSheet(Sheet sheet) {
-        Row row = null;
+    protected void parseRow(Row row) {
         Cell cell = null;
         String cellContent;
         String currTopicName = null;
         String currTopicCode = null;
         int currTopicYear;
         Topic currTopic = null;
+        cell = row.getCell(0);
+        cell.setCellType(Cell.CELL_TYPE_STRING);
 
-        for (int i = 0; i < sheet.getLastRowNum(); i++) {
-            row = sheet.getRow(i);
-            if(row != null){
+        cellContent = cell.getStringCellValue().trim();
+        switch (state){
+            case START:
+                if(isBlankCell(cellContent) || !cellContent.matches("^[A-z]{1,5}\\d{4}\\s*-\\s*.+$"))
+                    return;
+                else{
+                    currTopicCode = extractTopicCode(cellContent);
 
-                cell = row.getCell(0);
-                if(cell == null){
-                    continue;
+                    currTopicName = extractTopicName(cellContent);
+                    this.state = State.UC_ID;
                 }
-                cell.setCellType(Cell.CELL_TYPE_STRING);
-                cellContent = cell.getStringCellValue().trim();
-                switch (state){
-                    case START:
-                        if(isBlankCell(cellContent) || !cellContent.matches("^[A-z]{1,5}\\d{4}\\s*-\\s*.+$"))
-                            continue;
-                        else{
-                            currTopicCode = extractTopicCode(cellContent);
-
-                            currTopicName = extractTopicName(cellContent);
-                            this.state = State.UC_ID;
-                        }
-                        break;
-                    case UC_ID:
-                        if(isBlankCell(cellContent) || !cellContent.matches(CLASS))
-                            continue;
-                        else {
-                            Matcher matcherYear = Pattern.compile(CLASS).matcher(cellContent);
-                            matcherYear.matches();
-                            currTopicYear = Integer.parseInt(matcherYear.group(1));
-                            currTopic = new Topic(currTopicYear,currTopicCode,currTopicName);
-                            try {
-                                addTopic(currTopic);
-                            } catch (ParserException e) {
-                                handleParserException(row, cell, e);
-                            }
-                            this.state = State.UC_YEAR;
-                        }
-                        break;
-                    case UC_YEAR:
-                        if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome"))
-                            continue;
-                        else {
-                            Student student = parseStudent(row);
-                            if(student == null)
-                                continue;
-                            try {
-                                addStudentToTopic(currTopic,student);
-                            } catch (ParserException e) {
-                                handleParserException(row, cell,e);
-                            }
-                            this.state = State.STUDENT;
-                        }
-                        break;
-                    case STUDENT:
-                        if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS)){
-                            continue;
-                        }else if(cellContent.matches(UC)) {
-                            currTopicCode = extractTopicCode(cellContent);
-                            currTopicName = extractTopicName(cellContent);
-                            this.state = State.UC_ID;
-                        }else{
-                            Student student = parseStudent(row);
-                            if(student == null)
-                                continue;
-                            try {
-                                addStudentToTopic(currTopic,student);
-                            } catch (ParserException e) {
-                                handleParserException(row, cell,e);
-                            }
-                        }
-                        break;
-                    default:
-                        feedback.addError("Input inexperado",row.getRowNum()+"",cell.getColumnIndex()+"");
-                        return false;
+                break;
+            case UC_ID:
+                if(isBlankCell(cellContent) || !cellContent.matches(CLASS))
+                    return;
+                else {
+                    Matcher matcherYear = Pattern.compile(CLASS).matcher(cellContent);
+                    matcherYear.matches();
+                    currTopicYear = Integer.parseInt(matcherYear.group(1));
+                    currTopic = new Topic(currTopicYear,currTopicCode,currTopicName);
+                    try {
+                        addTopic(currTopic);
+                    } catch (ParserException e) {
+                        handleParserException(row, cell, e);
+                    }
+                    this.state = State.UC_YEAR;
                 }
-            }
-        }
-
-        if(state.equals(UCMapParser.State.STUDENT)){
-            feedback.setGenerated(true);
-            return true;
-        }else {
-            feedback.addError("Erro inesperado. Parsing interrompido.", row == null? (0+"") : (row.getRowNum()+""),0+"");
-            return false;
+                break;
+            case UC_YEAR:
+                if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome"))
+                    return;
+                else {
+                    Student student = parseStudent(row);
+                    if(student == null)
+                        return;
+                    try {
+                        addStudentToTopic(currTopic,student);
+                    } catch (ParserException e) {
+                        handleParserException(row, cell,e);
+                    }
+                    this.state = State.STUDENT;
+                }
+                break;
+            case STUDENT:
+                if(isBlankCell(cellContent) || cellContent.trim().equalsIgnoreCase("Nome") || cellContent.matches(CLASS)){
+                    return;
+                }else if(cellContent.matches(UC)) {
+                    currTopicCode = extractTopicCode(cellContent);
+                    currTopicName = extractTopicName(cellContent);
+                    this.state = State.UC_ID;
+                }else{
+                    Student student = parseStudent(row);
+                    if(student == null)
+                        return;
+                    try {
+                        addStudentToTopic(currTopic,student);
+                    } catch (ParserException e) {
+                        handleParserException(row, cell,e);
+                    }
+                }
+                break;
+            default:
+                feedback.addError("Input inexperado",row.getRowNum()+"",cell.getColumnIndex()+"");
+                return;
         }
     }
-
 
 
     private String extractTopicName(String cellContent) {
