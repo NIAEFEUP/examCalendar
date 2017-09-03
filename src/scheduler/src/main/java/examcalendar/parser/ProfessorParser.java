@@ -30,42 +30,11 @@ public class ProfessorParser extends ExcelParser{
         Cell cell = null;
         String cellContent;
 
-        String currTopicCode;
-        String currProfessorAcronym;
-        Professor currProf = null;
-        Topic currTopic = null;
+
 
         for (int i = 0; i < sheet.getLastRowNum(); i++) {
             row = sheet.getRow(i);
-            if (row != null) {
-                cell = row.getCell(0);
-                if(cell == null){
-                    continue;
-                }
-                cellContent = cell.getStringCellValue().trim();
-                if(isBlankCell(cellContent) || !cellContent.matches(UC_ID))
-                    continue;
 
-                currTopicCode = UCMapParser.extractTopicCode(cellContent);
-                currTopic = getTopic(currTopicCode);
-                if(currTopic == null){
-                    feedback.addError("UC não existe", (row.getRowNum()+1)+"", cell.getColumnIndex()+"");
-                    return false;
-                }
-                currProfessorAcronym = row.getCell(1).getStringCellValue();
-                if(professors.containsKey(currProfessorAcronym)){
-                    currProf = professors.get(currProfessorAcronym);
-                }else {
-                    currProf = new Professor(currProfessorAcronym);
-                    professors.put(currProfessorAcronym,currProf);
-                }
-
-                if(currTopic.getRegentList().contains(currProf)){
-                    feedback.addWarning("Este professor já está adicionado a esta UC como regente", row.getRowNum()+"", cell.getColumnIndex()+"");
-                }else{
-                    currTopic.addProfessor(currProf);
-                }
-            }
         }
         if(professors.size() > 0) {
             feedback.setGenerated(true);
@@ -74,6 +43,49 @@ public class ProfessorParser extends ExcelParser{
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected boolean hasGenerated() {
+        return professors.size() > 0;
+    }
+
+    @Override
+    protected void parseRow(Row row) {
+        Cell cell = null;
+        String cellContent = null;
+
+        String currTopicCode;
+        String currProfessorAcronym;
+        Professor currProf = null;
+        Topic currTopic = null;
+
+        cell = row.getCell(0);
+//        if(cell == null) return;
+
+        cellContent = cell.getStringCellValue().trim();
+        if(isBlankCell(cellContent) || !cellContent.matches(UC_ID))
+            return;
+
+        currTopicCode = UCMapParser.extractTopicCode(cellContent);
+        currTopic = getTopic(currTopicCode);
+        if(currTopic == null){
+            feedback.addError("UC não existe", (row.getRowNum()+1)+"", cell.getColumnIndex()+"");
+            return;
+        }
+        currProfessorAcronym = row.getCell(1).getStringCellValue();
+        if(professors.containsKey(currProfessorAcronym)){
+            currProf = professors.get(currProfessorAcronym);
+        }else {
+            currProf = new Professor(currProfessorAcronym);
+            professors.put(currProfessorAcronym,currProf);
+        }
+
+        if(currTopic.getRegentList().contains(currProf)){
+            feedback.addWarning("Este professor já está adicionado a esta UC como regente", row.getRowNum()+"", cell.getColumnIndex()+"");
+        }else{
+            currTopic.addProfessor(currProf);
+        }
     }
 
     private Topic getTopic(String code) {

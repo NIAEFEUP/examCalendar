@@ -23,6 +23,25 @@ public class RoomsParser extends ExcelParser {
     @Override
     protected boolean parseSheet(Sheet sheet) {
         Row row = null;
+
+        for (int i = 0; i < sheet.getLastRowNum(); i++) {
+            row = sheet.getRow(i);
+            if(row != null) { // TODO: refactor
+
+            }
+        }
+
+        feedback.setGenerated(true);
+        return true;
+    }
+
+    @Override
+    protected boolean hasGenerated() {
+        return true;
+    }
+
+    @Override
+    protected void parseRow(Row row) {
         Cell cell = null;
         String cellContent;
 
@@ -30,40 +49,28 @@ public class RoomsParser extends ExcelParser {
         int roomCapacity;
         boolean isPc;
         Room currRoom;
+        cell = row.getCell(0);
+        cellContent = cell.getStringCellValue();
+        if(isBlankCell(cellContent) || !cellContent.matches(ROOM))
+            return;
 
-        for (int i = 0; i < sheet.getLastRowNum(); i++) {
-            row = sheet.getRow(i);
-            if(row != null) { // TODO: refactor
-                cell = row.getCell(0);
-                if(cell == null){ // TODO: refactor
-                    continue;
-                }
-                cellContent = cell.getStringCellValue();
-                if(isBlankCell(cellContent) || !cellContent.matches(ROOM))
-                    continue;
+        roomNumber = cellContent.trim();
 
-                roomNumber = cellContent.trim();
-
-                try{
-                    roomCapacity = (int) row.getCell(1).getNumericCellValue();
-                }catch (Exception e){
-                    feedback.addError("Célula não contém um número válido", row.getRowNum()+"", 2+"");
-                    return false;
-                }
-
-                isPc = row.getCell(2).getStringCellValue().equalsIgnoreCase("sim");
-                if(rooms.get(roomNumber)!= null){
-                    feedback.addWarning("Sala já existe", row.getRowNum()+"", 0+"");
-                    continue;
-                }
-
-                currRoom = new Room(roomNumber,roomCapacity,isPc);
-                rooms.put(roomNumber,currRoom);
-            }
+        try{
+            roomCapacity = (int) row.getCell(1).getNumericCellValue();
+        }catch (Exception e){
+            feedback.addError("Célula não contém um número válido", row.getRowNum()+"", 2+"");
+            return;
         }
 
-        feedback.setGenerated(true);
-        return true;
+        isPc = row.getCell(2).getStringCellValue().equalsIgnoreCase("sim");
+        if(rooms.get(roomNumber)!= null){
+            feedback.addWarning("Sala já existe", row.getRowNum()+"", 0+"");
+            return;
+        }
+
+        currRoom = new Room(roomNumber,roomCapacity,isPc);
+        rooms.put(roomNumber,currRoom);
     }
 
     public Hashtable<String, Room> getRooms() {
