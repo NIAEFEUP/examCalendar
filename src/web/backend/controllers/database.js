@@ -3,12 +3,14 @@
 var mysql = require('mysql');
 var async = require('async');
 var nconf = require('nconf');
+var config = require('../config');
+
 var connection = mysql.createConnection({
     host: nconf.get("database:host"),
     port: nconf.get("database:port"),
-    user: 'root',
-    password: '',
-    database: 'examcalendar'
+    user: config.db.user,
+    password: config.db.password,
+    database: config.db.database
 });
 connection.connect();
 
