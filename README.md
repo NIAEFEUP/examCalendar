@@ -23,10 +23,20 @@ This is an exam calendar scheduler for the University of Porto to make it easy t
 
 Clone this repo to your desktop and run `npm install` on folder `src/web/backend/` to install all the dependencies.
 
+Create a MySQL local server with the setup present in the SQL files in /database.
+
 Rename the file `example-config.json` inside `src/web/backend/` to `config.json` and change the credentials inside to match your MySQL configuration.
 
 
 ## Usage
 
-Run `npm start` to start the backend server of the web interface. 
-Set up a web server at the folder `src/web/frontend/`. After that, access your web server with your browser.
+To completely setup the project, several systems must be brought up:
+
+- Scheduler backend (src/scheduler):
+  - TODO
+- WebApp backend (src/web/backend):
+  - Run `npm start` at system root to start the backend server of the web interface.
+  - This will use port 8081 to run the backend
+- WebApp frontend (src/web/frontend):
+  - Set up a web server (like [XAMPP](https://www.apachefriends.org/download.html)) at the frontend root dir. The frontend should then be accessible through localhost in a web browser.
+  - Web app users must be registered in the 'users' table in the database.
