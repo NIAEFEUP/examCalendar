@@ -70,7 +70,7 @@ $(document).ready(function () {
         onStepChanging: function (event, currentIndex, newIndex) {
             if (currentIndex == 0 && newIndex == currentIndex + 1) {  //step 0 : cofirmar reseting
                 $.ajax({
-                    url: "//localhost:8080/deleteCalendar",
+                    url: "//localhost:8082/deleteCalendar",
                     type: 'post',
                     xhrFields: {
                         withCredentials: true

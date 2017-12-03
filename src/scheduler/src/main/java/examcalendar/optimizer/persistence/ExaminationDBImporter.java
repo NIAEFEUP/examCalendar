@@ -2,7 +2,6 @@ package examcalendar.optimizer.persistence;
 
 import examcalendar.optimizer.domain.*;
 import examcalendar.server.Server;
-import javafx.util.Pair;
 import org.optaplanner.examples.common.persistence.AbstractSolutionImporter;
 import org.optaplanner.examples.common.persistence.SolutionDao;
 import sun.util.resources.cldr.mas.CalendarData_mas_KE;
@@ -294,6 +293,9 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
 
     // public static ArrayList<Integer> temp = new ArrayList<>();
 
+    private Calendar pairCalendar = null;
+    private Integer pairInteger = 0;
+
     private List<Period> generatePeriods(RequestConfig requestConfig) {
         List<Period> periods = new ArrayList<Period>();
 
@@ -301,14 +303,13 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Calendar c = Calendar.getInstance();
         c.setTime(currentDay);
         int dayIndex = 0;
-        Pair<Calendar,Integer> ret;
 
         while (dayIndex < requestConfig.normalSeasonDuration + requestConfig.appealSeasonDuration) {
-
-            ret = skipToNextWorkingDayAux(c,dayIndex);
-            if(ret != null) {
-                c = ret.getKey();
-                dayIndex = ret.getValue();
+            pairCalendar = null;
+            skipToNextWorkingDayAux(c,dayIndex);
+            if(pairCalendar != null) {
+                c = pairCalendar;
+                dayIndex = pairInteger;
             }
 
            // System.out.println(dayIndex);
@@ -333,7 +334,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         return periods;
     }
 
-    private Pair<Calendar, Integer> skipToNextWorkingDayAux(Calendar c, int dayIndex){
+    private void skipToNextWorkingDayAux(Calendar c, int dayIndex){
 
         if(c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY ){
             c.add(Calendar.DATE, 1); // Advance to monday (nextday = +1)
@@ -342,9 +343,10 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
             c.add(Calendar.DATE, 2); // Advance to monday
             dayIndex+=2;
         }else
-            return null;
+            return;
 
-        return new Pair<>(c, dayIndex);
+            pairCalendar = c;
+            pairInteger = dayIndex;
     }
 
 

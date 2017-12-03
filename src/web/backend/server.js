@@ -56,6 +56,7 @@ function allowRedirectAnswer(res) {
 }
 
 function isAuthenticated(req) {
+    console.log(req.url);
     console.log(req.session);
     return req.session != null && req.session.userID != null && req.session.userID >= 0;
 }
@@ -132,7 +133,9 @@ app.post('/database', function (req, res) {
         return;
     }
     var id = req.session.userID;
+    console.log('starting import');
     importDB.import(res, id, req);
+    console.log('return ok');
 });
 app.get('/importDatabase/topics', function (req, res) {
     res = allowRedirectAnswer(res);
@@ -275,7 +278,7 @@ app.delete('/calendar/exams/:examid/rooms/:roomid', function (req, res) {
 //////////////////////////////////////////////////////////////////
 //                         Connection                           //
 //////////////////////////////////////////////////////////////////
-var port = 8080;
+var port = 8082;
 app.listen(port, function () {
     console.log("Server running on port " + port);
 });
