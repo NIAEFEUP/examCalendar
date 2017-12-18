@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  web-frontend:
+    image: httpd:2.4
+    volumes:
+     - "./src/web/frontend/:/usr/local/apache2/htdocs/examCalendar/"
+    ports:
+     - "8080:80"
+    restart: "always"
