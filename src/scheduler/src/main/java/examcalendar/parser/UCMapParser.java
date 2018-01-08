@@ -29,6 +29,10 @@ public class UCMapParser extends ExcelParser {
     private State state = State.START;
     HashSet<Topic> topics = new HashSet<Topic>();
     Hashtable<String,Student> students = new Hashtable<String, Student>();
+    private Topic currTopic = null;
+    private String currTopicName = null;
+    private String currTopicCode = null;
+    private int currTopicYear;
 
     public UCMapParser(String file){
         super(file);
@@ -43,10 +47,10 @@ public class UCMapParser extends ExcelParser {
     protected void parseRow(Row row) {
         Cell cell = null;
         String cellContent;
-        String currTopicName = null;
-        String currTopicCode = null;
-        int currTopicYear;
-        Topic currTopic = null;
+        //String currTopicName = null;
+        //String currTopicCode = null;
+        //int currTopicYear;
+        //Topic currTopic = null;
         cell = row.getCell(0);
         cell.setCellType(Cell.CELL_TYPE_STRING);
 
@@ -57,7 +61,6 @@ public class UCMapParser extends ExcelParser {
                     return;
                 else{
                     currTopicCode = extractTopicCode(cellContent);
-
                     currTopicName = extractTopicName(cellContent);
                     this.state = State.UC_ID;
                 }
@@ -112,7 +115,7 @@ public class UCMapParser extends ExcelParser {
                 }
                 break;
             default:
-                feedback.addError("Input inexperado",row.getRowNum()+"",cell.getColumnIndex()+"");
+                feedback.addError("Input inesperado",row.getRowNum()+"",cell.getColumnIndex()+"");
                 return;
         }
     }
@@ -153,6 +156,10 @@ public class UCMapParser extends ExcelParser {
     }
 
     private void addStudentToTopic(Topic topic, Student givenStudent) throws ParserException {
+        if (givenStudent == null){
+            System.out.println("null ptr");
+            return;
+    }
         Student student = students.get(givenStudent.getCode());
         Set<Student> studentsList = topic.getStudentList();
         if(student == null){
@@ -199,7 +206,7 @@ public class UCMapParser extends ExcelParser {
     }
 
     public static void main(String[] args) {
-        String file = "src/scheduler/src/test/java/mapa_exames_mieic.xlsx";
+        String file = "src/scheduler/src/test/java/mapa_exames_mieic.xls";
         System.out.println("Working Directory = " +
                 System.getProperty("user.dir"));
         UCMapParser parser = new UCMapParser(file);
