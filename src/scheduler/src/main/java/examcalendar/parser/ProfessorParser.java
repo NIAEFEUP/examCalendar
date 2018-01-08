@@ -24,26 +24,26 @@ public class ProfessorParser extends ExcelParser{
         this.topics = topics;
     }
 
-    @Override
-    protected boolean parseSheet(Sheet sheet) {
-        Row row = null;
-        Cell cell = null;
-        String cellContent;
-
-
-
-        for (int i = 0; i < sheet.getLastRowNum(); i++) {
-            row = sheet.getRow(i);
-
-        }
-        if(professors.size() > 0) {
-            feedback.setGenerated(true);
-        }else{
-            feedback.addError("Erro a ler a lista de professores", row.getRowNum()+"",0+"");
-            return false;
-        }
-        return true;
-    }
+    // @Override
+    // protected boolean parseSheet(Sheet sheet) {
+    //     Row row = null;
+    //     Cell cell = null;
+    //     String cellContent;
+    //
+    //
+    //
+    //     for (int i = 0; i < sheet.getLastRowNum(); i++) {
+    //         row = sheet.getRow(i);
+    //
+    //     }
+    //     if(professors.size() > 0) {
+    //         feedback.setGenerated(true);
+    //     }else{
+    //         feedback.addError("Erro a ler a lista de professores", row.getRowNum()+"",0+"");
+    //         return false;
+    //     }
+    //     return true;
+    // }
 
     @Override
     protected boolean hasGenerated() {
