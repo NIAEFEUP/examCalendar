@@ -82,6 +82,7 @@ module.exports = {
     },
     //calendar
     getCalendar: function (userID, callback) {
+        console.log('querying');
         connection.query('SELECT id FROM calendars WHERE creator = ?',
             [userID],
             function (err, rows, fields) {
@@ -91,6 +92,7 @@ module.exports = {
                 callback(rows[0].id);
             }
         );
+        console.log('query done');
     },
     importCalendar: function (userID, calendar) {
         return false;

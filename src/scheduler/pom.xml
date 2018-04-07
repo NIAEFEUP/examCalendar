@@ -33,7 +33,7 @@
         </repository>
     </repositories>
 
-    <dependencies>
+    <dependencies>    
         <!-- Internal dependencies -->
         <dependency>
             <groupId>org.optaplanner</groupId>
@@ -56,6 +56,11 @@
             <artifactId>optaplanner-examples</artifactId>
             <!--<version>7.0.0.Beta1</version>-->
         </dependency>
+        <dependency>
+    <groupId>org.optaplanner</groupId>
+    <artifactId>optaplanner-persistence-common</artifactId>
+    <!--<version>7.4.1.Final</version>-->
+</dependency>
 
         <dependency>
             <groupId>org.drools</groupId>
