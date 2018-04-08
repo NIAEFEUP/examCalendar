@@ -3,8 +3,6 @@ package examcalendar.optimizer.persistence;
 import examcalendar.optimizer.domain.*;
 import examcalendar.server.Server;
 import org.optaplanner.examples.common.persistence.AbstractSolutionImporter;
-import org.optaplanner.examples.common.persistence.SolutionDao;
-import sun.util.resources.cldr.mas.CalendarData_mas_KE;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,7 +18,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
     private final Server server;
 
     public ExaminationDBImporter(Server server) {
-        super(true);
+        super();
         this.server = server;
     }
 

@@ -46,7 +46,12 @@ public class ExamMove extends AbstractMove {
     }
 
     @Override
-    public Move createUndoMove(ScoreDirector scoreDirector) {
+    public Move rebase(ScoreDirector destinationScoreDirector) {
+        return null;
+    }
+
+    @Override
+    public AbstractMove createUndoMove(ScoreDirector scoreDirector) {
         return new ExamMove(exam, newRPs, oldRPs);
     }
 

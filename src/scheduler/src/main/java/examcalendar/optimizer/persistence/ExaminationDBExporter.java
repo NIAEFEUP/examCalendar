@@ -6,7 +6,6 @@ import examcalendar.optimizer.domain.Period;
 import examcalendar.optimizer.domain.RoomPeriod;
 import examcalendar.server.Server;
 import org.optaplanner.examples.common.persistence.AbstractSolutionExporter;
-import org.optaplanner.examples.common.persistence.SolutionDao;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +21,7 @@ public class ExaminationDBExporter extends AbstractSolutionExporter<Examination>
     private final Server server;
 
     public ExaminationDBExporter(Server server) {
-        super(true);
+        super();
         this.server = server;
     }
 
