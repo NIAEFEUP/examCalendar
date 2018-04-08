@@ -40,7 +40,7 @@ public class Server {
     List<Scheduler> runningSchedulers;
     private Thread dispatcherThread;
     public static void main(String[] args) throws IOException, SQLException {
-        Server server = new Server("localhost", "examcalendar", "root", "root");
+        Server server = new Server("localhost", "examcalendar", "root", "");
         server.start();
     }
 

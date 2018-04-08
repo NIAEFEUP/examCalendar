@@ -15,8 +15,8 @@ import java.util.List;
  */
 public class ExamMoveFactory implements MoveListFactory<Examination> {
     @Override
-    public List<? extends Move> createMoveList(Examination examination) {
-        List<Move> moveList = new ArrayList<Move>();
+    public List<? extends Move<Examination>> createMoveList(Examination examination) {
+        List<Move<Examination>> moveList = new ArrayList<Move<Examination>>();
         for (Exam exam : examination.getExamList()) {
             List <RoomPeriod> oldRPs = new ArrayList<RoomPeriod>();
             for (RoomPeriod rp : examination.getRoomPeriodList()) {
