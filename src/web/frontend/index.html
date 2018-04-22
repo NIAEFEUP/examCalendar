@@ -10,7 +10,7 @@
 	<base href="http://localhost/examCalendar/"><!--[if lte IE 6]></base><![endif]-->
   </head>
 
-  <body ng-app="ExamCalendar">
+  <body>
 
   <div ng-view></div>
 
@@ -54,7 +54,11 @@
 	<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
 	<!-- Include Date Range Picker -->
-	<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    
+    <script>
+        angular.bootstrap(document.body, ['ExamCalendar']);
+    </script>
 
   </body>
 
