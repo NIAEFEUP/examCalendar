@@ -27,15 +27,6 @@ global HardSoftScoreHolder scoreHolder;
 // Hard constraints
 // ############################################################################
 
-// The same exam can't be scheduled at different periods
-rule "differentPeriodsSameExam"
-    when
-        RoomPeriod(exam != null, $period : period, $exam : exam)
-        RoomPeriod($exam == exam, $period != period)
-    then
-        scoreHolder.addHardConstraintMatch(kcontext, -1);
-end
-
 //An exam can't be scheduled when a professor is unavailable
 rule "professorUnavailable"
     when
@@ -43,20 +34,15 @@ rule "professorUnavailable"
         TopicProfessor($topic : topic, $professor == professor)
         RoomPeriod(exam != null, $topic == exam.getTopic(), $period == getPeriod())
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1000);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
-// An exam must to have rooms with enough space for all of it's students
-rule "notEnoughRoomsForExam"
+// All exams must be allocated
+rule "allExamsAllocated"
     when
         $exam : Exam($numStudents : numStudents)
-        $num2 : Number() from $numStudents
-        $totalCapacity : Number(intValue < $numStudents) from accumulate (
-            RoomPeriod(exam == $exam, $room : room),
-            sum($room.getCapacity())
-        )
+        not(exists RoomPeriod(exam != null, exam == $exam))
     then
-        //scoreHolder.addHardConstraintMatch(kcontext, $totalCapacity.intValue() - $numStudents);
         scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
@@ -76,7 +62,7 @@ rule "pcExamsNotInPcRooms"
     when
         RoomPeriod(exam != null, exam.getPC() != room.isPc())
     then
-        scoreHolder.addHardConstraintMatch(kcontext, -1000);
+        scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 // The difference of days between Normal Exams and Appeal Exams of the same topic must be bigger than InstitutionParametrization.minDaysBetweenSameTopicExams
@@ -113,7 +99,7 @@ end
 
 rule "examInWrongSeason"
     when RoomPeriod(exam != null, exam.isNormal() != period.isNormal())
-    then scoreHolder.addHardConstraintMatch(kcontext, -1000);
+    then scoreHolder.addHardConstraintMatch(kcontext, -1);
 end
 
 // ############################################################################

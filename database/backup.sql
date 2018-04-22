@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4
+-- version 4.7.9
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: 01-Fev-2017 às 17:35
--- Versão do servidor: 5.7.14
--- PHP Version: 7.0.10
+-- Host: 127.0.0.1:3306
+-- Generation Time: 22-Abr-2018 às 16:54
+-- Versão do servidor: 5.7.21
+-- PHP Version: 5.6.35
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -26,8 +28,9 @@ SET time_zone = "+00:00";
 -- Estrutura da tabela `calendars`
 --
 
-CREATE TABLE `calendars` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `calendars`;
+CREATE TABLE IF NOT EXISTS `calendars` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `creator` bigint(20) UNSIGNED NOT NULL,
   `timeout` int(11) NOT NULL DEFAULT '1000',
   `minDaysBetweenSameTopicExams` int(11) NOT NULL DEFAULT '14',
@@ -39,8 +42,10 @@ CREATE TABLE `calendars` (
   `spreadPenalty` float NOT NULL DEFAULT '10',
   `enqueueingTime` timestamp NULL DEFAULT NULL,
   `startTime` timestamp NULL DEFAULT NULL,
-  `endTime` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `endTime` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `calendars`
@@ -55,7 +60,8 @@ INSERT INTO `calendars` (`id`, `creator`, `timeout`, `minDaysBetweenSameTopicExa
 -- Estrutura da tabela `examrooms`
 --
 
-CREATE TABLE `examrooms` (
+DROP TABLE IF EXISTS `examrooms`;
+CREATE TABLE IF NOT EXISTS `examrooms` (
   `exam` bigint(20) UNSIGNED NOT NULL,
   `room` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -5382,14 +5388,17 @@ INSERT INTO `examrooms` (`exam`, `room`) VALUES
 -- Estrutura da tabela `exams`
 --
 
-CREATE TABLE `exams` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `exams`;
+CREATE TABLE IF NOT EXISTS `exams` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `topic` bigint(20) UNSIGNED NOT NULL,
   `normal` tinyint(1) NOT NULL DEFAULT '1',
   `pc` tinyint(1) NOT NULL DEFAULT '0',
   `day` date DEFAULT NULL,
-  `time` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1563 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `exams`
@@ -6512,8 +6521,6 @@ INSERT INTO `exams` (`id`, `topic`, `normal`, `pc`, `day`, `time`) VALUES
 (1199, 554, 1, 0, '2017-01-24', 1),
 (1202, 562, 0, 1, '2017-02-01', 2),
 (1201, 562, 1, 1, '2017-01-16', 1),
-(1479, 678, 1, 0, NULL, NULL),
-(1480, 678, 0, 0, NULL, NULL),
 (1185, 551, 1, 1, '2017-01-18', 0),
 (1186, 551, 0, 1, '2017-02-08', 2),
 (1187, 552, 1, 0, '2017-01-12', 0),
@@ -6596,22 +6603,16 @@ INSERT INTO `exams` (`id`, `topic`, `normal`, `pc`, `day`, `time`) VALUES
 (1392, 649, 0, 0, '2017-06-29', 0),
 (1466, 664, 0, 0, '2017-06-26', 1),
 (1465, 664, 1, 0, '2017-06-09', 2),
-(1482, 679, 0, 0, NULL, NULL),
-(1481, 679, 1, 0, NULL, NULL),
 (1397, 652, 1, 0, '2017-06-12', 2),
 (1398, 652, 0, 0, '2017-06-28', 1),
 (1460, 670, 0, 0, '2017-06-19', 1),
 (1459, 670, 1, 0, '2017-06-16', 2),
-(1474, 675, 0, 0, NULL, NULL),
-(1473, 675, 1, 0, NULL, NULL),
 (1403, 655, 1, 0, '2017-06-12', 2),
 (1404, 655, 0, 0, '2017-06-20', 2),
 (1557, 685, 1, 0, NULL, NULL),
 (1558, 685, 0, 0, NULL, NULL),
 (1407, 657, 1, 0, '2017-06-16', 2),
 (1408, 657, 0, 0, NULL, NULL),
-(1478, 677, 0, 0, NULL, NULL),
-(1477, 677, 1, 0, NULL, NULL),
 (1411, 659, 1, 0, '2017-06-09', 2),
 (1412, 659, 0, 0, '2017-06-23', 2),
 (1413, 660, 1, 0, '2017-06-12', 1),
@@ -6632,8 +6633,6 @@ INSERT INTO `exams` (`id`, `topic`, `normal`, `pc`, `day`, `time`) VALUES
 (1428, 667, 0, 0, '2017-06-29', 1),
 (1454, 671, 0, 0, '2017-06-20', 0),
 (1453, 671, 1, 0, '2017-06-06', 1),
-(1470, 673, 0, 0, NULL, NULL),
-(1469, 673, 1, 0, NULL, NULL),
 (1433, 670, 1, 0, '2017-06-05', 0),
 (1434, 670, 0, 0, NULL, NULL),
 (1435, 671, 1, 0, '2017-06-06', 1),
@@ -6656,34 +6655,14 @@ INSERT INTO `exams` (`id`, `topic`, `normal`, `pc`, `day`, `time`) VALUES
 (1551, 692, 1, 1, NULL, NULL),
 (1556, 694, 0, 0, NULL, NULL),
 (1555, 694, 1, 0, NULL, NULL),
-(1493, 685, 1, 0, NULL, NULL),
-(1494, 685, 0, 0, NULL, NULL),
 (1560, 677, 0, 0, NULL, NULL),
 (1559, 677, 1, 0, NULL, NULL),
-(1497, 687, 1, 0, NULL, NULL),
-(1498, 687, 0, 0, NULL, NULL),
-(1499, 688, 1, 0, NULL, NULL),
-(1500, 688, 0, 0, NULL, NULL),
-(1501, 689, 1, 0, NULL, NULL),
-(1502, 689, 0, 0, NULL, NULL),
-(1503, 690, 1, 0, NULL, NULL),
-(1504, 690, 0, 0, NULL, NULL),
 (1562, 699, 0, 0, NULL, NULL),
 (1561, 699, 1, 0, NULL, NULL),
-(1507, 692, 1, 0, NULL, NULL),
-(1508, 692, 0, 0, NULL, NULL),
-(1509, 693, 1, 0, NULL, NULL),
-(1510, 693, 0, 0, NULL, NULL),
-(1511, 694, 1, 0, NULL, NULL),
-(1512, 694, 0, 0, NULL, NULL),
 (1554, 687, 0, 0, NULL, NULL),
 (1553, 687, 1, 0, NULL, NULL),
 (1548, 701, 0, 0, NULL, NULL),
 (1547, 701, 1, 0, NULL, NULL),
-(1521, 699, 1, 0, NULL, NULL),
-(1522, 699, 0, 0, NULL, NULL),
-(1525, 701, 1, 0, NULL, NULL),
-(1526, 701, 0, 0, NULL, NULL),
 (1550, 673, 0, 0, NULL, NULL),
 (1549, 673, 1, 0, NULL, NULL),
 (1535, 678, 1, 1, NULL, NULL),
@@ -6705,13 +6684,16 @@ INSERT INTO `exams` (`id`, `topic`, `normal`, `pc`, `day`, `time`) VALUES
 -- Estrutura da tabela `professors`
 --
 
-CREATE TABLE `professors` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `professors`;
+CREATE TABLE IF NOT EXISTS `professors` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `calendar` bigint(20) UNSIGNED NOT NULL,
   `name` text,
   `acronym` text NOT NULL,
-  `cod` text
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `cod` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=595 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `professors`
@@ -7319,12 +7301,16 @@ INSERT INTO `professors` (`id`, `calendar`, `name`, `acronym`, `cod`) VALUES
 -- Estrutura da tabela `professorunavailable`
 --
 
-CREATE TABLE `professorunavailable` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `professorunavailable`;
+CREATE TABLE IF NOT EXISTS `professorunavailable` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `calendar` bigint(20) UNSIGNED NOT NULL,
   `professor` bigint(20) UNSIGNED NOT NULL,
   `day` date NOT NULL,
-  `time` int(11) NOT NULL
+  `time` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `professor` (`professor`,`day`,`time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -7333,12 +7319,15 @@ CREATE TABLE `professorunavailable` (
 -- Estrutura da tabela `roomperiodunavailable`
 --
 
-CREATE TABLE `roomperiodunavailable` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `roomperiodunavailable`;
+CREATE TABLE IF NOT EXISTS `roomperiodunavailable` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `calendar` bigint(20) UNSIGNED NOT NULL,
   `room` bigint(20) UNSIGNED NOT NULL,
   `day` date NOT NULL,
-  `time` int(11) NOT NULL
+  `time` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -7347,13 +7336,16 @@ CREATE TABLE `roomperiodunavailable` (
 -- Estrutura da tabela `rooms`
 --
 
-CREATE TABLE `rooms` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `rooms`;
+CREATE TABLE IF NOT EXISTS `rooms` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `calendar` bigint(20) UNSIGNED NOT NULL,
   `cod` text NOT NULL,
   `capacity` int(11) NOT NULL,
-  `pc` tinyint(1) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `pc` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=177 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `rooms`
@@ -7543,14 +7535,17 @@ INSERT INTO `rooms` (`id`, `calendar`, `cod`, `capacity`, `pc`) VALUES
 -- Estrutura da tabela `students`
 --
 
-CREATE TABLE `students` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `students`;
+CREATE TABLE IF NOT EXISTS `students` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `calendar` bigint(20) UNSIGNED NOT NULL,
   `name` text NOT NULL,
   `cod` text NOT NULL,
   `entryYear` int(11) DEFAULT NULL,
-  `currentYear` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `currentYear` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=13751 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `students`
@@ -21332,9 +21327,11 @@ INSERT INTO `students` (`id`, `calendar`, `name`, `cod`, `entryYear`, `currentYe
 -- Estrutura da tabela `studenttopic`
 --
 
-CREATE TABLE `studenttopic` (
+DROP TABLE IF EXISTS `studenttopic`;
+CREATE TABLE IF NOT EXISTS `studenttopic` (
   `student` bigint(20) UNSIGNED NOT NULL,
-  `topic` bigint(20) UNSIGNED NOT NULL
+  `topic` bigint(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`student`,`topic`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
@@ -85031,10 +85028,13 @@ INSERT INTO `studenttopic` (`student`, `topic`) VALUES
 -- Estrutura da tabela `topicprofessor`
 --
 
-CREATE TABLE `topicprofessor` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `topicprofessor`;
+CREATE TABLE IF NOT EXISTS `topicprofessor` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `topic` bigint(20) UNSIGNED NOT NULL,
-  `professor` bigint(20) UNSIGNED NOT NULL
+  `professor` bigint(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -85043,15 +85043,18 @@ CREATE TABLE `topicprofessor` (
 -- Estrutura da tabela `topics`
 --
 
-CREATE TABLE `topics` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `topics`;
+CREATE TABLE IF NOT EXISTS `topics` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `calendar` bigint(20) UNSIGNED NOT NULL,
   `name` text NOT NULL,
   `acronym` text,
   `code` text NOT NULL,
   `year` int(11) NOT NULL,
-  `difficulty` int(11) NOT NULL DEFAULT '1'
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `difficulty` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=705 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `topics`
@@ -85769,10 +85772,13 @@ INSERT INTO `topics` (`id`, `calendar`, `name`, `acronym`, `code`, `year`, `diff
 -- Estrutura da tabela `users`
 --
 
-CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `email` text
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` text,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Extraindo dados da tabela `users`
@@ -85780,142 +85786,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `email`) VALUES
 (1, 'up201304143@fe.up.pt');
+COMMIT;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `calendars`
---
-ALTER TABLE `calendars`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `exams`
---
-ALTER TABLE `exams`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `professors`
---
-ALTER TABLE `professors`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `professorunavailable`
---
-ALTER TABLE `professorunavailable`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`),
-  ADD UNIQUE KEY `professor` (`professor`,`day`,`time`);
-
---
--- Indexes for table `roomperiodunavailable`
---
-ALTER TABLE `roomperiodunavailable`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `rooms`
---
-ALTER TABLE `rooms`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `students`
---
-ALTER TABLE `students`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `studenttopic`
---
-ALTER TABLE `studenttopic`
-  ADD PRIMARY KEY (`student`,`topic`);
-
---
--- Indexes for table `topicprofessor`
---
-ALTER TABLE `topicprofessor`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `topics`
---
-ALTER TABLE `topics`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `calendars`
---
-ALTER TABLE `calendars`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
---
--- AUTO_INCREMENT for table `exams`
---
-ALTER TABLE `exams`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1563;
---
--- AUTO_INCREMENT for table `professors`
---
-ALTER TABLE `professors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=595;
---
--- AUTO_INCREMENT for table `professorunavailable`
---
-ALTER TABLE `professorunavailable`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `roomperiodunavailable`
---
-ALTER TABLE `roomperiodunavailable`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `rooms`
---
-ALTER TABLE `rooms`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=177;
---
--- AUTO_INCREMENT for table `students`
---
-ALTER TABLE `students`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13751;
---
--- AUTO_INCREMENT for table `topicprofessor`
---
-ALTER TABLE `topicprofessor`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `topics`
---
-ALTER TABLE `topics`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=705;
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
