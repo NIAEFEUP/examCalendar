@@ -49,7 +49,7 @@ public class ExaminationDBImporter extends AbstractSolutionImporter {
         Examination examination = new Examination();
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", ""); // TODO (hardcoded)
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/examcalendar?serverTimezone=UTC", "root", "root"); // TODO (hardcoded)
 
             requestConfig = readRequestConfig(calendar, conn);
             if (requestConfig == null) return null;
